@@ -74,16 +74,5 @@ Walkthroughs
 
 .. toctree::
    sub_pages/download_metadataset
+   sub_pages/example_images
 
-
-
-Walkthroughs
-------------
-
-.. toctree::
-   example_usage/custom_imagenet
-   example_usage/breeds_datasets
-   example_usage/cli_usage
-   example_usage/input_space_manipulation
-   example_usage/training_lib_part_1
-   example_usage/training_lib_part_2
