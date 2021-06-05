@@ -12,3 +12,12 @@ For each image class (e.g. *Dogs*), the MetaDataset contains different sets of d
    Each class also has is also associated with a meta-graph. 
    The subsets are characterized by a diverse collection of 1,853 distinct contexts. 
 
+
+Presence/Absence of Other Objects
+------------------------------------------------------------------------
+.. figure:: ./figures/MetaDataset-Examples.jpg
+   :width: 100 %
+   :align: center
+   :alt: 
+
+   **Figure: Example Cat vs. Dog Images from MetaDataset.** For each class, MetaDataset provides many subsets of data, each of which corresponds different contexts (the context is stated in parenthesis). 
