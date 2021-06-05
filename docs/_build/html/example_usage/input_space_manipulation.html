@@ -1,0 +1,661 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Input manipulation with pre-trained models &mdash; MetaDataset 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/all.min.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using robustness as a general training library (Part 1: Getting started)" href="training_lib_part_1.html" />
+    <link rel="prev" title="Training and evaluating networks via command line" href="cli_usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetaDataset
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cli_usage.html">Training and evaluating networks via command line</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli_usage.html#training-a-standard-nonrobust-model">Training a standard (nonrobust) model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli_usage.html#training-a-robust-model-adversarial-training">Training a robust model (adversarial training)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli_usage.html#evaluating-trained-models">Evaluating trained models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli_usage.html#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli_usage.html#training-a-non-robust-resnet-18-for-the-cifar-dataset">Training a non-robust ResNet-18 for the CIFAR dataset:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli_usage.html#training-a-robust-resnet-50-for-the-restricted-imagenet-dataset">Training a robust ResNet-50 for the Restricted-ImageNet dataset:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli_usage.html#reading-and-analyzing-training-results">Reading and analyzing training results</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Input manipulation with pre-trained models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#generating-untargeted-adversarial-examples">Generating Untargeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generating-targeted-adversarial-examples">Generating Targeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-input-manipulation-e-g-representation-inversion">Custom Input Manipulation (e.g. Representation Inversion)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#changing-optimization-methods">Changing optimization methods</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-usage">Advanced usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gradient-estimation-nes">Gradient Estimation/NES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#custom-optimization-methods">Custom optimization methods</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="training_lib_part_1.html">Using robustness as a general training library (Part 1: Getting started)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_1.html#step-1-imports">Step 1: Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_1.html#step-2-dealing-with-arguments">Step 2: Dealing with arguments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="training_lib_part_1.html#step-2-1-setting-up-command-line-args">Step 2.1: Setting up command-line args</a></li>
+<li class="toctree-l3"><a class="reference internal" href="training_lib_part_1.html#step-2-2-sanity-checks-and-defaults">Step 2.2: Sanity checks and defaults</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_1.html#step-3-creating-the-model-dataset-and-loader">Step 3: Creating the model, dataset, and loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_1.html#step-4-training-the-model">Step 4: Training the model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="training_lib_part_2.html">Using robustness as a general training library (Part 2: Customizing training)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_2.html#training-networks-with-custom-loss-functions">Training networks with custom loss functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_2.html#training-networks-with-custom-data-loaders">Training networks with custom data loaders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="training_lib_part_2.html#using-lambdaloader-to-train-with-label-noise">Using LambdaLoader to train with label noise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="training_lib_part_2.html#using-transformedloader-to-train-with-random-labels">Using TransformedLoader to train with random labels</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_2.html#training-networks-with-custom-logging">Training networks with custom logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_2.html#training-on-custom-datasets">Training on custom datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_2.html#training-with-custom-architectures">Training with custom architectures</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="custom_imagenet.html">Creating a custom dataset by superclassing ImageNet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="custom_imagenet.html#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_imagenet.html#basic-usage-loading-pre-packaged-imagenet-based-datasets">Basic Usage: Loading Pre-Packaged ImageNet-based Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_imagenet.html#advanced-usage-making-custom-datasets-part-1-browsing-the-wordnet-hierarchy">Advanced Usage (Making Custom Datasets) Part 1: Browsing the WordNet Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_imagenet.html#advanced-usage-making-custom-datasets-part-2-making-the-datasets">Advanced Usage (Making Custom Datasets) Part 2: Making the Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="breeds_datasets.html">Creating BREEDS subpopulation shift benchmarks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="breeds_datasets.html#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="breeds_datasets.html#part-1-browsing-through-the-class-hierarchy">Part 1: Browsing through the Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="breeds_datasets.html#part-2-creating-breeds-datasets">Part 2: Creating BREEDS Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="breeds_datasets.html#part-3-loading-in-built-breeds-datasets">Part 3: Loading in-built BREEDS Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#robustness-1-2-post2">robustness 1.2.post2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#robustness-1-2">robustness 1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#robustness-1-1-post2">robustness 1.1.post2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#robustness-1-1">robustness 1.1</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.attack_steps.html">robustness.attack_steps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.attacker.html">robustness.attacker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.data_augmentation.html">robustness.data_augmentation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.datasets.html">robustness.datasets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.defaults.html">robustness.defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.loaders.html">robustness.loaders module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.main.html">robustness.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.model_utils.html">robustness.model_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.train.html">robustness.train module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.tools.html">robustness.tools package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/robustness.tools.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.constants.html">robustness.tools.constants module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.folder.html">robustness.tools.folder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.helpers.html">robustness.tools.helpers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.label_maps.html">robustness.tools.label_maps module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.vis_tools.html">robustness.tools.vis_tools module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.breeds_helpers.html">robustness.tools.breeds_helpers module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api/robustness.tools.html#module-robustness.tools">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetaDataset</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Input manipulation with pre-trained models</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/example_usage/input_space_manipulation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="input-manipulation-with-pre-trained-models">
+<h1>Input manipulation with pre-trained models<a class="headerlink" href="#input-manipulation-with-pre-trained-models" title="Permalink to this headline">¶</a></h1>
+<p>The robustness library provides functionality to perform various input space
+manipulations using a trained model. This ranges from basic manipulation such
+as creating untargeted and targeted adversarial examples, to more
+advanced/custom ones. These types of manipulations are precisely what we use in
+the <a class="reference external" href="https://git.io/robust-reps">code</a> <a class="reference external" href="https://git.io/robust-apps">releases</a> for our papers <a class="reference internal" href="../index.html#eis-19" id="id1"><span>[EIS+19]</span></a> and <a class="reference internal" href="../index.html#ste-19" id="id2"><span>[STE+19]</span></a>.</p>
+<i class="fa fa-play"></i> &nbsp;&nbsp; <a
+href="https://github.com/MadryLab/robustness/blob/master/notebooks/Input%20manipulation%20with%20pre-trained%20models.ipynb">Download
+a Jupyter notebook</a> containing all the code from this walkthrough! <br />
+<br /><div class="section" id="generating-untargeted-adversarial-examples">
+<h2>Generating Untargeted Adversarial Examples<a class="headerlink" href="#generating-untargeted-adversarial-examples" title="Permalink to this headline">¶</a></h2>
+<p>First, we will go through an example of how to create untargeted adversarial
+examples for a ResNet-50 on the dataset CIFAR-10.</p>
+<ol class="arabic">
+<li><p>Load the dataset using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">ch</span>
+<span class="kn">from</span> <span class="nn">robustness.datasets</span> <span class="kn">import</span> <span class="n">CIFAR</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">CIFAR</span><span class="p">(</span><span class="s1">&#39;/path/to/cifar&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Restore the pre-trained model using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness.model_utils</span> <span class="kn">import</span> <span class="n">make_and_restore_model</span>
+<span class="n">model</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">make_and_restore_model</span><span class="p">(</span><span class="n">arch</span><span class="o">=</span><span class="s1">&#39;resnet50&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">ds</span><span class="p">,</span>
+             <span class="n">resume_path</span><span class="o">=</span><span class="n">PATH_TO_MODEL</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+<li><p>Create a loader to iterate through the test set (set hyperparameters
+appropriately). Get a batch of test image-label pairs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">test_loader</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">make_loaders</span><span class="p">(</span><span class="n">workers</span><span class="o">=</span><span class="n">NUM_WORKERS</span><span class="p">,</span>
+                                    <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">test_loader</span><span class="p">))</span>
+</pre></div>
+</div>
+</li>
+<li><p>Define attack parameters (see
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">robustness.attacker.AttackerModel.forward()</span></code> for documentation on these
+parameters):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;constraint&#39;</span><span class="p">:</span><span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="c1"># use L2-PGD</span>
+    <span class="s1">&#39;eps&#39;</span><span class="p">:</span> <span class="n">ATTACK_EPS</span><span class="p">,</span> <span class="c1"># L2 radius around original image</span>
+    <span class="s1">&#39;step_size&#39;</span><span class="p">:</span> <span class="n">ATTACK_STEPSIZE</span><span class="p">,</span>
+    <span class="s1">&#39;iterations&#39;</span><span class="p">:</span> <span class="n">ATTACK_STEPS</span><span class="p">,</span>
+    <span class="s1">&#39;do_tqdm&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The example considers a standard PGD attack on the
+cross-entropy loss. The parameters that you might want to customize are
+<code class="samp docutils literal notranslate"><span class="pre">constraint</span></code> (<code class="samp docutils literal notranslate"><span class="pre">'2'</span></code> and <code class="samp docutils literal notranslate"><span class="pre">'inf'</span></code> are supported), <code class="samp docutils literal notranslate"><span class="pre">'attack_eps'</span></code>,
+<code class="samp docutils literal notranslate"><span class="pre">'step_size'</span></code> and <code class="samp docutils literal notranslate"><span class="pre">'iterations'</span></code>.</p>
+</li>
+<li><p>Find adversarial examples for <code class="samp docutils literal notranslate"><span class="pre">im</span></code> from step 3:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">im_adv</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">make_adv</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>If we want to visualize adversarial examples <code class="samp docutils literal notranslate"><span class="pre">im_adv</span></code> from step 5, we
+can use the utilities provided in the <a class="reference internal" href="../api/robustness.tools.html#module-robustness.tools" title="robustness.tools"><code class="xref py py-mod docutils literal notranslate"><span class="pre">robustness.tools</span></code></a> module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness.tools.vis_tools</span> <span class="kn">import</span> <span class="n">show_image_row</span>
+<span class="kn">from</span> <span class="nn">robustness.tools.label_maps</span> <span class="kn">import</span> <span class="n">CLASS_DICT</span>
+
+<span class="c1"># Get predicted labels for adversarial examples</span>
+<span class="n">pred</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">im_adv</span><span class="p">)</span>
+<span class="n">label_pred</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Visualize test set images, along with corresponding adversarial examples</span>
+<span class="n">show_image_row</span><span class="p">([</span><span class="n">im</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span> <span class="n">im_adv</span><span class="o">.</span><span class="n">cpu</span><span class="p">()],</span>
+         <span class="n">tlist</span><span class="o">=</span><span class="p">[[</span><span class="n">CLASS_DICT</span><span class="p">[</span><span class="s1">&#39;CIFAR&#39;</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">)]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">l</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="p">[</span><span class="n">label</span><span class="p">,</span> <span class="n">label_pred</span><span class="p">]],</span>
+         <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span>
+         <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;./adversarial_example_CIFAR.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Here is a sample output visualization snippet from step 6:</p>
+<div class="figure align-center" id="id5">
+<a class="reference internal image-reference" href="../_images/untargeted_adversarial_example_CIFAR.png"><img alt="Sample visualization of untargeted adversarial examples for the CIFAR-10 dataset." src="../_images/untargeted_adversarial_example_CIFAR.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-text">Random samples from the CIFAR-10 test set (top row), along with their corresponding
+untargeted adversarial examples (bottom row). Image titles correspond to ground truth
+labels and predicted labels for the top and bottom row respectively.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="generating-targeted-adversarial-examples">
+<h2>Generating Targeted Adversarial Examples<a class="headerlink" href="#generating-targeted-adversarial-examples" title="Permalink to this headline">¶</a></h2>
+<p>The procedure for creating untargeted and targeted adversarial examples using
+the robustness library are very similar. In fact, we will start by repeating
+steps 1-3 describe above. The rest of the procedure is as follows (most of it
+involves minor modifications to steps 4-5 above):</p>
+<ol class="arabic">
+<li><p>Define attack parameters:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;constraint&#39;</span><span class="p">:</span><span class="s1">&#39;2&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;eps&#39;</span><span class="p">:</span> <span class="n">ATTACK_EPS</span><span class="p">,</span>
+    <span class="s1">&#39;step_size&#39;</span><span class="p">:</span> <span class="n">ATTACK_STEPSIZE</span><span class="p">,</span>
+    <span class="s1">&#39;iterations&#39;</span><span class="p">:</span> <span class="n">ATTACK_STEPS</span><span class="p">,</span>
+    <span class="s1">&#39;targeted&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;do_tqdm&#39;</span><span class="p">:</span> <span class="kc">True</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The key difference from step 4 above is the inclusion of an additional parameter
+<code class="samp docutils literal notranslate"><span class="pre">'targeted'</span></code> which is set to <code class="samp docutils literal notranslate"><span class="pre">True</span></code> in this case.</p>
+</li>
+<li><p>Define target classes towards which we want to perturb <code class="samp docutils literal notranslate"><span class="pre">im</span></code>.
+For instance, we can perturb all the images towards class <code class="samp docutils literal notranslate"><span class="pre">0</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">targ</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Find adversarial examples for <code class="samp docutils literal notranslate"><span class="pre">im</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">im_adv</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">targ</span><span class="p">,</span> <span class="n">make_adv</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>If you would like to visualize the targeted adversarial examples, you can repeat
+the aforementioned step 6, i.e. the
+<a class="reference internal" href="../api/robustness.tools.vis_tools.html#robustness.tools.vis_tools.show_image_row" title="robustness.tools.vis_tools.show_image_row"><code class="xref py py-meth docutils literal notranslate"><span class="pre">robustness.tools.vis_tools.show_image_row()</span></code></a> method:</p>
+<div class="figure align-center" id="id6">
+<a class="reference internal image-reference" href="../_images/targeted_adversarial_example_CIFAR.png"><img alt="Sample visualization of targeted adversarial examples for the CIFAR-10 dataset." src="../_images/targeted_adversarial_example_CIFAR.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-text">Random samples from the CIFAR-10 test set (top row), along with their corresponding
+targeted adversarial examples (bottom row). Image titles correspond to ground truth
+labels and predicted labels (target labels) for the top and bottom row respectively.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="custom-input-manipulation-e-g-representation-inversion">
+<h2>Custom Input Manipulation (e.g. Representation Inversion)<a class="headerlink" href="#custom-input-manipulation-e-g-representation-inversion" title="Permalink to this headline">¶</a></h2>
+<p>You can also use the robustness lib functionality to perform input
+manipulations beyond  adversarial attacks. In order to do this, you will need to
+define a custom loss function (to replace the default
+<code class="samp docutils literal notranslate"><span class="pre">ch.nn.CrossEntropyLoss</span></code>).</p>
+<p>We will now walk through an example of defining a custom loss for inverting the
+representation (output of the pre-final network layer, before the linear
+classifier) for a given image.  Specifically, given the representation for an
+image, our goal is to find (starting from noise) an  input whose representation
+is close by (in terms of euclidean distance).</p>
+<p>First, we will repeat steps 1-3 from the procedure for generating untargeted
+adversarial examples.</p>
+<ol class="arabic">
+<li><p>Load a set of images to invert and find their representation. Here we
+choose random samples from the test set:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="p">(</span><span class="n">im_inv</span><span class="p">,</span> <span class="n">label_inv</span><span class="p">)</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">test_loader</span><span class="p">))</span> <span class="c1"># Images to invert</span>
+<span class="k">with</span> <span class="n">ch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">rep_inv</span><span class="p">),</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">im_inv</span><span class="p">,</span> <span class="n">with_latent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># Corresponding representation</span>
+</pre></div>
+</div>
+</li>
+<li><p>We now define a custom loss function that penalizes difference from a
+target representation <code class="samp docutils literal notranslate"><span class="pre">targ</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inversion_loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">inp</span><span class="p">,</span> <span class="n">targ</span><span class="p">):</span>
+   <span class="c1"># Compute representation for the input</span>
+   <span class="n">_</span><span class="p">,</span> <span class="n">rep</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">with_latent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fake_relu</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+   <span class="c1"># Normalized L2 error w.r.t. the target representation</span>
+   <span class="n">loss</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">ch</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">rep</span> <span class="o">-</span> <span class="n">targ</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">ch</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">targ</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+   <span class="k">return</span> <span class="n">loss</span><span class="p">,</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</li>
+<li><p>We are now ready to define the attack args :samp: <cite>kwargs</cite>. This time we will
+supply our custom loss <code class="samp docutils literal notranslate"><span class="pre">inversion_loss</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;custom_loss&#39;</span><span class="p">:</span> <span class="n">inversion_loss</span><span class="p">,</span>
+    <span class="s1">&#39;constraint&#39;</span><span class="p">:</span><span class="s1">&#39;2&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;eps&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="s1">&#39;step_size&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;iterations&#39;</span><span class="p">:</span> <span class="mi">10000</span><span class="p">,</span>
+    <span class="s1">&#39;targeted&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;do_tqdm&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>We now define a seed input which will be the starting point for our inversion process. We will
+just use a gray image with (scaled) Gaussian noise:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">im_seed</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">ch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">im_inv</span><span class="p">)</span> <span class="o">/</span> <span class="mi">20</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Finally, we are ready to perform the inversion:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">im_matched</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">im_seed</span><span class="p">,</span> <span class="n">rep_inv</span><span class="p">,</span> <span class="n">make_adv</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>We can also visualize the results of the inversion process (similar to step 6 above)::</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">show_image_row</span><span class="p">([</span><span class="n">im_inv</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span> <span class="n">im_seed</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span> <span class="n">im_matched</span><span class="o">.</span><span class="n">cpu</span><span class="p">()],</span>
+         <span class="p">[</span><span class="s2">&quot;Original&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;Seed ($x_0$)&quot;</span><span class="p">,</span> <span class="s2">&quot;Result&quot;</span><span class="p">],</span>
+         <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span>
+         <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;./custom_inversion_CIFAR.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>You should see something like this:</p>
+<div class="figure align-center" id="id7">
+<a class="reference internal image-reference" href="../_images/custom_inversion_CIFAR.png"><img alt="Sample visualization of inverting representations for a robust network." src="../_images/custom_inversion_CIFAR.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-text">Inverting representations of a robust network. Starting from the seed (middle row), we optimize
+for an image (bottom row) that is close to the representation of the original image (top row).</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
+<div class="section" id="changing-optimization-methods">
+<h3>Changing optimization methods<a class="headerlink" href="#changing-optimization-methods" title="Permalink to this headline">¶</a></h3>
+<p>In the above, we consistently used L2-PGD for all of our optimization tasks, as
+dictated by the value of the <code class="docutils literal notranslate"><span class="pre">constraint</span></code> argument to the model. However,
+there are a few more possible optimization methods available in the
+<code class="docutils literal notranslate"><span class="pre">robustness</span></code> package by default. We give a brief overview of them here—the
+<a class="reference internal" href="../api/robustness.attack_steps.html#module-robustness.attack_steps" title="robustness.attack_steps"><code class="xref py py-mod docutils literal notranslate"><span class="pre">robustness.attack_steps</span></code></a> module has more in-depth documentation on each
+method:</p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">kwargs['constraint']</span> <span class="pre">==</span> <span class="pre">'2'</span></code> (as it was for this walkthrough), then
+<code class="docutils literal notranslate"><span class="pre">eps</span></code> is interpreted as an L2-norm constraint, and we take
+<span class="math notranslate nohighlight">\(\ell_2\)</span>-normalized gradient steps. More information at
+<a class="reference internal" href="../api/robustness.attack_steps.html#robustness.attack_steps.L2Step" title="robustness.attack_steps.L2Step"><code class="xref py py-class docutils literal notranslate"><span class="pre">robustness.attack_steps.L2Step</span></code></a>.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">kwargs['constraint']</span> <span class="pre">==</span> <span class="pre">'inf'</span></code>, then <code class="docutils literal notranslate"><span class="pre">eps</span></code> is interpreted as an
+<span class="math notranslate nohighlight">\(\ell_\infty\)</span> norm constraint, and we take
+<span class="math notranslate nohighlight">\(\ell_\infty\)</span>-normalized PGD steps (i.e. signed gradient steps). More
+information at <a class="reference internal" href="../api/robustness.attack_steps.html#robustness.attack_steps.LinfStep" title="robustness.attack_steps.LinfStep"><code class="xref py py-class docutils literal notranslate"><span class="pre">robustness.attack_steps.LinfStep</span></code></a>.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">kwargs['constraint']</span> <span class="pre">==</span> <span class="pre">'unconstrained'</span></code>, then <code class="docutils literal notranslate"><span class="pre">eps</span></code> is ignored and
+the adversarial image is only clipped to the [0, 1] range. The optimization
+method is ordinary gradient descent, i.e., no projection is done to the
+gradient before making a step.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">kwargs['constraint']</span> <span class="pre">==</span> <span class="pre">'fourier'</span></code>, then <code class="docutils literal notranslate"><span class="pre">eps</span></code> is ignored and the
+adversarial image is only clipped to the [0, 1] range. The optimization method
+is once again ordinary gradient descent, but this time in the Fourier basis
+rather than the pixel basis. This tends to yield nicer-looking
+images, for reasons discussed <a class="reference external" href="https://distill.pub/2017/feature-visualization/#preconditioning">here</a> <a class="reference internal" href="#oms17" id="id3"><span>[OMS17]</span></a>.</p></li>
+</ul>
+<p>For example, in order to do representation inversion in the fourier basis rather
+than the pixel basis, we would change <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;custom_loss&#39;</span><span class="p">:</span> <span class="n">inversion_loss</span><span class="p">,</span>
+    <span class="s1">&#39;constraint&#39;</span><span class="p">:</span><span class="s1">&#39;fourier&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;eps&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span> <span class="c1"># ignored anyways</span>
+    <span class="s1">&#39;step_size&#39;</span><span class="p">:</span>  <span class="mi">5000</span><span class="p">,</span> <span class="c1"># have to re-tune LR</span>
+    <span class="s1">&#39;iterations&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="s1">&#39;targeted&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;do_tqdm&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>We also have to change our <code class="docutils literal notranslate"><span class="pre">im_seed</span></code> to be a valid Fourier-basis
+parameterization of an image:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">im_seed</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">BATCH_SIZE</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">5</span> <span class="c1"># Parameterizes a grey image</span>
+</pre></div>
+</div>
+<p>Running this through the model just like before and visualizing the results should
+yield something like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">show_image_row</span><span class="p">([</span><span class="n">im_inv</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span> <span class="n">im_matched</span><span class="o">.</span><span class="n">cpu</span><span class="p">()],</span>
+      <span class="p">[</span><span class="s2">&quot;Original&quot;</span><span class="p">,</span> <span class="s2">&quot;Result&quot;</span><span class="p">],</span>
+      <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span>
+      <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;./custom_inversion_CIFAR_fourier.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center" id="id8">
+<a class="reference internal image-reference" href="../_images/custom_inversion_CIFAR_fourier.png"><img alt="Sample visualization of inverting representations for a robust network in the fourier basis." src="../_images/custom_inversion_CIFAR_fourier.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-text">Inverting representations of a robust network in the fourier basis. Starting
+from the seed (middle row), we optimize for an image (bottom row) that is
+close to the representation of the original image (top row).</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</div>
+<p><a class="reference internal" href="#adding-custom-steps"><span class="std std-ref">Below</span></a> we show how to implement our own custom optimization methods as
+well.</p>
+<dl class="citation">
+<dt class="label" id="oms17"><span class="brackets"><a class="fn-backref" href="#id3">OMS17</a></span></dt>
+<dd><p>Olah, et al., “Feature Visualization”, Distill, 2017.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="advanced-usage">
+<h2>Advanced usage<a class="headerlink" href="#advanced-usage" title="Permalink to this headline">¶</a></h2>
+<p>The steps given above are sufficient for using the <code class="samp docutils literal notranslate"><span class="pre">robustness</span></code> library
+for a wide a variety of input manipulation techniques, and for reproducing the
+code for our papers. Here we go through a couple more advanced options and
+techniques for using the library.</p>
+<div class="section" id="gradient-estimation-nes">
+<h3>Gradient Estimation/NES<a class="headerlink" href="#gradient-estimation-nes" title="Permalink to this headline">¶</a></h3>
+<p>The first more advanced option we look at is how to use estimated gradients
+in place of real ones when doing adversarial attacks (this corresponds to the
+NES black-box attack <a class="reference internal" href="#iea-18" id="id4"><span>[IEA+18]</span></a>). To do this, we simply need to provide the
+<code class="docutils literal notranslate"><span class="pre">est_grad</span></code> argument (<code class="docutils literal notranslate"><span class="pre">None</span></code> by default) to the model upon creation of the
+adversarial example. As discussed in <code class="xref py py-meth docutils literal notranslate"><span class="pre">this</span> <span class="pre">docstring</span></code>, the proper format for this argument is
+a tuple of the form <code class="docutils literal notranslate"><span class="pre">(R,</span> <span class="pre">N)</span></code>, and the resulting gradient estimator is</p>
+<div class="math notranslate nohighlight">
+\[\nabla_x f(x) \approx \sum_{i=0}^N f(x + R\cdot \vec{\delta_i})\cdot
+\vec{\delta_i},\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta_i\)</span> are randomly sampled from the unit ball (note that we
+employ antithetic sampling to reduce variance, meaning that we actually draw
+<span class="math notranslate nohighlight">\(N/2\)</span> random vectors from the unit ball, and then use
+<span class="math notranslate nohighlight">\(\delta_{N/2+i} = -\delta_{i}\)</span>.</p>
+<p>To do representation inversion with NES/estimated gradients, we would just need
+to add the following line to the above:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;est_grad&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will run the optimization process using 100-query gradient estimates with
+<span class="math notranslate nohighlight">\(R = 0.5\)</span> in the above estimator.</p>
+<dl class="citation">
+<dt class="label" id="iea-18"><span class="brackets"><a class="fn-backref" href="#id4">IEA+18</a></span></dt>
+<dd><p>Ilyas, A., Engstrom, L., Athalye, A., &amp; Lin, J. (2018). Black-box
+adversarial attacks with limited queries and information. arXiv preprint
+arXiv:1804.08598.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="custom-optimization-methods">
+<span id="adding-custom-steps"></span><h3>Custom optimization methods<a class="headerlink" href="#custom-optimization-methods" title="Permalink to this headline">¶</a></h3>
+<p>To make a custom optimization method, all that is required is to subclass
+<a class="reference internal" href="../api/robustness.attack_steps.html#robustness.attack_steps.AttackerStep" title="robustness.attack_steps.AttackerStep"><code class="xref py py-class docutils literal notranslate"><span class="pre">robustness.attack_steps.AttackerStep</span></code></a> class. The class documentation has
+information about which methods and properties need to be implemented, but
+perhaps the most illustrative thing is an example of how to implement the
+<span class="math notranslate nohighlight">\(\ell_2\)</span>-PGD attacker:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">L2Step</span><span class="p">(</span><span class="n">AttackerStep</span><span class="p">):</span>
+   <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+      <span class="n">diff</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_input</span>
+      <span class="n">diff</span> <span class="o">=</span> <span class="n">diff</span><span class="o">.</span><span class="n">renorm</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxnorm</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span>
+      <span class="k">return</span> <span class="n">ch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_input</span> <span class="o">+</span> <span class="n">diff</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+   <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
+      <span class="c1"># Scale g so that each element of the batch is at least norm 1</span>
+      <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+      <span class="n">g_norm</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">l</span><span class="p">))</span>
+      <span class="n">scaled_g</span> <span class="o">=</span> <span class="n">g</span> <span class="o">/</span> <span class="p">(</span><span class="n">g_norm</span> <span class="o">+</span> <span class="mf">1e-10</span><span class="p">)</span>
+      <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">scaled_g</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_size</span>
+
+   <span class="k">def</span> <span class="nf">random_perturb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+      <span class="n">new_x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">ch</span><span class="o">.</span><span class="n">rand_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">renorm</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">maxnorm</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span>
+      <span class="k">return</span> <span class="n">ch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">new_x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+   <span class="k">def</span> <span class="nf">to_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+      <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+<p>As part of initialization, the properties <code class="docutils literal notranslate"><span class="pre">self.orig_input</span></code>, <code class="docutils literal notranslate"><span class="pre">self.eps</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">self.step_size</span></code>, and <code class="docutils literal notranslate"><span class="pre">self.use_grad</span></code> will already be defined.  As shown
+above, there are four functions that your custom step can implement (three of
+which, <code class="docutils literal notranslate"><span class="pre">project</span></code>, <code class="docutils literal notranslate"><span class="pre">step</span></code>, and <code class="docutils literal notranslate"><span class="pre">random_perturb</span></code>, are mandatory).</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">project</span></code> function takes in an input <code class="docutils literal notranslate"><span class="pre">x</span></code> and projects it to the
+appropriate ball around <code class="docutils literal notranslate"><span class="pre">self.orig_input</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">step</span></code> function takes in a current input and a gradient, and outputs the
+next iterate of the optimization process (in our case, we normalize the
+gradient and then add it to the iterate to perform an <span class="math notranslate nohighlight">\(\ell_2\)</span> projected
+gradient ascent step).</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">random_perturb</span></code> function is called if the <code class="docutils literal notranslate"><span class="pre">random_start</span></code> option is
+given when constructing the adversarial example. Given an input, it should
+apply a small random perturbation to the input while still keeping it within
+the adversarial budget.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">to_image</span></code> function is identity by default, but is useful when working
+with alternative parameterizations of images. For example, when optimizing in
+Fourier space, the <code class="docutils literal notranslate"><span class="pre">to_image</span></code> function takes in an input which is in the
+Fourier basis, and outputs a valid image.</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="training_lib_part_1.html" class="btn btn-neutral float-right" title="Using robustness as a general training library (Part 1: Getting started)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="cli_usage.html" class="btn btn-neutral float-left" title="Training and evaluating networks via command line" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, MetaDataset Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

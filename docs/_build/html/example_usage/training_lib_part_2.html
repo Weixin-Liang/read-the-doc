@@ -1,0 +1,721 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Using robustness as a general training library (Part 2: Customizing training) &mdash; MetaDataset 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/all.min.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Creating a custom dataset by superclassing ImageNet" href="custom_imagenet.html" />
+    <link rel="prev" title="Using robustness as a general training library (Part 1: Getting started)" href="training_lib_part_1.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetaDataset
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cli_usage.html">Training and evaluating networks via command line</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli_usage.html#training-a-standard-nonrobust-model">Training a standard (nonrobust) model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli_usage.html#training-a-robust-model-adversarial-training">Training a robust model (adversarial training)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli_usage.html#evaluating-trained-models">Evaluating trained models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli_usage.html#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli_usage.html#training-a-non-robust-resnet-18-for-the-cifar-dataset">Training a non-robust ResNet-18 for the CIFAR dataset:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli_usage.html#training-a-robust-resnet-50-for-the-restricted-imagenet-dataset">Training a robust ResNet-50 for the Restricted-ImageNet dataset:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli_usage.html#reading-and-analyzing-training-results">Reading and analyzing training results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="input_space_manipulation.html">Input manipulation with pre-trained models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="input_space_manipulation.html#generating-untargeted-adversarial-examples">Generating Untargeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_space_manipulation.html#generating-targeted-adversarial-examples">Generating Targeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_space_manipulation.html#custom-input-manipulation-e-g-representation-inversion">Custom Input Manipulation (e.g. Representation Inversion)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="input_space_manipulation.html#changing-optimization-methods">Changing optimization methods</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="input_space_manipulation.html#advanced-usage">Advanced usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="input_space_manipulation.html#gradient-estimation-nes">Gradient Estimation/NES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="input_space_manipulation.html#custom-optimization-methods">Custom optimization methods</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="training_lib_part_1.html">Using robustness as a general training library (Part 1: Getting started)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_1.html#step-1-imports">Step 1: Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_1.html#step-2-dealing-with-arguments">Step 2: Dealing with arguments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="training_lib_part_1.html#step-2-1-setting-up-command-line-args">Step 2.1: Setting up command-line args</a></li>
+<li class="toctree-l3"><a class="reference internal" href="training_lib_part_1.html#step-2-2-sanity-checks-and-defaults">Step 2.2: Sanity checks and defaults</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_1.html#step-3-creating-the-model-dataset-and-loader">Step 3: Creating the model, dataset, and loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_1.html#step-4-training-the-model">Step 4: Training the model</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using robustness as a general training library (Part 2: Customizing training)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#training-networks-with-custom-loss-functions">Training networks with custom loss functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#training-networks-with-custom-data-loaders">Training networks with custom data loaders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-lambdaloader-to-train-with-label-noise">Using LambdaLoader to train with label noise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-transformedloader-to-train-with-random-labels">Using TransformedLoader to train with random labels</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#training-networks-with-custom-logging">Training networks with custom logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#training-on-custom-datasets">Training on custom datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#training-with-custom-architectures">Training with custom architectures</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="custom_imagenet.html">Creating a custom dataset by superclassing ImageNet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="custom_imagenet.html#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_imagenet.html#basic-usage-loading-pre-packaged-imagenet-based-datasets">Basic Usage: Loading Pre-Packaged ImageNet-based Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_imagenet.html#advanced-usage-making-custom-datasets-part-1-browsing-the-wordnet-hierarchy">Advanced Usage (Making Custom Datasets) Part 1: Browsing the WordNet Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_imagenet.html#advanced-usage-making-custom-datasets-part-2-making-the-datasets">Advanced Usage (Making Custom Datasets) Part 2: Making the Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="breeds_datasets.html">Creating BREEDS subpopulation shift benchmarks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="breeds_datasets.html#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="breeds_datasets.html#part-1-browsing-through-the-class-hierarchy">Part 1: Browsing through the Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="breeds_datasets.html#part-2-creating-breeds-datasets">Part 2: Creating BREEDS Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="breeds_datasets.html#part-3-loading-in-built-breeds-datasets">Part 3: Loading in-built BREEDS Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#robustness-1-2-post2">robustness 1.2.post2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#robustness-1-2">robustness 1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#robustness-1-1-post2">robustness 1.1.post2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#robustness-1-1">robustness 1.1</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.attack_steps.html">robustness.attack_steps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.attacker.html">robustness.attacker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.data_augmentation.html">robustness.data_augmentation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.datasets.html">robustness.datasets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.defaults.html">robustness.defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.loaders.html">robustness.loaders module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.main.html">robustness.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.model_utils.html">robustness.model_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.train.html">robustness.train module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.tools.html">robustness.tools package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/robustness.tools.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.constants.html">robustness.tools.constants module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.folder.html">robustness.tools.folder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.helpers.html">robustness.tools.helpers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.label_maps.html">robustness.tools.label_maps module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.vis_tools.html">robustness.tools.vis_tools module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.breeds_helpers.html">robustness.tools.breeds_helpers module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api/robustness.tools.html#module-robustness.tools">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetaDataset</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Using robustness as a general training library (Part 2: Customizing training)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/example_usage/training_lib_part_2.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="using-robustness-as-a-general-training-library-part-2-customizing-training">
+<h1>Using robustness as a general training library (Part 2: Customizing training)<a class="headerlink" href="#using-robustness-as-a-general-training-library-part-2-customizing-training" title="Permalink to this headline">¶</a></h1>
+<i class="fa fa-play"></i> &nbsp;&nbsp; <a
+href="https://github.com/MadryLab/robustness/blob/master/notebooks/Using%20robustness%20as%20a%20library.ipynb">Download
+a Jupyter notebook</a> containing all the code from this walkthrough! <br />
+<br /><p>In this document, we’ll continue our walk through using robustness as a library.
+In the <a class="reference internal" href="training_lib_part_1.html"><span class="doc">first part</span></a>, we made a <code class="docutils literal notranslate"><span class="pre">main.py</span></code> file that trains a model
+given user-specified parameters. For this part of the walkthrough, we’ll
+continue from that <code class="docutils literal notranslate"><span class="pre">main.py</span></code> file. You can also start with a copy the <a class="reference external" href="https://github.com/MadryLab/robustness/robustness/main.py">source</a> of
+<a class="reference internal" href="../api/robustness.main.html#module-robustness.main" title="robustness.main"><code class="xref py py-mod docutils literal notranslate"><span class="pre">robustness.main</span></code></a>, or (if you don’t want the full flexibility of all of
+those arguments) the following bare-bones <code class="samp docutils literal notranslate"><span class="pre">main.py</span></code> file suffices for
+training an adversarially robust CIFAR classifier with a fixed set of
+parameters:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness</span> <span class="kn">import</span> <span class="n">model_utils</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">defaults</span>
+<span class="kn">from</span> <span class="nn">robustness.datasets</span> <span class="kn">import</span> <span class="n">CIFAR</span>
+<span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">ch</span>
+
+<span class="c1"># We use cox (http://github.com/MadryLab/cox) to log, store and analyze</span>
+<span class="c1"># results. Read more at https//cox.readthedocs.io.</span>
+<span class="kn">from</span> <span class="nn">cox.utils</span> <span class="kn">import</span> <span class="n">Parameters</span>
+<span class="kn">import</span> <span class="nn">cox.store</span>
+
+<span class="c1"># Hard-coded dataset, architecture, batch size, workers</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">CIFAR</span><span class="p">(</span><span class="s1">&#39;/tmp/&#39;</span><span class="p">)</span>
+<span class="n">m</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">make_and_restore_model</span><span class="p">(</span><span class="n">arch</span><span class="o">=</span><span class="s1">&#39;resnet50&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">ds</span><span class="p">)</span>
+<span class="n">train_loader</span><span class="p">,</span> <span class="n">val_loader</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">make_loaders</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="n">NUM_WORKERS</span><span class="p">)</span>
+
+<span class="c1"># Create a cox store for logging</span>
+<span class="n">out_store</span> <span class="o">=</span> <span class="n">cox</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">Store</span><span class="p">(</span><span class="n">OUT_DIR</span><span class="p">)</span>
+
+<span class="c1"># Hard-coded base parameters</span>
+<span class="n">train_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;out_dir&#39;</span><span class="p">:</span> <span class="s2">&quot;train_out&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;adv_train&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;constraint&#39;</span><span class="p">:</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;eps&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="s1">&#39;attack_lr&#39;</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">,</span>
+    <span class="s1">&#39;attack_steps&#39;</span><span class="p">:</span> <span class="mi">20</span>
+<span class="p">}</span>
+<span class="n">train_args</span> <span class="o">=</span> <span class="n">Parameters</span><span class="p">(</span><span class="n">train_kwargs</span><span class="p">)</span>
+
+<span class="c1"># Fill whatever parameters are missing from the defaults</span>
+<span class="n">train_args</span> <span class="o">=</span> <span class="n">defaults</span><span class="o">.</span><span class="n">check_and_fill_args</span><span class="p">(</span><span class="n">train_args</span><span class="p">,</span>
+                        <span class="n">defaults</span><span class="o">.</span><span class="n">TRAINING_ARGS</span><span class="p">,</span> <span class="n">CIFAR</span><span class="p">)</span>
+<span class="n">train_args</span> <span class="o">=</span> <span class="n">defaults</span><span class="o">.</span><span class="n">check_and_fill_args</span><span class="p">(</span><span class="n">train_args</span><span class="p">,</span>
+                        <span class="n">defaults</span><span class="o">.</span><span class="n">PGD_ARGS</span><span class="p">,</span> <span class="n">CIFAR</span><span class="p">)</span>
+
+<span class="c1"># Train a model</span>
+<span class="n">train</span><span class="o">.</span><span class="n">train_model</span><span class="p">(</span><span class="n">train_args</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="p">(</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">val_loader</span><span class="p">),</span> <span class="n">store</span><span class="o">=</span><span class="n">out_store</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The following sections will demonstrate how to customize training in a variety
+of ways.</p>
+<div class="section" id="training-networks-with-custom-loss-functions">
+<h2>Training networks with custom loss functions<a class="headerlink" href="#training-networks-with-custom-loss-functions" title="Permalink to this headline">¶</a></h2>
+<p>By default, training uses the cross-entropy loss; however, we can easily change
+this by specifying a custom training loss and a custom adversary loss. For
+example, suppose that instead of just computing the cross-entropy loss, we’re
+going to try an experimental new training loss that multiplies a random 50%
+of the logits by 10. (<em>Note that this is just for illustrative purposes—in
+practice this is a terrible idea</em>.)</p>
+<p>We can implement this crazy loss function as a training criterion and a
+corresponding adversary loss. Recall that as discussed in the
+<a class="reference internal" href="../api/robustness.train.html#robustness.train.train_model" title="robustness.train.train_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">robustness.train.train_model()</span></code></a> docstring, the train loss takes in
+<code class="samp docutils literal notranslate"><span class="pre">logits,targets</span></code> and returns a scalar, whereas the adversary loss takes in
+<code class="samp docutils literal notranslate"><span class="pre">model,inputs,targets</span></code> and returns a vector (not averaged along the
+batch) as well as the output.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_crit</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">custom_train_loss</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">targ</span><span class="p">):</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span>
+    <span class="n">logits_to_multiply</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">bernoulli</span><span class="p">(</span><span class="n">probs</span><span class="p">)</span> <span class="o">*</span> <span class="mi">9</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">train_crit</span><span class="p">(</span><span class="n">logits_to_multiply</span> <span class="o">*</span> <span class="n">logits</span><span class="p">,</span> <span class="n">targ</span><span class="p">)</span>
+
+<span class="n">adv_crit</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">(</span><span class="n">reduction</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">custom_adv_loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">inp</span><span class="p">,</span> <span class="n">targ</span><span class="p">):</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span>
+    <span class="n">logits_to_multiply</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">bernoulli</span><span class="p">(</span><span class="n">probs</span><span class="p">)</span> <span class="o">*</span> <span class="mi">9</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">new_logits</span> <span class="o">=</span> <span class="n">logits_to_multiply</span> <span class="o">*</span> <span class="n">logits</span>
+    <span class="k">return</span> <span class="n">adv_crit</span><span class="p">(</span><span class="n">new_logits</span><span class="p">,</span> <span class="n">targ</span><span class="p">),</span> <span class="n">new_logits</span>
+
+<span class="n">train_args</span><span class="o">.</span><span class="n">custom_train_loss</span> <span class="o">=</span> <span class="n">custom_train_loss</span>
+<span class="n">train_args</span><span class="o">.</span><span class="n">custom_adv_loss</span> <span class="o">=</span> <span class="n">custom_adv_loss</span>
+</pre></div>
+</div>
+<p>Adding these few lines right before calling of
+<a class="reference internal" href="../api/robustness.train.html#robustness.train.train_model" title="robustness.train.train_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">train_model()</span></code></a>
+suffices for training our network robustly with this custom loss.</p>
+<p>As of the latest version of <code class="docutils literal notranslate"><span class="pre">robustness</span></code>, you can now also supply a custom
+function for computing accuracy using the <code class="docutils literal notranslate"><span class="pre">custom_accuracy</span></code> flag. This should
+be a function that takes in the model output and the target labels, and returns
+a tuple of <code class="docutils literal notranslate"><span class="pre">(top1,</span> <span class="pre">top5)</span></code> accuracies (feel free to make the second element
+<code class="docutils literal notranslate"><span class="pre">float('nan')</span></code> if there’s only one accuracy metric you want to display). Here
+is an example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">custom_acc_func</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">targ</span><span class="p">):</span>
+    <span class="c1"># Calculate top1 and top5 accuracy for this batch here</span>
+    <span class="k">return</span> <span class="mf">100.</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span> <span class="c1"># Return (top1, top5)</span>
+
+<span class="n">train_args</span><span class="o">.</span><span class="n">custom_accuracy</span> <span class="o">=</span> <span class="n">custom_acc_func</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="training-networks-with-custom-data-loaders">
+<span id="using-custom-loaders"></span><h2>Training networks with custom data loaders<a class="headerlink" href="#training-networks-with-custom-data-loaders" title="Permalink to this headline">¶</a></h2>
+<p>Another aspect of the training we can customize is data loading, through two
+utilities for modifying dataloaders called
+<a class="reference internal" href="../api/robustness.loaders.html#robustness.loaders.TransformedLoader" title="robustness.loaders.TransformedLoader"><code class="xref py py-meth docutils literal notranslate"><span class="pre">robustness.loaders.TransformedLoader()</span></code></a> and
+<a class="reference internal" href="../api/robustness.loaders.html#robustness.loaders.LambdaLoader" title="robustness.loaders.LambdaLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">robustness.loaders.LambdaLoader</span></code></a>. To see how they work, we’re going to
+consider two variations on our training: (a) training with label noise, and (b)
+training with random labels.</p>
+<div class="section" id="using-lambdaloader-to-train-with-label-noise">
+<h3>Using LambdaLoader to train with label noise<a class="headerlink" href="#using-lambdaloader-to-train-with-label-noise" title="Permalink to this headline">¶</a></h3>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">LambdaLoader</span></code> works by modifying the output of a
+data loader <em>in real-time</em>, i.e. it applies a fixed function to the output of a
+loader. This makes it well-suited to, e.g., custom data augmentation,
+input/label noise, or other applications where randomness across batches is
+needed. To demonstrate its usage, we’re going to add label noise to our training
+setup. To do this, all we need to do is define a function which takes in a batch
+of inputs and labels, and returns the same batch but with label noise added in.
+For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness.loaders</span> <span class="kn">import</span> <span class="n">LambdaLoader</span>
+
+<span class="k">def</span> <span class="nf">label_noiser</span><span class="p">(</span><span class="n">ims</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+    <span class="n">label_noise</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">randint_like</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">label_noise</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span>
+    <span class="n">labels_to_noise</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">bernoulli</span><span class="p">(</span><span class="n">probs</span><span class="o">.</span><span class="n">float</span><span class="p">())</span><span class="o">.</span><span class="n">long</span><span class="p">()</span>
+    <span class="n">new_labels</span> <span class="o">=</span> <span class="p">(</span><span class="n">labels</span> <span class="o">+</span> <span class="n">label_noise</span> <span class="o">*</span> <span class="n">labels_to_noise</span><span class="p">)</span> <span class="o">%</span> <span class="mi">10</span>
+    <span class="k">return</span> <span class="n">ims</span><span class="p">,</span> <span class="n">new_labels</span>
+
+<span class="n">train_loader</span> <span class="o">=</span> <span class="n">LambdaLoader</span><span class="p">(</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">label_noiser</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that LamdaLoader is quite general—any function that takes in <code class="samp docutils literal notranslate"><span class="pre">ims,</span>
+<span class="pre">labels</span></code> and outputs <code class="samp docutils literal notranslate"><span class="pre">ims,</span> <span class="pre">labels</span></code> of the same shape can be put in place of
+<code class="samp docutils literal notranslate"><span class="pre">label_noiser</span></code> above.</p>
+</div>
+<div class="section" id="using-transformedloader-to-train-with-random-labels">
+<h3>Using TransformedLoader to train with random labels<a class="headerlink" href="#using-transformedloader-to-train-with-random-labels" title="Permalink to this headline">¶</a></h3>
+<p>In contrast to <a class="reference internal" href="../api/robustness.loaders.html#robustness.loaders.LambdaLoader" title="robustness.loaders.LambdaLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">LambdaLoader</span></code></a>,
+<a class="reference internal" href="../api/robustness.loaders.html#robustness.loaders.TransformedLoader" title="robustness.loaders.TransformedLoader"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TransformedLoader()</span></code></a> is a data loader transformation
+that is applied <em>once</em> at the beginning of training (this makes it better suited
+to deterministic transformations to inputs or labels). Unfortunately, the
+implementation of TransformedLoader currently loads the entire dataset into
+memory, so it only reliably works on small datasets (e.g. CIFAR). This will be
+fixed in a future version of the library. To demonstrate its usage, we will use
+it to randomize labels for the training set. (Recall that when we usually train
+using random labels, we perform the label assignment only once, prior to
+training.) To do this, all we need to do is define a function which takes in a
+batch of inputs and labels, and returns the same batch, but with random labels
+instead. For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness.loaders</span> <span class="kn">import</span> <span class="n">TransformedLoader</span>
+<span class="kn">from</span> <span class="nn">robustness.data_augmentation</span> <span class="kn">import</span> <span class="n">TRAIN_TRANSFORMS_DEFAULT</span>
+
+<span class="k">def</span> <span class="nf">make_rand_labels</span><span class="p">(</span><span class="n">ims</span><span class="p">,</span> <span class="n">targs</span><span class="p">):</span>
+    <span class="n">new_targs</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">targs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">long</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">ims</span><span class="p">,</span> <span class="n">new_targs</span>
+
+<span class="n">train_loader_transformed</span> <span class="o">=</span> <span class="n">TransformedLoader</span><span class="p">(</span><span class="n">train_loader</span><span class="p">,</span>
+                                           <span class="n">make_rand_labels</span><span class="p">,</span>
+                                           <span class="n">TRAIN_TRANSFORMS_DEFAULT</span><span class="p">(</span><span class="mi">32</span><span class="p">),</span>
+                                           <span class="n">workers</span><span class="o">=</span><span class="n">NUM_WORKERS</span><span class="p">,</span>
+                                           <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span>
+                                           <span class="n">do_tqdm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here, we start with a <code class="samp docutils literal notranslate"><span class="pre">train_loader</span></code> without data augmentation, to get access
+to the actual image-label pairs from the training set. We then transform each input
+by assigning an image a random label instead. Moreover, we also support applying other
+transforms in <em>real-time</em> (such as data augmentation) during the creation of the
+transformed dataset using <code class="samp docutils literal notranslate"><span class="pre">train_loader_transformed</span></code> (e.g.,
+<code class="samp docutils literal notranslate"><span class="pre">TRAIN_TRANSFORMS(32)</span></code> here).</p>
+<p>Note that TransformedLoader is quite general—any function that takes in <code class="samp docutils literal notranslate"><span class="pre">ims,</span>
+<span class="pre">labels</span></code> and outputs <code class="samp docutils literal notranslate"><span class="pre">ims,</span> <span class="pre">labels</span></code> of the same shape can be put in place of
+<code class="samp docutils literal notranslate"><span class="pre">rand_label_transform</span></code> above.</p>
+</div>
+</div>
+<div class="section" id="training-networks-with-custom-logging">
+<h2>Training networks with custom logging<a class="headerlink" href="#training-networks-with-custom-logging" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="samp docutils literal notranslate"><span class="pre">robustness</span></code> library also supports training with custom logging
+functionality. When calling <a class="reference internal" href="../api/robustness.train.html#robustness.train.train_model" title="robustness.train.train_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">train_model()</span></code></a>, the user can
+specify “hooks,” functions that will be called by the training process every
+iteration or every epoch. Here, we’ll demonstrate this functionality using a
+logging function that measures the norm of the network parameters (by treating
+them as a single vector). We will modify/augment the <code class="samp docutils literal notranslate"><span class="pre">main.py</span></code> code
+described above:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.nn.utils</span> <span class="kn">import</span> <span class="n">parameters_to_vector</span> <span class="k">as</span> <span class="n">flatten</span>
+
+<span class="k">def</span> <span class="nf">log_norm</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">log_info</span><span class="p">):</span>
+   <span class="n">curr_params</span> <span class="o">=</span> <span class="n">flatten</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+   <span class="n">log_info_custom</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;epoch&#39;</span><span class="p">:</span> <span class="n">log_info</span><span class="p">[</span><span class="s1">&#39;epoch&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;weight_norm&#39;</span><span class="p">:</span> <span class="n">ch</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">curr_params</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="p">}</span>
+   <span class="n">out_store</span><span class="p">[</span><span class="s1">&#39;custom&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append_row</span><span class="p">(</span><span class="n">log_info_custom</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We now create a custom <a class="reference external" href="http://github.com/MadryLab/cox">cox</a> store that we’ll
+hold our results in (<code class="samp docutils literal notranslate"><span class="pre">cox</span></code> is our super-lightweight library for storing
+and analyzing experimental results, you can read the docs <a class="reference external" href="https://cox.readthedocs.io">here</a>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">CUSTOM_SCHEMA</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;epoch&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="s1">&#39;weight_norm&#39;</span><span class="p">:</span> <span class="nb">float</span> <span class="p">}</span>
+<span class="n">out_store</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s1">&#39;custom&#39;</span><span class="p">,</span> <span class="n">CUSTOM_SCHEMA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We will then modify the <code class="samp docutils literal notranslate"><span class="pre">train_args</span></code> to incorporate this function into
+the logging done per epoch/iteration. If we want to log the norm of the weights
+every epoch, we can do:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_args</span><span class="o">.</span><span class="n">epoch_hook</span> <span class="o">=</span> <span class="n">log_norm</span>
+</pre></div>
+</div>
+<p>If we want to perform the logging every iteration, we need to make the
+following modifications:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">CUSTOM_SCHEMA</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;iteration&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="s1">&#39;weight_norm&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">}</span>
+<span class="n">out_store</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s1">&#39;custom&#39;</span><span class="p">,</span> <span class="n">CUSTOM_SCHEMA</span><span class="p">)</span>
+
+ <span class="k">def</span> <span class="nf">log_norm</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">it</span><span class="p">,</span> <span class="n">loop_type</span><span class="p">,</span> <span class="n">inp</span><span class="p">,</span> <span class="n">targ</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">loop_type</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span>
+       <span class="n">curr_params</span> <span class="o">=</span> <span class="n">flatten</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+       <span class="n">log_info_custom</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;iteration&#39;</span><span class="p">:</span> <span class="n">it</span><span class="p">,</span>
+                      <span class="s1">&#39;weight_norm&#39;</span><span class="p">:</span> <span class="n">ch</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">curr_params</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="p">}</span>
+       <span class="n">out_store</span><span class="p">[</span><span class="s1">&#39;custom&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append_row</span><span class="p">(</span><span class="n">log_info_custom</span><span class="p">)</span>
+
+ <span class="n">train_args</span><span class="o">.</span><span class="n">iteration_hook</span> <span class="o">=</span> <span class="n">log_norm</span>
+</pre></div>
+</div>
+<p>The arguments taken by the iteration hook differ from those taken by
+the epoch hook: the former takes a model, iteration number, loop_type, current
+input batch, and current target batch. The latter takes only the model and a
+dictionary called log_info containing all of the normally logged statistics as
+in train.py.</p>
+<p>Note that the custom logging functionality provided by the robustness library is
+quite general—any function that takes the appropriate input arguments can be
+used in place of <code class="samp docutils literal notranslate"><span class="pre">log_norm</span></code> above.</p>
+</div>
+<div class="section" id="training-on-custom-datasets">
+<span id="using-custom-datasets"></span><h2>Training on custom datasets<a class="headerlink" href="#training-on-custom-datasets" title="Permalink to this headline">¶</a></h2>
+<p>The robustness library by default includes most common datasets: ImageNet,
+Restricted-ImageNet, CIFAR, CINIC, and A2B. That said, it is rather
+straightforward to add your own dataset.</p>
+<ol class="arabic">
+<li><p>Subclass the <a class="reference internal" href="../api/robustness.datasets.html#robustness.datasets.DataSet" title="robustness.datasets.DataSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataSet</span></code></a> class from
+<a class="reference internal" href="../api/robustness.datasets.html#module-robustness.datasets" title="robustness.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">robustness.datasets</span></code></a>. This means implementing
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">__init__()</span></code>
+and <a class="reference internal" href="../api/robustness.datasets.html#robustness.datasets.DataSet.get_model" title="robustness.datasets.DataSet.get_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_model()</span></code></a> functions.</p></li>
+<li><p>In <code class="samp docutils literal notranslate"><span class="pre">__init__()</span></code>, all that is required is to call
+<code class="samp docutils literal notranslate"><span class="pre">super(NewClass,</span> <span class="pre">self).__init__</span></code> with the appropriate arguments,
+found in <a class="reference internal" href="../api/robustness.datasets.html#robustness.datasets.DataSet" title="robustness.datasets.DataSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">the</span> <span class="pre">docstring</span></code></a> and
+duplicated below:</p>
+<dl>
+<dt>Arguments:</dt><dd><blockquote>
+<div><ul class="simple">
+<li><p>Dataset name (e.g. <code class="samp docutils literal notranslate"><span class="pre">imagenet</span></code>).</p></li>
+<li><p>Dataset path (if your desired dataset is in the list of already
+implemented datasets in torchvision.datasets, pass the appropriate
+location, otherwise make this an argument of your subclassed
+<code class="samp docutils literal notranslate"><span class="pre">__init__</span></code> function.</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>Named arguments (all required):</dt><dd><ul class="simple">
+<li><p><code class="samp docutils literal notranslate"><span class="pre">num_classes</span></code>, the number of classes in the dataset</p></li>
+<li><p><code class="samp docutils literal notranslate"><span class="pre">mean</span></code>, the mean to normalize the dataset with</p></li>
+<li><p><code class="samp docutils literal notranslate"><span class="pre">std</span></code>, the standard deviation to normalize the dataset with</p></li>
+<li><p><code class="samp docutils literal notranslate"><span class="pre">custom_class</span></code>, the <cite>torchvision.models</cite> class corresponding
+to the dataset, if it exists (otherwise <code class="samp docutils literal notranslate"><span class="pre">None</span></code>)</p></li>
+<li><p><code class="samp docutils literal notranslate"><span class="pre">label_mapping</span></code>, a dictionary mapping from class numbers to
+human-interpretable class names (can be <code class="samp docutils literal notranslate"><span class="pre">None</span></code>)</p></li>
+<li><p><code class="samp docutils literal notranslate"><span class="pre">transform_train</span></code>, instance of <code class="samp docutils literal notranslate"><span class="pre">torchvision.transforms</span></code>
+to apply to the training images from the dataset</p></li>
+<li><p><code class="samp docutils literal notranslate"><span class="pre">transform_test</span></code>, instance of <code class="samp docutils literal notranslate"><span class="pre">torchvision.transforms</span></code>
+to apply to the validation images from the dataset</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><p>In <a class="reference internal" href="../api/robustness.datasets.html#robustness.datasets.DataSet.get_model" title="robustness.datasets.DataSet.get_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_model()</span></code></a>, implement a
+function which takes in an architecture name <code class="samp docutils literal notranslate"><span class="pre">arch</span></code> and boolean
+<code class="samp docutils literal notranslate"><span class="pre">pretrained</span></code>, and returns a PyTorch model (nn.Module) (see
+<a class="reference internal" href="../api/robustness.datasets.html#robustness.datasets.DataSet.get_model" title="robustness.datasets.DataSet.get_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">the</span> <span class="pre">docstring</span></code></a> for
+more details). This will probably entail just using something like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness</span> <span class="kn">import</span> <span class="n">imagenet_models</span> <span class="c1"># or cifar_models</span>
+<span class="k">assert</span> <span class="ow">not</span> <span class="n">pretrained</span><span class="p">,</span> <span class="s2">&quot;pretrained only available for ImageNet&quot;</span>
+<span class="k">return</span> <span class="n">imagenet_models</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">arch</span><span class="p">](</span><span class="n">num_classes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span><span class="p">)</span>
+<span class="c1"># replace &quot;models&quot; with &quot;cifar_models&quot; in the above if the</span>
+<span class="c1"># image size is less than [224, 224, 3]</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>You’re all set! You can create an instance of your dataset and a
+corresponding model with::</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness.datasets</span> <span class="kn">import</span> <span class="n">MyNewDataSet</span>
+<span class="kn">from</span> <span class="nn">robustness.model_utils</span> <span class="kn">import</span> <span class="n">make_and_restore_model</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">MyNewDataSet</span><span class="p">(</span><span class="s1">&#39;/path/to/dataset/&#39;</span><span class="p">)</span>
+<span class="n">model</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">make_and_restore_model</span><span class="p">(</span><span class="n">arch</span><span class="o">=</span><span class="s1">&#39;resnet50&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">ds</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Note: if you also want to be able to use your dataset with the</strong>
+<a class="reference internal" href="cli_usage.html"><span class="doc">command-line tool</span></a>, <strong>you’ll need to clone the repository and pip
+install it locally, after also following these extra steps</strong>:</p>
+<ol class="arabic simple" start="4">
+<li><p>Add an entry to <a class="reference internal" href="../api/robustness.datasets.html#robustness.datasets.DATASETS" title="robustness.datasets.DATASETS"><code class="xref py py-attr docutils literal notranslate"><span class="pre">robustness.datasets.DATASETS</span></code></a> dictionary for your
+dataset.</p></li>
+<li><p>If you want to be able to train a robust model on your dataset, add it
+to the <code class="xref py py-attr docutils literal notranslate"><span class="pre">DATASET_TO_CONFIG</span></code> dictionary in <cite>main.py</cite> and
+create a config file in the same manner as for the other datasets.</p></li>
+</ol>
+</div>
+<div class="section" id="training-with-custom-architectures">
+<span id="using-custom-archs"></span><h2>Training with custom architectures<a class="headerlink" href="#training-with-custom-architectures" title="Permalink to this headline">¶</a></h2>
+<p>Currently the robustness library supports a few common architectures. The
+models are split between two folders: <code class="samp docutils literal notranslate"><span class="pre">cifar_models</span></code> for
+architectures that handle CIFAR-size (i.e. 32x32x3) images, and
+<code class="samp docutils literal notranslate"><span class="pre">imagenet_models</span></code> for models that require larger images (e.g.
+224x224x3). It is possible to add architectures to either of these
+folders, but to make them fully compatible with the <code class="samp docutils literal notranslate"><span class="pre">robustness</span></code>
+library requires a few extra steps.</p>
+<p>We’ll go through an example of how to add a simple one-hidden-layer MLP
+architecture for CIFAR:</p>
+<ol class="arabic" start="0">
+<li><p>Let’s set up our imports and instantiate the dataset:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
+<span class="kn">from</span> <span class="nn">robustness.model_utils</span> <span class="kn">import</span> <span class="n">make_and_restore_model</span>
+<span class="kn">from</span> <span class="nn">robustness.datasets</span> <span class="kn">import</span> <span class="n">CIFAR</span>
+
+<span class="n">ds</span> <span class="o">=</span> <span class="n">CIFAR</span><span class="p">(</span><span class="s1">&#39;/path/to/cifar&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Implement and create an instance of your model:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MLP</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+   <span class="c1"># Must implement the num_classes argument</span>
+   <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+      <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">32</span><span class="o">*</span><span class="mi">32</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">relu1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+
+   <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+      <span class="n">out</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+      <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+      <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu1</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">MLP</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Call <a class="reference internal" href="../api/robustness.model_utils.html#robustness.model_utils.make_and_restore_model" title="robustness.model_utils.make_and_restore_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">robustness.model_utils.make_and_restore_model()</span></code></a>, but this time
+feed in <code class="docutils literal notranslate"><span class="pre">model</span></code> instead of a string with the architecture name:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">make_and_restore_model</span><span class="p">(</span><span class="n">arch</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">ds</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>(If all you want to do with this architecture is training a
+model, <strong>you can skip this step</strong>). In order to make it fully compatible
+with the robustness library, the :<cite>forward</cite> function of our architecture
+must support the following three (boolean) arguments:</p>
+<ul class="simple">
+<li><p><code class="samp docutils literal notranslate"><span class="pre">with_latent</span></code> : If this option is given, <code class="samp docutils literal notranslate"><span class="pre">forward</span></code> should
+return the output of the second-last layer along with the logits.</p></li>
+<li><p><code class="samp docutils literal notranslate"><span class="pre">fake_relu</span></code> :  If this option is given, replace the ReLU just
+after the second-last layer with a <code class="samp docutils literal notranslate"><span class="pre">custom_modules.FakeReLUM</span></code>,
+which is a ReLU on the forwards pass and identity on the backwards
+pass.</p></li>
+<li><p><code class="samp docutils literal notranslate"><span class="pre">no_relu</span></code> : If this option is given, then <code class="samp docutils literal notranslate"><span class="pre">with_latent</span></code>
+should return the <em>pre-ReLU</em> activations of the second-last layer.</p></li>
+</ul>
+<p>These options are usually actually quite simple to implement:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness.imagenet_models</span> <span class="kn">import</span> <span class="n">custom_modules</span>
+
+<span class="k">class</span> <span class="nc">MLP</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+   <span class="c1"># Must implement the num_classes argument</span>
+   <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+      <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">32</span><span class="o">*</span><span class="mi">32</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">relu1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">fake_relu1</span> <span class="o">=</span> <span class="n">custom_modules</span><span class="o">.</span><span class="n">FakeReLUM</span><span class="p">()</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+
+   <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">with_latent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fake_relu</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">no_relu</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+      <span class="n">out</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+      <span class="n">pre_relu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+      <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fake_relu1</span><span class="p">(</span><span class="n">pre_relu</span><span class="p">)</span> <span class="k">if</span> <span class="n">fake_relu</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">relu1</span><span class="p">(</span><span class="n">pre_relu</span><span class="p">)</span>
+      <span class="n">final</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">with_latent</span><span class="p">:</span>
+         <span class="k">return</span> <span class="p">(</span><span class="n">final</span><span class="p">,</span> <span class="n">pre_relu</span><span class="p">)</span> <span class="k">if</span> <span class="n">no_relu</span> <span class="k">else</span> <span class="p">(</span><span class="n">final</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
+      <span class="k">return</span> <span class="n">final</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>That’s it! Now, just like for custom datasets, if you want these architectures
+to be available via the <a class="reference internal" href="cli_usage.html"><span class="doc">command line tool</span></a>,
+you’ll have to clone the <code class="docutils literal notranslate"><span class="pre">robustness</span></code> repository and pip install it locally.
+You’ll also have to do the following:</p>
+<ol class="arabic simple" start="4">
+<li><p>Put the declaration of the <code class="docutils literal notranslate"><span class="pre">MLP</span></code> class into its own <code class="docutils literal notranslate"><span class="pre">mlp.py</span></code> file, and
+add this file to the <code class="samp docutils literal notranslate"><span class="pre">cifar_models</span></code> folder</p></li>
+</ol>
+<ol class="arabic" start="3">
+<li><p>In <code class="samp docutils literal notranslate"><span class="pre">cifar_models/__init__.py</span></code>, add the line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.mlp</span> <span class="kn">import</span> <span class="n">MLP</span>
+</pre></div>
+</div>
+</li>
+<li><p>The new architecture is now available as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness.model_utils</span> <span class="kn">import</span> <span class="n">make_and_restore_model</span>
+<span class="kn">from</span> <span class="nn">robustness.datasets</span> <span class="kn">import</span> <span class="n">CIFAR</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">CIFAR</span><span class="p">(</span><span class="s1">&#39;/path/to/cifar&#39;</span><span class="p">)</span>
+<span class="n">model</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">make_and_restore_model</span><span class="p">(</span><span class="n">arch</span><span class="o">=</span><span class="s1">&#39;MLP&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">ds</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and via the command line option <code class="docutils literal notranslate"><span class="pre">--arch</span> <span class="pre">MLP</span></code>.</p>
+</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="custom_imagenet.html" class="btn btn-neutral float-right" title="Creating a custom dataset by superclassing ImageNet" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="training_lib_part_1.html" class="btn btn-neutral float-left" title="Using robustness as a general training library (Part 1: Getting started)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, MetaDataset Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

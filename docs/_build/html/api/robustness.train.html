@@ -1,0 +1,480 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>robustness.train module &mdash; MetaDataset 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/all.min.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="robustness.tools package" href="robustness.tools.html" />
+    <link rel="prev" title="robustness.model_utils module" href="robustness.model_utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetaDataset
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/cli_usage.html">Training and evaluating networks via command line</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#training-a-standard-nonrobust-model">Training a standard (nonrobust) model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#training-a-robust-model-adversarial-training">Training a robust model (adversarial training)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#evaluating-trained-models">Evaluating trained models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/cli_usage.html#training-a-non-robust-resnet-18-for-the-cifar-dataset">Training a non-robust ResNet-18 for the CIFAR dataset:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/cli_usage.html#training-a-robust-resnet-50-for-the-restricted-imagenet-dataset">Training a robust ResNet-50 for the Restricted-ImageNet dataset:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#reading-and-analyzing-training-results">Reading and analyzing training results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/input_space_manipulation.html">Input manipulation with pre-trained models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/input_space_manipulation.html#generating-untargeted-adversarial-examples">Generating Untargeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/input_space_manipulation.html#generating-targeted-adversarial-examples">Generating Targeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/input_space_manipulation.html#custom-input-manipulation-e-g-representation-inversion">Custom Input Manipulation (e.g. Representation Inversion)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/input_space_manipulation.html#changing-optimization-methods">Changing optimization methods</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/input_space_manipulation.html#advanced-usage">Advanced usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/input_space_manipulation.html#gradient-estimation-nes">Gradient Estimation/NES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/input_space_manipulation.html#custom-optimization-methods">Custom optimization methods</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/training_lib_part_1.html">Using robustness as a general training library (Part 1: Getting started)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-1-imports">Step 1: Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-2-dealing-with-arguments">Step 2: Dealing with arguments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-2-1-setting-up-command-line-args">Step 2.1: Setting up command-line args</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-2-2-sanity-checks-and-defaults">Step 2.2: Sanity checks and defaults</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-3-creating-the-model-dataset-and-loader">Step 3: Creating the model, dataset, and loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-4-training-the-model">Step 4: Training the model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/training_lib_part_2.html">Using robustness as a general training library (Part 2: Customizing training)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-networks-with-custom-loss-functions">Training networks with custom loss functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-networks-with-custom-data-loaders">Training networks with custom data loaders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/training_lib_part_2.html#using-lambdaloader-to-train-with-label-noise">Using LambdaLoader to train with label noise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/training_lib_part_2.html#using-transformedloader-to-train-with-random-labels">Using TransformedLoader to train with random labels</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-networks-with-custom-logging">Training networks with custom logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-on-custom-datasets">Training on custom datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-with-custom-architectures">Training with custom architectures</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/custom_imagenet.html">Creating a custom dataset by superclassing ImageNet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/custom_imagenet.html#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/custom_imagenet.html#basic-usage-loading-pre-packaged-imagenet-based-datasets">Basic Usage: Loading Pre-Packaged ImageNet-based Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/custom_imagenet.html#advanced-usage-making-custom-datasets-part-1-browsing-the-wordnet-hierarchy">Advanced Usage (Making Custom Datasets) Part 1: Browsing the WordNet Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/custom_imagenet.html#advanced-usage-making-custom-datasets-part-2-making-the-datasets">Advanced Usage (Making Custom Datasets) Part 2: Making the Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/breeds_datasets.html">Creating BREEDS subpopulation shift benchmarks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/breeds_datasets.html#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/breeds_datasets.html#part-1-browsing-through-the-class-hierarchy">Part 1: Browsing through the Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/breeds_datasets.html#part-2-creating-breeds-datasets">Part 2: Creating BREEDS Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/breeds_datasets.html#part-3-loading-in-built-breeds-datasets">Part 3: Loading in-built BREEDS Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/changelog.html#robustness-1-2-post2">robustness 1.2.post2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/changelog.html#robustness-1-2">robustness 1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/changelog.html#robustness-1-1-post2">robustness 1.1.post2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/changelog.html#robustness-1-1">robustness 1.1</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="robustness.attack_steps.html">robustness.attack_steps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.attacker.html">robustness.attacker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.data_augmentation.html">robustness.data_augmentation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.datasets.html">robustness.datasets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.defaults.html">robustness.defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.loaders.html">robustness.loaders module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.main.html">robustness.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.model_utils.html">robustness.model_utils module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">robustness.train module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.tools.html">robustness.tools package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="robustness.tools.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="robustness.tools.constants.html">robustness.tools.constants module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="robustness.tools.folder.html">robustness.tools.folder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="robustness.tools.helpers.html">robustness.tools.helpers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="robustness.tools.label_maps.html">robustness.tools.label_maps module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="robustness.tools.vis_tools.html">robustness.tools.vis_tools module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="robustness.tools.breeds_helpers.html">robustness.tools.breeds_helpers module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="robustness.tools.html#module-robustness.tools">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetaDataset</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+        
+      <li>robustness.train module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/api/robustness.train.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-robustness.train">
+<span id="robustness-train-module"></span><h1>robustness.train module<a class="headerlink" href="#module-robustness.train" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="robustness.train.check_required_args">
+<code class="sig-prename descclassname">robustness.train.</code><code class="sig-name descname">check_required_args</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">args</span></em>, <em class="sig-param"><span class="n">eval_only</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.train.check_required_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that the required training arguments are present.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<em>argparse object</em>) – the arguments to check</p></li>
+<li><p><strong>eval_only</strong> (<em>bool</em>) – whether to check only the arguments for evaluation</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="robustness.train.make_optimizer_and_schedule">
+<code class="sig-prename descclassname">robustness.train.</code><code class="sig-name descname">make_optimizer_and_schedule</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">args</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">checkpoint</span></em>, <em class="sig-param"><span class="n">params</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.train.make_optimizer_and_schedule" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Internal Function</em> (called directly from train_model)</p>
+<p>Creates an optimizer and a schedule for a given model, restoring from a
+checkpoint if it is non-null.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<em>object</em>) – an arguments object, see
+<a class="reference internal" href="#robustness.train.train_model" title="robustness.train.train_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">train_model()</span></code></a> for details</p></li>
+<li><p><strong>model</strong> (<em>AttackerModel</em>) – the model to create the optimizer for</p></li>
+<li><p><strong>checkpoint</strong> (<em>dict</em>) – a loaded checkpoint saved by this library and loaded
+with <cite>ch.load</cite></p></li>
+<li><p><strong>params</strong> (<em>list|None</em>) – a list of parameters that should be updatable, all
+other params will not update. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, update all params</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>An optimizer (ch.nn.optim.Optimizer) and a scheduler</dt><dd><p>(ch.nn.optim.lr_schedulers module).</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="robustness.train.eval_model">
+<code class="sig-prename descclassname">robustness.train.</code><code class="sig-name descname">eval_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">args</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">loader</span></em>, <em class="sig-param"><span class="n">store</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.train.eval_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate a model for standard (and optionally adversarial) accuracy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<em>object</em>) – A list of arguments—should be a python object
+implementing <code class="docutils literal notranslate"><span class="pre">getattr()</span></code> and <code class="docutils literal notranslate"><span class="pre">setattr()</span></code>.</p></li>
+<li><p><strong>model</strong> (<em>AttackerModel</em>) – model to evaluate</p></li>
+<li><p><strong>loader</strong> (<em>iterable</em>) – a dataloader serving <cite>(input, label)</cite> batches from
+the validation set</p></li>
+<li><p><strong>store</strong> (<em>cox.Store</em>) – store for saving results in (via tensorboardX)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="robustness.train.train_model">
+<code class="sig-prename descclassname">robustness.train.</code><code class="sig-name descname">train_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">args</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">loaders</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">checkpoint</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dp_device_ids</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">store</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">update_params</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">disable_no_grad</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.train.train_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main function for training a model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<em>object</em>) – <p>A python object for arguments, implementing
+<code class="docutils literal notranslate"><span class="pre">getattr()</span></code> and <code class="docutils literal notranslate"><span class="pre">setattr()</span></code> and having the following
+attributes. See <a class="reference internal" href="robustness.defaults.html#robustness.defaults.TRAINING_ARGS" title="robustness.defaults.TRAINING_ARGS"><code class="xref py py-attr docutils literal notranslate"><span class="pre">robustness.defaults.TRAINING_ARGS</span></code></a> for a
+list of arguments, and you can use
+<a class="reference internal" href="robustness.defaults.html#robustness.defaults.check_and_fill_args" title="robustness.defaults.check_and_fill_args"><code class="xref py py-meth docutils literal notranslate"><span class="pre">robustness.defaults.check_and_fill_args()</span></code></a> to make sure that
+all required arguments are filled and to fill missing args with
+reasonable defaults:</p>
+<dl class="simple">
+<dt>adv_train (int or bool, <em>required</em>)</dt><dd><p>if 1/True, adversarially train, otherwise if 0/False do
+standard training</p>
+</dd>
+<dt>epochs (int, <em>required</em>)</dt><dd><p>number of epochs to train for</p>
+</dd>
+<dt>lr (float, <em>required</em>)</dt><dd><p>learning rate for SGD optimizer</p>
+</dd>
+<dt>weight_decay (float, <em>required</em>)</dt><dd><p>weight decay for SGD optimizer</p>
+</dd>
+<dt>momentum (float, <em>required</em>)</dt><dd><p>momentum parameter for SGD optimizer</p>
+</dd>
+<dt>step_lr (int)</dt><dd><p>if given, drop learning rate by 10x every <cite>step_lr</cite> steps</p>
+</dd>
+<dt>custom_lr_multplier (str)</dt><dd><dl class="simple">
+<dt>If given, use a custom LR schedule, formed by multiplying the</dt><dd><p>original <code class="docutils literal notranslate"><span class="pre">lr</span></code> (format: [(epoch, LR_MULTIPLIER),…])</p>
+</dd>
+</dl>
+</dd>
+<dt>lr_interpolation (str)</dt><dd><dl class="simple">
+<dt>How to drop the learning rate, either <code class="docutils literal notranslate"><span class="pre">step</span></code> or <code class="docutils literal notranslate"><span class="pre">linear</span></code>,</dt><dd><p>ignored unless <code class="docutils literal notranslate"><span class="pre">custom_lr_multiplier</span></code> is provided.</p>
+</dd>
+</dl>
+</dd>
+<dt>adv_eval (int or bool)</dt><dd><p>If True/1, then also do adversarial evaluation, otherwise skip
+(ignored if adv_train is True)</p>
+</dd>
+<dt>log_iters (int, <em>required</em>)</dt><dd><p>How frequently (in epochs) to save training logs</p>
+</dd>
+<dt>save_ckpt_iters (int, <em>required</em>)</dt><dd><p>How frequently (in epochs) to save checkpoints (if -1, then only
+save latest and best ckpts)</p>
+</dd>
+<dt>attack_lr (float or str, <em>required if adv_train or adv_eval</em>)</dt><dd><p>float (or float-parseable string) for the adv attack step size</p>
+</dd>
+<dt>constraint (str, <em>required if adv_train or adv_eval</em>)</dt><dd><p>the type of adversary constraint
+(<code class="xref py py-attr docutils literal notranslate"><span class="pre">robustness.attacker.STEPS</span></code>)</p>
+</dd>
+<dt>eps (float or str, <em>required if adv_train or adv_eval</em>)</dt><dd><p>float (or float-parseable string) for the adv attack budget</p>
+</dd>
+<dt>attack_steps (int, <em>required if adv_train or adv_eval</em>)</dt><dd><p>number of steps to take in adv attack</p>
+</dd>
+<dt>custom_eps_multiplier (str, <em>required if adv_train or adv_eval</em>)</dt><dd><p>If given, then set epsilon according to a schedule by
+multiplying the given eps value by a factor at each epoch. Given
+in the same format as <code class="docutils literal notranslate"><span class="pre">custom_lr_multiplier</span></code>, <code class="docutils literal notranslate"><span class="pre">[(epoch,</span>
+<span class="pre">MULTIPLIER)..]</span></code></p>
+</dd>
+<dt>use_best (int or bool, <em>required if adv_train or adv_eval</em>) :</dt><dd><p>If True/1, use the best (in terms of loss) PGD step as the
+attack, if False/0 use the last step</p>
+</dd>
+<dt>random_restarts (int, <em>required if adv_train or adv_eval</em>)</dt><dd><p>Number of random restarts to use for adversarial evaluation</p>
+</dd>
+<dt>custom_train_loss (function, optional)</dt><dd><p>If given, a custom loss instead of the default CrossEntropyLoss.
+Takes in <cite>(logits, targets)</cite> and returns a scalar.</p>
+</dd>
+<dt>custom_adv_loss (function, <em>required if custom_train_loss</em>)</dt><dd><p>If given, a custom loss function for the adversary. The custom
+loss function takes in <cite>model, input, target</cite> and should return
+a vector representing the loss for each element of the batch, as
+well as the classifier output.</p>
+</dd>
+<dt>custom_accuracy (function)</dt><dd><p>If given, should be a function that takes in model outputs
+and model targets and outputs a top1 and top5 accuracy, will
+displayed instead of conventional accuracies</p>
+</dd>
+<dt>regularizer (function, optional)</dt><dd><p>If given, this function of <cite>model, input, target</cite> returns a
+(scalar) that is added on to the training loss without being
+subject to adversarial attack</p>
+</dd>
+<dt>iteration_hook (function, optional)</dt><dd><p>If given, this function is called every training iteration by
+the training loop (useful for custom logging). The function is
+given arguments <cite>model, iteration #, loop_type [train/eval],
+current_batch_ims, current_batch_labels</cite>.</p>
+</dd>
+<dt>epoch hook (function, optional)</dt><dd><p>Similar to iteration_hook but called every epoch instead, and
+given arguments <cite>model, log_info</cite> where <cite>log_info</cite> is a
+dictionary with keys <cite>epoch, nat_prec1, adv_prec1, nat_loss,
+adv_loss, train_prec1, train_loss</cite>.</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>model</strong> (<em>AttackerModel</em>) – the model to train.</p></li>
+<li><p><strong>loaders</strong> (<em>tuple</em><em>[</em><em>iterable</em><em>]</em>) – <cite>tuple</cite> of data loaders of the form
+<cite>(train_loader, val_loader)</cite></p></li>
+<li><p><strong>checkpoint</strong> (<em>dict</em>) – a loaded checkpoint previously saved by this library
+(if resuming from checkpoint)</p></li>
+<li><p><strong>dp_device_ids</strong> (<em>list|None</em>) – if not <code class="docutils literal notranslate"><span class="pre">None</span></code>, a list of device ids to
+use for DataParallel.</p></li>
+<li><p><strong>store</strong> (<em>cox.Store</em>) – a cox store for logging training progress</p></li>
+<li><p><strong>update_params</strong> (<em>list</em>) – list of parameters to use for training, if None
+then all parameters in the model are used (useful for transfer
+learning)</p></li>
+<li><p><strong>disable_no_grad</strong> (<em>bool</em>) – if True, then even model evaluation will be
+run with autograd enabled (otherwise it will be wrapped in a ch.no_grad())</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="robustness.tools.html" class="btn btn-neutral float-right" title="robustness.tools package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="robustness.model_utils.html" class="btn btn-neutral float-left" title="robustness.model_utils module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, MetaDataset Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

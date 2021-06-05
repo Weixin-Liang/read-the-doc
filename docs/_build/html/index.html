@@ -1,0 +1,550 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>MetaDataset &mdash; MetaDataset 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/all.min.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Training and evaluating networks via command line" href="example_usage/cli_usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> MetaDataset
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="example_usage/cli_usage.html">Training and evaluating networks via command line</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/cli_usage.html#training-a-standard-nonrobust-model">Training a standard (nonrobust) model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/cli_usage.html#training-a-robust-model-adversarial-training">Training a robust model (adversarial training)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/cli_usage.html#evaluating-trained-models">Evaluating trained models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/cli_usage.html#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="example_usage/cli_usage.html#training-a-non-robust-resnet-18-for-the-cifar-dataset">Training a non-robust ResNet-18 for the CIFAR dataset:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example_usage/cli_usage.html#training-a-robust-resnet-50-for-the-restricted-imagenet-dataset">Training a robust ResNet-50 for the Restricted-ImageNet dataset:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/cli_usage.html#reading-and-analyzing-training-results">Reading and analyzing training results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example_usage/input_space_manipulation.html">Input manipulation with pre-trained models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/input_space_manipulation.html#generating-untargeted-adversarial-examples">Generating Untargeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/input_space_manipulation.html#generating-targeted-adversarial-examples">Generating Targeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/input_space_manipulation.html#custom-input-manipulation-e-g-representation-inversion">Custom Input Manipulation (e.g. Representation Inversion)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="example_usage/input_space_manipulation.html#changing-optimization-methods">Changing optimization methods</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/input_space_manipulation.html#advanced-usage">Advanced usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="example_usage/input_space_manipulation.html#gradient-estimation-nes">Gradient Estimation/NES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example_usage/input_space_manipulation.html#custom-optimization-methods">Custom optimization methods</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example_usage/training_lib_part_1.html">Using robustness as a general training library (Part 1: Getting started)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/training_lib_part_1.html#step-1-imports">Step 1: Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/training_lib_part_1.html#step-2-dealing-with-arguments">Step 2: Dealing with arguments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="example_usage/training_lib_part_1.html#step-2-1-setting-up-command-line-args">Step 2.1: Setting up command-line args</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example_usage/training_lib_part_1.html#step-2-2-sanity-checks-and-defaults">Step 2.2: Sanity checks and defaults</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/training_lib_part_1.html#step-3-creating-the-model-dataset-and-loader">Step 3: Creating the model, dataset, and loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/training_lib_part_1.html#step-4-training-the-model">Step 4: Training the model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example_usage/training_lib_part_2.html">Using robustness as a general training library (Part 2: Customizing training)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/training_lib_part_2.html#training-networks-with-custom-loss-functions">Training networks with custom loss functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/training_lib_part_2.html#training-networks-with-custom-data-loaders">Training networks with custom data loaders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="example_usage/training_lib_part_2.html#using-lambdaloader-to-train-with-label-noise">Using LambdaLoader to train with label noise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example_usage/training_lib_part_2.html#using-transformedloader-to-train-with-random-labels">Using TransformedLoader to train with random labels</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/training_lib_part_2.html#training-networks-with-custom-logging">Training networks with custom logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/training_lib_part_2.html#training-on-custom-datasets">Training on custom datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/training_lib_part_2.html#training-with-custom-architectures">Training with custom architectures</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example_usage/custom_imagenet.html">Creating a custom dataset by superclassing ImageNet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/custom_imagenet.html#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/custom_imagenet.html#basic-usage-loading-pre-packaged-imagenet-based-datasets">Basic Usage: Loading Pre-Packaged ImageNet-based Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/custom_imagenet.html#advanced-usage-making-custom-datasets-part-1-browsing-the-wordnet-hierarchy">Advanced Usage (Making Custom Datasets) Part 1: Browsing the WordNet Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/custom_imagenet.html#advanced-usage-making-custom-datasets-part-2-making-the-datasets">Advanced Usage (Making Custom Datasets) Part 2: Making the Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example_usage/breeds_datasets.html">Creating BREEDS subpopulation shift benchmarks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/breeds_datasets.html#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/breeds_datasets.html#part-1-browsing-through-the-class-hierarchy">Part 1: Browsing through the Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/breeds_datasets.html#part-2-creating-breeds-datasets">Part 2: Creating BREEDS Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/breeds_datasets.html#part-3-loading-in-built-breeds-datasets">Part 3: Loading in-built BREEDS Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example_usage/changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/changelog.html#robustness-1-2-post2">robustness 1.2.post2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/changelog.html#robustness-1-2">robustness 1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/changelog.html#robustness-1-1-post2">robustness 1.1.post2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/changelog.html#robustness-1-1">robustness 1.1</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.attack_steps.html">robustness.attack_steps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.attacker.html">robustness.attacker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.data_augmentation.html">robustness.data_augmentation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.datasets.html">robustness.datasets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.defaults.html">robustness.defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.loaders.html">robustness.loaders module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.main.html">robustness.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.model_utils.html">robustness.model_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.train.html">robustness.train module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.tools.html">robustness.tools package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/robustness.tools.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/robustness.tools.constants.html">robustness.tools.constants module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/robustness.tools.folder.html">robustness.tools.folder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/robustness.tools.helpers.html">robustness.tools.helpers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/robustness.tools.label_maps.html">robustness.tools.label_maps module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/robustness.tools.vis_tools.html">robustness.tools.vis_tools module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/robustness.tools.breeds_helpers.html">robustness.tools.breeds_helpers module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/robustness.tools.html#module-robustness.tools">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">MetaDataset</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>MetaDataset</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="metadataset">
+<h1>MetaDataset<a class="headerlink" href="#metadataset" title="Permalink to this headline">¶</a></h1>
+<i class="fa fa-github"></i> View on <a
+href="https://github.com/MadryLab/robustness">GitHub</a> <br /> <br /><p>Install via <code class="docutils literal notranslate"><span class="pre">pip</span></code>: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">robustness</span></code></p>
+<p><code class="samp docutils literal notranslate"><span class="pre">robustness</span></code> is a package we (students in the <a class="reference external" href="http://madry-lab.ml">MadryLab</a>) created
+to make training, evaluating, and exploring neural networks flexible and easy.
+We use it in almost all of our projects (whether they involve
+adversarial training or not!) and it will be a dependency in many of our
+upcoming code releases. A few projects using the library include:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/MadryLab/robust_representations">Code</a>  for
+“Learning Perceptually-Aligned Representations via Adversarial Robustness”
+<a class="reference internal" href="#eis-19" id="id1"><span>[EIS+19]</span></a></p></li>
+<li><p><a class="reference external" href="https://github.com/MadryLab/robustness_applications">Code</a> for
+“Image Synthesis with a Single (Robust) Classifier” <a class="reference internal" href="#ste-19" id="id3"><span>[STE+19]</span></a></p></li>
+<li><p><a class="reference external" href="https://github.com/MadryLab/BREEDS-Benchmarks">Code</a> for
+“BREEDS: Benchmarks for Subpopulation Shift” <a class="reference internal" href="#stm20" id="id5"><span>[STM20]</span></a></p></li>
+</ul>
+<p>We demonstrate how to use the library in a set of walkthroughs and our API
+reference. Functionality provided by the library includes:</p>
+<ul class="simple">
+<li><p>Training and evaluating standard and robust models for a variety of
+datasets/architectures using a <a class="reference internal" href="example_usage/cli_usage.html"><span class="doc">CLI interface</span></a>. The library also provides support for adding
+<a class="reference internal" href="example_usage/training_lib_part_2.html#using-custom-datasets"><span class="std std-ref">custom datasets</span></a> and <a class="reference internal" href="example_usage/training_lib_part_2.html#using-custom-archs"><span class="std std-ref">model architectures</span></a>.</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m robustness.main --dataset cifar --data /path/to/cifar <span class="se">\</span>
+   --adv-train <span class="m">0</span> --arch resnet18 --out-dir /logs/checkpoints/dir/
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Performing <a class="reference internal" href="example_usage/input_space_manipulation.html"><span class="doc">input manipulation</span></a> using robust (or standard)
+models—this includes making adversarial examples, inverting representations,
+feature visualization, etc. The library offers a variety of optimization
+options (e.g. choice between real/estimated gradients, Fourier/pixel basis,
+custom loss functions etc.), and is easily extendable.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">ch</span>
+<span class="kn">from</span> <span class="nn">robustness.datasets</span> <span class="kn">import</span> <span class="n">CIFAR</span>
+<span class="kn">from</span> <span class="nn">robustness.model_utils</span> <span class="kn">import</span> <span class="n">make_and_restore_model</span>
+
+<span class="n">ds</span> <span class="o">=</span> <span class="n">CIFAR</span><span class="p">(</span><span class="s1">&#39;/path/to/cifar&#39;</span><span class="p">)</span>
+<span class="n">model</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">make_and_restore_model</span><span class="p">(</span><span class="n">arch</span><span class="o">=</span><span class="s1">&#39;resnet50&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">ds</span><span class="p">,</span>
+             <span class="n">resume_path</span><span class="o">=</span><span class="s1">&#39;/path/to/model&#39;</span><span class="p">,</span> <span class="n">state_dict_path</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+<span class="n">attack_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="s1">&#39;constraint&#39;</span><span class="p">:</span> <span class="s1">&#39;inf&#39;</span><span class="p">,</span> <span class="c1"># L-inf PGD</span>
+   <span class="s1">&#39;eps&#39;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span> <span class="c1"># Epsilon constraint (L-inf norm)</span>
+   <span class="s1">&#39;step_size&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="c1"># Learning rate for PGD</span>
+   <span class="s1">&#39;iterations&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="c1"># Number of PGD steps</span>
+   <span class="s1">&#39;targeted&#39;</span><span class="p">:</span> <span class="kc">True</span> <span class="c1"># Targeted attack</span>
+   <span class="s1">&#39;custom_loss&#39;</span><span class="p">:</span> <span class="kc">None</span> <span class="c1"># Use default cross-entropy loss</span>
+<span class="p">}</span>
+
+<span class="n">_</span><span class="p">,</span> <span class="n">test_loader</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">make_loaders</span><span class="p">(</span><span class="n">workers</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">im</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">test_loader</span><span class="p">))</span>
+<span class="n">target_label</span> <span class="o">=</span> <span class="p">(</span><span class="n">label</span> <span class="o">+</span> <span class="n">ch</span><span class="o">.</span><span class="n">randint_like</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">9</span><span class="p">))</span> <span class="o">%</span> <span class="mi">10</span>
+<span class="n">adv_out</span><span class="p">,</span> <span class="n">adv_im</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">target_label</span><span class="p">,</span> <span class="n">make_adv</span><span class="p">,</span> <span class="o">**</span><span class="n">attack_kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Importing <code class="samp docutils literal notranslate"><span class="pre">robustness</span></code> as a package, which allows for easy training of
+neural networks with support for custom loss functions, logging, data loading,
+and more! A good introduction can be found in our two-part walkthrough
+(<a class="reference internal" href="example_usage/training_lib_part_1.html"><span class="doc">Part 1</span></a>, <a class="reference internal" href="example_usage/training_lib_part_2.html"><span class="doc">Part 2</span></a>).</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness</span> <span class="kn">import</span> <span class="n">model_utils</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">defaults</span>
+<span class="kn">from</span> <span class="nn">robustness.datasets</span> <span class="kn">import</span> <span class="n">CIFAR</span>
+
+<span class="c1"># We use cox (http://github.com/MadryLab/cox) to log, store and analyze</span>
+<span class="c1"># results. Read more at https//cox.readthedocs.io.</span>
+<span class="kn">from</span> <span class="nn">cox.utils</span> <span class="kn">import</span> <span class="n">Parameters</span>
+<span class="kn">import</span> <span class="nn">cox.store</span>
+
+<span class="c1"># Hard-coded dataset, architecture, batch size, workers</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">CIFAR</span><span class="p">(</span><span class="s1">&#39;/path/to/cifar&#39;</span><span class="p">)</span>
+<span class="n">m</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">make_and_restore_model</span><span class="p">(</span><span class="n">arch</span><span class="o">=</span><span class="s1">&#39;resnet50&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">ds</span><span class="p">)</span>
+<span class="n">train_loader</span><span class="p">,</span> <span class="n">val_loader</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">make_loaders</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="c1"># Create a cox store for logging</span>
+<span class="n">out_store</span> <span class="o">=</span> <span class="n">cox</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">Store</span><span class="p">(</span><span class="n">OUT_DIR</span><span class="p">)</span>
+
+<span class="c1"># Hard-coded base parameters</span>
+<span class="n">train_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;out_dir&#39;</span><span class="p">:</span> <span class="s2">&quot;train_out&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;adv_train&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;constraint&#39;</span><span class="p">:</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;eps&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="s1">&#39;attack_lr&#39;</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">,</span>
+    <span class="s1">&#39;attack_steps&#39;</span><span class="p">:</span> <span class="mi">20</span>
+<span class="p">}</span>
+<span class="n">train_args</span> <span class="o">=</span> <span class="n">Parameters</span><span class="p">(</span><span class="n">train_kwargs</span><span class="p">)</span>
+
+<span class="c1"># Fill whatever parameters are missing from the defaults</span>
+<span class="n">train_args</span> <span class="o">=</span> <span class="n">defaults</span><span class="o">.</span><span class="n">check_and_fill_args</span><span class="p">(</span><span class="n">train_args</span><span class="p">,</span>
+                        <span class="n">defaults</span><span class="o">.</span><span class="n">TRAINING_ARGS</span><span class="p">,</span> <span class="n">CIFAR</span><span class="p">)</span>
+<span class="n">train_args</span> <span class="o">=</span> <span class="n">defaults</span><span class="o">.</span><span class="n">check_and_fill_args</span><span class="p">(</span><span class="n">train_args</span><span class="p">,</span>
+                        <span class="n">defaults</span><span class="o">.</span><span class="n">PGD_ARGS</span><span class="p">,</span> <span class="n">CIFAR</span><span class="p">)</span>
+
+<span class="c1"># Train a model</span>
+<span class="n">train</span><span class="o">.</span><span class="n">train_model</span><span class="p">(</span><span class="n">train_args</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="p">(</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">val_loader</span><span class="p">),</span> <span class="n">store</span><span class="o">=</span><span class="n">out_store</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="citation">
+<h2>Citation<a class="headerlink" href="#citation" title="Permalink to this headline">¶</a></h2>
+<p>If you use this library in your research, cite it as
+follows:</p>
+<div class="highlight-bibtex notranslate"><div class="highlight"><pre><span></span><span class="nc">@misc</span><span class="p">{</span><span class="nl">robustness</span><span class="p">,</span>
+   <span class="na">title</span><span class="p">=</span><span class="s">{Robustness (Python Library)}</span><span class="p">,</span>
+   <span class="na">author</span><span class="p">=</span><span class="s">{Logan Engstrom and Andrew Ilyas and Shibani Santurkar and Dimitris Tsipras}</span><span class="p">,</span>
+   <span class="na">year</span><span class="p">=</span><span class="s">{2019}</span><span class="p">,</span>
+   <span class="na">url</span><span class="p">=</span><span class="s">{https://github.com/MadryLab/robustness}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><em>(Have you used the package and found it useful? Let us know!)</em>.</p>
+</div>
+<div class="section" id="walkthroughs">
+<h2>Walkthroughs<a class="headerlink" href="#walkthroughs" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="example_usage/cli_usage.html">Training and evaluating networks via command line</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/cli_usage.html#training-a-standard-nonrobust-model">Training a standard (nonrobust) model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/cli_usage.html#training-a-robust-model-adversarial-training">Training a robust model (adversarial training)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/cli_usage.html#evaluating-trained-models">Evaluating trained models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/cli_usage.html#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="example_usage/cli_usage.html#training-a-non-robust-resnet-18-for-the-cifar-dataset">Training a non-robust ResNet-18 for the CIFAR dataset:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example_usage/cli_usage.html#training-a-robust-resnet-50-for-the-restricted-imagenet-dataset">Training a robust ResNet-50 for the Restricted-ImageNet dataset:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/cli_usage.html#reading-and-analyzing-training-results">Reading and analyzing training results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example_usage/input_space_manipulation.html">Input manipulation with pre-trained models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/input_space_manipulation.html#generating-untargeted-adversarial-examples">Generating Untargeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/input_space_manipulation.html#generating-targeted-adversarial-examples">Generating Targeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/input_space_manipulation.html#custom-input-manipulation-e-g-representation-inversion">Custom Input Manipulation (e.g. Representation Inversion)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="example_usage/input_space_manipulation.html#changing-optimization-methods">Changing optimization methods</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/input_space_manipulation.html#advanced-usage">Advanced usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="example_usage/input_space_manipulation.html#gradient-estimation-nes">Gradient Estimation/NES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example_usage/input_space_manipulation.html#custom-optimization-methods">Custom optimization methods</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example_usage/training_lib_part_1.html">Using robustness as a general training library (Part 1: Getting started)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/training_lib_part_1.html#step-1-imports">Step 1: Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/training_lib_part_1.html#step-2-dealing-with-arguments">Step 2: Dealing with arguments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="example_usage/training_lib_part_1.html#step-2-1-setting-up-command-line-args">Step 2.1: Setting up command-line args</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example_usage/training_lib_part_1.html#step-2-2-sanity-checks-and-defaults">Step 2.2: Sanity checks and defaults</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/training_lib_part_1.html#step-3-creating-the-model-dataset-and-loader">Step 3: Creating the model, dataset, and loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/training_lib_part_1.html#step-4-training-the-model">Step 4: Training the model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example_usage/training_lib_part_2.html">Using robustness as a general training library (Part 2: Customizing training)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/training_lib_part_2.html#training-networks-with-custom-loss-functions">Training networks with custom loss functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/training_lib_part_2.html#training-networks-with-custom-data-loaders">Training networks with custom data loaders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="example_usage/training_lib_part_2.html#using-lambdaloader-to-train-with-label-noise">Using LambdaLoader to train with label noise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example_usage/training_lib_part_2.html#using-transformedloader-to-train-with-random-labels">Using TransformedLoader to train with random labels</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/training_lib_part_2.html#training-networks-with-custom-logging">Training networks with custom logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/training_lib_part_2.html#training-on-custom-datasets">Training on custom datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/training_lib_part_2.html#training-with-custom-architectures">Training with custom architectures</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example_usage/custom_imagenet.html">Creating a custom dataset by superclassing ImageNet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/custom_imagenet.html#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/custom_imagenet.html#basic-usage-loading-pre-packaged-imagenet-based-datasets">Basic Usage: Loading Pre-Packaged ImageNet-based Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/custom_imagenet.html#advanced-usage-making-custom-datasets-part-1-browsing-the-wordnet-hierarchy">Advanced Usage (Making Custom Datasets) Part 1: Browsing the WordNet Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/custom_imagenet.html#advanced-usage-making-custom-datasets-part-2-making-the-datasets">Advanced Usage (Making Custom Datasets) Part 2: Making the Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example_usage/breeds_datasets.html">Creating BREEDS subpopulation shift benchmarks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/breeds_datasets.html#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/breeds_datasets.html#part-1-browsing-through-the-class-hierarchy">Part 1: Browsing through the Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/breeds_datasets.html#part-2-creating-breeds-datasets">Part 2: Creating BREEDS Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/breeds_datasets.html#part-3-loading-in-built-breeds-datasets">Part 3: Loading in-built BREEDS Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example_usage/changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/changelog.html#robustness-1-2-post2">robustness 1.2.post2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/changelog.html#robustness-1-2">robustness 1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/changelog.html#robustness-1-1-post2">robustness 1.1.post2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_usage/changelog.html#robustness-1-1">robustness 1.1</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
+<p>We provide an API reference where we discuss the role of each module and
+provide extensive documentation.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.attack_steps.html">robustness.attack_steps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.attacker.html">robustness.attacker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.data_augmentation.html">robustness.data_augmentation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.datasets.html">robustness.datasets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.defaults.html">robustness.defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.loaders.html">robustness.loaders module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.main.html">robustness.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.model_utils.html">robustness.model_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.train.html">robustness.train module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/robustness.tools.html">robustness.tools package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/robustness.tools.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/robustness.tools.constants.html">robustness.tools.constants module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/robustness.tools.folder.html">robustness.tools.folder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/robustness.tools.helpers.html">robustness.tools.helpers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/robustness.tools.label_maps.html">robustness.tools.label_maps module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/robustness.tools.vis_tools.html">robustness.tools.vis_tools module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/robustness.tools.breeds_helpers.html">robustness.tools.breeds_helpers module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/robustness.tools.html#module-robustness.tools">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="contributors">
+<h2>Contributors<a class="headerlink" href="#contributors" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://twitter.com/andrew_ilyas">Andrew Ilyas</a></p></li>
+<li><p><a class="reference external" href="https://twitter.com/logan_engstrom">Logan Engstrom</a></p></li>
+<li><p><a class="reference external" href="https://twitter.com/ShibaniSan">Shibani Santurkar</a></p></li>
+<li><p><a class="reference external" href="https://twitter.com/tsiprasd">Dimitris Tsipras</a></p></li>
+</ul>
+<dl class="citation">
+<dt class="label" id="eis-19"><span class="brackets"><a class="fn-backref" href="#id1">EIS+19</a></span></dt>
+<dd><p>Engstrom L., Ilyas A., Santurkar S., Tsipras D., Tran B., Madry A. (2019). Learning Perceptually-Aligned Representations via Adversarial Robustness. arXiv, arXiv:1906.00945</p>
+</dd>
+<dt class="label" id="ste-19"><span class="brackets"><a class="fn-backref" href="#id3">STE+19</a></span></dt>
+<dd><p>Santurkar S., Tsipras D., Tran B., Ilyas A., Engstrom L., Madry A. (2019). Image Synthesis with a Single (Robust) Classifier. arXiv, arXiv:1906.09453</p>
+</dd>
+<dt class="label" id="stm20"><span class="brackets"><a class="fn-backref" href="#id5">STM20</a></span></dt>
+<dd><p>Santurkar S., Tsipras D., Madry A. (2020). : BREEDS: Benchmarks for Subpopulation Shift. arXiv, arXiv:2008.04859</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="example_usage/cli_usage.html" class="btn btn-neutral float-right" title="Training and evaluating networks via command line" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, MetaDataset Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

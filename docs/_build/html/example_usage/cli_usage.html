@@ -1,0 +1,485 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Training and evaluating networks via command line &mdash; MetaDataset 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/all.min.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Input manipulation with pre-trained models" href="input_space_manipulation.html" />
+    <link rel="prev" title="MetaDataset" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetaDataset
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Training and evaluating networks via command line</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#training-a-standard-nonrobust-model">Training a standard (nonrobust) model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#training-a-robust-model-adversarial-training">Training a robust model (adversarial training)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#evaluating-trained-models">Evaluating trained models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#training-a-non-robust-resnet-18-for-the-cifar-dataset">Training a non-robust ResNet-18 for the CIFAR dataset:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#training-a-robust-resnet-50-for-the-restricted-imagenet-dataset">Training a robust ResNet-50 for the Restricted-ImageNet dataset:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#reading-and-analyzing-training-results">Reading and analyzing training results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="input_space_manipulation.html">Input manipulation with pre-trained models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="input_space_manipulation.html#generating-untargeted-adversarial-examples">Generating Untargeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_space_manipulation.html#generating-targeted-adversarial-examples">Generating Targeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_space_manipulation.html#custom-input-manipulation-e-g-representation-inversion">Custom Input Manipulation (e.g. Representation Inversion)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="input_space_manipulation.html#changing-optimization-methods">Changing optimization methods</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="input_space_manipulation.html#advanced-usage">Advanced usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="input_space_manipulation.html#gradient-estimation-nes">Gradient Estimation/NES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="input_space_manipulation.html#custom-optimization-methods">Custom optimization methods</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="training_lib_part_1.html">Using robustness as a general training library (Part 1: Getting started)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_1.html#step-1-imports">Step 1: Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_1.html#step-2-dealing-with-arguments">Step 2: Dealing with arguments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="training_lib_part_1.html#step-2-1-setting-up-command-line-args">Step 2.1: Setting up command-line args</a></li>
+<li class="toctree-l3"><a class="reference internal" href="training_lib_part_1.html#step-2-2-sanity-checks-and-defaults">Step 2.2: Sanity checks and defaults</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_1.html#step-3-creating-the-model-dataset-and-loader">Step 3: Creating the model, dataset, and loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_1.html#step-4-training-the-model">Step 4: Training the model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="training_lib_part_2.html">Using robustness as a general training library (Part 2: Customizing training)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_2.html#training-networks-with-custom-loss-functions">Training networks with custom loss functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_2.html#training-networks-with-custom-data-loaders">Training networks with custom data loaders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="training_lib_part_2.html#using-lambdaloader-to-train-with-label-noise">Using LambdaLoader to train with label noise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="training_lib_part_2.html#using-transformedloader-to-train-with-random-labels">Using TransformedLoader to train with random labels</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_2.html#training-networks-with-custom-logging">Training networks with custom logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_2.html#training-on-custom-datasets">Training on custom datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_2.html#training-with-custom-architectures">Training with custom architectures</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="custom_imagenet.html">Creating a custom dataset by superclassing ImageNet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="custom_imagenet.html#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_imagenet.html#basic-usage-loading-pre-packaged-imagenet-based-datasets">Basic Usage: Loading Pre-Packaged ImageNet-based Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_imagenet.html#advanced-usage-making-custom-datasets-part-1-browsing-the-wordnet-hierarchy">Advanced Usage (Making Custom Datasets) Part 1: Browsing the WordNet Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_imagenet.html#advanced-usage-making-custom-datasets-part-2-making-the-datasets">Advanced Usage (Making Custom Datasets) Part 2: Making the Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="breeds_datasets.html">Creating BREEDS subpopulation shift benchmarks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="breeds_datasets.html#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="breeds_datasets.html#part-1-browsing-through-the-class-hierarchy">Part 1: Browsing through the Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="breeds_datasets.html#part-2-creating-breeds-datasets">Part 2: Creating BREEDS Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="breeds_datasets.html#part-3-loading-in-built-breeds-datasets">Part 3: Loading in-built BREEDS Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#robustness-1-2-post2">robustness 1.2.post2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#robustness-1-2">robustness 1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#robustness-1-1-post2">robustness 1.1.post2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#robustness-1-1">robustness 1.1</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.attack_steps.html">robustness.attack_steps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.attacker.html">robustness.attacker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.data_augmentation.html">robustness.data_augmentation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.datasets.html">robustness.datasets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.defaults.html">robustness.defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.loaders.html">robustness.loaders module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.main.html">robustness.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.model_utils.html">robustness.model_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.train.html">robustness.train module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.tools.html">robustness.tools package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/robustness.tools.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.constants.html">robustness.tools.constants module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.folder.html">robustness.tools.folder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.helpers.html">robustness.tools.helpers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.label_maps.html">robustness.tools.label_maps module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.vis_tools.html">robustness.tools.vis_tools module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.breeds_helpers.html">robustness.tools.breeds_helpers module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api/robustness.tools.html#module-robustness.tools">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetaDataset</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Training and evaluating networks via command line</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/example_usage/cli_usage.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="training-and-evaluating-networks-via-command-line">
+<h1>Training and evaluating networks via command line<a class="headerlink" href="#training-and-evaluating-networks-via-command-line" title="Permalink to this headline">¶</a></h1>
+<p>In this walkthrough, we’ll go over how to train and evaluate networks via the
+<a class="reference internal" href="../api/robustness.main.html#module-robustness.main" title="robustness.main"><code class="xref py py-mod docutils literal notranslate"><span class="pre">robustness.main</span></code></a> command-line tool.</p>
+<div class="section" id="training-a-standard-nonrobust-model">
+<h2>Training a standard (nonrobust) model<a class="headerlink" href="#training-a-standard-nonrobust-model" title="Permalink to this headline">¶</a></h2>
+<p>We’ll start by training a standard (non-robust) model. This is accomplished through the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m robustness.main --dataset DATASET --data /path/to/dataset <span class="se">\</span>
+   --adv-train <span class="m">0</span> --arch ARCH --out-dir /logs/checkpoints/dir/
+</pre></div>
+</div>
+<p>In the above, <code class="samp docutils literal notranslate"><span class="pre">DATASET</span></code> can be any supported dataset (i.e. in
+<a class="reference internal" href="../api/robustness.datasets.html#robustness.datasets.DATASETS" title="robustness.datasets.DATASETS"><code class="xref py py-attr docutils literal notranslate"><span class="pre">robustness.datasets.DATASETS</span></code></a>). For a demonstration of how to add a
+supported dataset, see <a class="reference internal" href="training_lib_part_2.html#using-custom-datasets"><span class="std std-ref">here</span></a>.</p>
+<p>With the above command, you should start seeing progress bars indicating that
+the training has begun! Note that there are a whole host of arguments that you
+can customize in training, including optimizer parameters (e.g. <code class="samp docutils literal notranslate"><span class="pre">--lr</span></code>,
+<code class="samp docutils literal notranslate"><span class="pre">--weight-decay</span></code>, <code class="samp docutils literal notranslate"><span class="pre">--momentum</span></code>), logging parameters (e.g.
+<code class="samp docutils literal notranslate"><span class="pre">--log-iters</span></code>, <code class="samp docutils literal notranslate"><span class="pre">--save-ckpt-iters</span></code>), and learning rate schedule. To
+see more about these arguments, we run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m robustness --help
+</pre></div>
+</div>
+<p>For completeness, the full list of parameters related to <em>non-robust</em> training
+are below:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>--out-dir OUT_DIR     where to save training logs and checkpoints <span class="o">(</span>default:
+                   required<span class="o">)</span>
+                      config path <span class="k">for</span> loading <span class="k">in</span> parameters <span class="o">(</span>default: None<span class="o">)</span>
+--exp-name EXP_NAME   where to save <span class="k">in</span> <span class="o">(</span>inside out_dir<span class="o">)</span> <span class="o">(</span>default: None<span class="o">)</span>
+--dataset <span class="o">{</span>imagenet,restricted_imagenet,cifar,cinic,a2b<span class="o">}</span>
+                      <span class="o">(</span>choices: <span class="o">{</span>arg_type<span class="o">}</span>, default: required<span class="o">)</span>
+--data DATA           path to the dataset <span class="o">(</span>default: /tmp/<span class="o">)</span>
+--arch ARCH           architecture <span class="o">(</span>see <span class="o">{</span>cifar,imagenet<span class="o">}</span>_models/ <span class="o">(</span>default:
+                      required<span class="o">)</span>
+--batch-size BATCH_SIZE
+                      batch size <span class="k">for</span> data loading <span class="o">(</span>default: by dataset<span class="o">)</span>
+--workers WORKERS     data loading workers <span class="o">(</span>default: <span class="m">30</span><span class="o">)</span>
+--resume RESUME       path to checkpoint to resume from <span class="o">(</span>default: None<span class="o">)</span>
+--data-aug <span class="o">{</span><span class="m">0</span>,1<span class="o">}</span>      whether to use data augmentation <span class="o">(</span>choices: <span class="o">{</span>arg_type<span class="o">}</span>,
+                      default: <span class="m">1</span><span class="o">)</span>
+--epochs EPOCHS       number of epochs to train <span class="k">for</span> <span class="o">(</span>default: by dataset<span class="o">)</span>
+--lr LR               initial learning rate <span class="k">for</span> training <span class="o">(</span>default: <span class="m">0</span>.1<span class="o">)</span>
+--weight_decay WEIGHT_DECAY
+                      SGD weight decay parameter <span class="o">(</span>default: by dataset<span class="o">)</span>
+--momentum MOMENTUM   SGD momentum parameter <span class="o">(</span>default: <span class="m">0</span>.9<span class="o">)</span>
+--step-lr STEP_LR     number of steps between 10x LR drops <span class="o">(</span>default: by
+                      dataset<span class="o">)</span>
+--step-lr-gamma GAMMA multiplier <span class="k">for</span> each LR drop <span class="o">(</span>default: <span class="m">0</span>.1, i.e., 10x drops<span class="o">)</span>
+--custom-lr-multiplier CUSTOM_SCHEDULE
+                      LR sched <span class="o">(</span>format: <span class="o">[(</span>epoch, LR<span class="o">)</span>,...<span class="o">])</span> <span class="o">(</span>default: None<span class="o">)</span>
+--lr-interpolation <span class="o">{</span>linear, step<span class="o">}</span>
+                      How to interpolate between learning rates <span class="o">(</span>default: step<span class="o">)</span>
+--log-iters LOG_ITERS
+                      how frequently <span class="o">(</span><span class="k">in</span> epochs<span class="o">)</span> to log <span class="o">(</span>default: <span class="m">5</span><span class="o">)</span>
+--save-ckpt-iters SAVE_CKPT_ITERS
+                      how frequently <span class="o">(</span>epochs<span class="o">)</span> to save <span class="o">(</span>-1 <span class="k">for</span> bash, only
+                      saves best and last<span class="o">)</span> <span class="o">(</span>default: -1<span class="o">)</span>
+--mixed-precision <span class="o">{</span><span class="m">0</span>, <span class="m">1</span><span class="o">}</span>
+                      Whether to use mixed-precision training <span class="o">(</span>needs
+                      to be compiled with NVIDIA AMP support<span class="o">)</span>
+</pre></div>
+</div>
+<p>Finally, there is one additional argument, <code class="samp docutils literal notranslate"><span class="pre">--adv-eval</span> <em><span class="pre">0,1</span></em></code>, that enables
+adversarial evaluation of the non-robust model as it is being trained (i.e.
+instead of reporting just standard accuracy every few epochs, we’ll also report
+robust accuracy if <code class="samp docutils literal notranslate"><span class="pre">--adv-eval</span> <span class="pre">1</span></code> is added). However, adding this argument
+also necessitates the addition of hyperparameters for adversarial attack, which
+we cover in the following section.</p>
+</div>
+<div class="section" id="training-a-robust-model-adversarial-training">
+<h2>Training a robust model (adversarial training)<a class="headerlink" href="#training-a-robust-model-adversarial-training" title="Permalink to this headline">¶</a></h2>
+<p>To train a robust model we proceed in the exact same way as for a standard
+model, but with a few changes. First, we change <code class="samp docutils literal notranslate"><span class="pre">--adv-train</span> <span class="pre">0</span></code> to
+<code class="samp docutils literal notranslate"><span class="pre">--adv-train</span> <span class="pre">1</span></code> in the training command. Then, we need to make sure to
+supply all the necessary hyperparameters for the attack:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>--attack-steps ATTACK_STEPS
+                   number of steps <span class="k">for</span> adversarial attack <span class="o">(</span>default: <span class="m">7</span><span class="o">)</span>
+--constraint <span class="o">{</span>inf,2,unconstrained<span class="o">}</span>
+                      adv constraint <span class="o">(</span>choices: <span class="o">{</span>arg_type<span class="o">}</span>, default:
+                      required<span class="o">)</span>
+--eps EPS             adversarial perturbation budget <span class="o">(</span>default: required<span class="o">)</span>
+--attack-lr ATTACK_LR
+                      step size <span class="k">for</span> PGD <span class="o">(</span>default: required<span class="o">)</span>
+--use-best <span class="o">{</span><span class="m">0</span>,1<span class="o">}</span>      <span class="k">if</span> <span class="m">1</span> <span class="o">(</span><span class="m">0</span><span class="o">)</span> use best <span class="o">(</span>final<span class="o">)</span> PGD step as example
+                      <span class="o">(</span>choices: <span class="o">{</span>arg_type<span class="o">}</span>, default: <span class="m">1</span><span class="o">)</span>
+--random-restarts RANDOM_RESTARTS
+                      number of random PGD restarts <span class="k">for</span> <span class="nb">eval</span> <span class="o">(</span>default: <span class="m">0</span><span class="o">)</span>
+--custom-eps-multiplier EPS_SCHEDULE
+                      epsilon multiplier sched <span class="o">(</span>same format as LR schedule<span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="evaluating-trained-models">
+<h2>Evaluating trained models<a class="headerlink" href="#evaluating-trained-models" title="Permalink to this headline">¶</a></h2>
+<p>To evaluate a trained model, we use the <code class="docutils literal notranslate"><span class="pre">--eval-only</span></code> flag when calling
+<a class="reference internal" href="../api/robustness.main.html#module-robustness.main" title="robustness.main"><code class="xref py py-mod docutils literal notranslate"><span class="pre">robustness.main</span></code></a>. To evaluate the model for just standard
+(not adversarial) accuracy, only the following arguments are required:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m robustness.main --dataset DATASET --data /path/to/dataset <span class="se">\</span>
+   --eval-only <span class="m">1</span> --out-dir OUT_DIR --arch arch --adv-eval <span class="m">0</span> <span class="se">\</span>
+   --resume PATH_TO_TRAINED_MODEL_CHECKPOINT
+</pre></div>
+</div>
+<p>We can also evaluate adversarial accuracy by changing <code class="docutils literal notranslate"><span class="pre">--adv-eval</span> <span class="pre">0</span></code> to
+<code class="docutils literal notranslate"><span class="pre">--adv-eval</span> <span class="pre">1</span></code> and also adding the arguments from the previous section used
+for adversarial attacks.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="training-a-non-robust-resnet-18-for-the-cifar-dataset">
+<h3>Training a non-robust ResNet-18 for the CIFAR dataset:<a class="headerlink" href="#training-a-non-robust-resnet-18-for-the-cifar-dataset" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m robustness.main --dataset cifar --data /path/to/cifar <span class="se">\</span>
+   --adv-train <span class="m">0</span> --arch resnet18 --out-dir /logs/checkpoints/dir/
+</pre></div>
+</div>
+</div>
+<div class="section" id="training-a-robust-resnet-50-for-the-restricted-imagenet-dataset">
+<h3>Training a robust ResNet-50 for the Restricted-ImageNet dataset:<a class="headerlink" href="#training-a-robust-resnet-50-for-the-restricted-imagenet-dataset" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">CUDA_VISIBLE_DEVICES</span><span class="o">=</span><span class="m">1</span>,2,3,4,5,6 python -m robustness.main --dataset restricted_imagenet --data <span class="se">\</span>
+   <span class="nv">$IMAGENET_PATH</span> --adv-train <span class="m">1</span> --arch resnet50 <span class="se">\</span>
+   --out-dir /tmp/logs/checkpoints/dir/ --eps <span class="m">3</span>.0 --attack-lr <span class="m">0</span>.5 <span class="se">\</span>
+   --attack-steps <span class="m">7</span> --constraint <span class="m">2</span>
+</pre></div>
+</div>
+<p>Testing the standard and adversarial accuracy of a trained CIFAR-10 model with
+L2 norm constraint of 0.5 and 100 L2-PGD steps:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m robustness.main --dataset cifar --eval-only <span class="m">1</span> --out-dir /tmp/ <span class="se">\</span>
+--arch resnet50 --adv-eval <span class="m">1</span> --constraint <span class="m">2</span> --eps <span class="m">0</span>.5 --attack-lr <span class="m">0</span>.1 <span class="se">\</span>
+--attack-steps <span class="m">100</span> --resume path/to/ckpt/checkpoint.pt.best
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="reading-and-analyzing-training-results">
+<h2>Reading and analyzing training results<a class="headerlink" href="#reading-and-analyzing-training-results" title="Permalink to this headline">¶</a></h2>
+<p>By default, the above command will store all the data generated from the
+training process above in a subdirectory inside of
+<code class="samp docutils literal notranslate"><span class="pre">/logs/checkpoints/dir/</span></code>, the path supplied to the <code class="samp docutils literal notranslate"><span class="pre">--out-dir</span></code>
+argument. The subdirectory will be named by default via a 36 character, randomly
+generated unique identifier, but it can be named manually via the
+<code class="samp docutils literal notranslate"><span class="pre">--exp-name</span></code> argument. By the end of training, the folder structure will
+look something like like:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/logs/checkpoints/dir/a9ffc412-595d-4f8c-8e35-41f000cd35ed
+   checkpoint.latest.pt
+   checkpoint.best.pt
+   store.h5
+   tensorboard/
+   save/
+</pre></div>
+</div>
+<p>This is the file structure of a data store from the
+<a class="reference external" href="https://github.com/madrylab/cox">Cox</a> logging library. It contains all the
+tables (stored as Pandas dataframes, in HDF5 format) of data we wrote about the
+experiment:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cox</span> <span class="kn">import</span> <span class="n">store</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">Store</span><span class="p">(</span><span class="s1">&#39;/logs/checkpoints/dir/&#39;</span><span class="p">,</span> <span class="s1">&#39;6aeae7de-3549-49d5-adb6-52fe04689b4e&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">tables</span>
+<span class="go">{&#39;ckpts&#39;: &lt;cox.store.Table object at 0x7f09a6ae99b0&gt;, &#39;logs&#39;: &lt;cox.store.Table object at 0x7f09a6ae9e80&gt;, &#39;metadata&#39;: &lt;cox.store.Table object at 0x7f09a6ae9dd8&gt;}</span>
+</pre></div>
+</div>
+<p>We can get the metadata by looking at the metadata table and extracting values
+we want. For example, if we wanted to get the learning rate, 0.1:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;lr&#39;</span><span class="p">]</span>
+<span class="go">0    0.1</span>
+<span class="go">Name: lr, dtype: float64</span>
+</pre></div>
+</div>
+<p>Or, if we wanted to find out which epoch had the highest validation accuracy:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">l_df</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="s1">&#39;logs&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ldf</span><span class="p">[</span><span class="n">ldf</span><span class="p">[</span><span class="s1">&#39;nat_prec1&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">max</span><span class="p">(</span><span class="n">ldf</span><span class="p">[</span><span class="s1">&#39;nat_prec1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())][</span><span class="s1">&#39;epoch&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">32</span>
+</pre></div>
+</div>
+<p>In a similar manner, the ‘ckpts’ table contains all the previous checkpoints,
+and the ‘logs’ table contains logging information pertaining to the training.
+Cox allows us to really easily aggregate training logs across different training
+runs and compare/analyze them—we recommend taking a look at the <a class="reference external" href="https://cox.readthedocs.io">Cox documentation</a> for more information on how to use it.</p>
+<p>Note that when training models programmatically (as in our walkthrough
+<a class="reference internal" href="training_lib_part_1.html"><span class="doc">Part 1</span></a> and <a class="reference internal" href="training_lib_part_2.html"><span class="doc">Part 2</span></a>), it is possible to add on custom
+logging functionalities and keep track of essentially anything during training.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="input_space_manipulation.html" class="btn btn-neutral float-right" title="Input manipulation with pre-trained models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../index.html" class="btn btn-neutral float-left" title="MetaDataset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, MetaDataset Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

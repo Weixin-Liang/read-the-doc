@@ -1,0 +1,509 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Creating a custom dataset by superclassing ImageNet &mdash; MetaDataset 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/all.min.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Creating BREEDS subpopulation shift benchmarks" href="breeds_datasets.html" />
+    <link rel="prev" title="Using robustness as a general training library (Part 2: Customizing training)" href="training_lib_part_2.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetaDataset
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cli_usage.html">Training and evaluating networks via command line</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli_usage.html#training-a-standard-nonrobust-model">Training a standard (nonrobust) model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli_usage.html#training-a-robust-model-adversarial-training">Training a robust model (adversarial training)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli_usage.html#evaluating-trained-models">Evaluating trained models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli_usage.html#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli_usage.html#training-a-non-robust-resnet-18-for-the-cifar-dataset">Training a non-robust ResNet-18 for the CIFAR dataset:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli_usage.html#training-a-robust-resnet-50-for-the-restricted-imagenet-dataset">Training a robust ResNet-50 for the Restricted-ImageNet dataset:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli_usage.html#reading-and-analyzing-training-results">Reading and analyzing training results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="input_space_manipulation.html">Input manipulation with pre-trained models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="input_space_manipulation.html#generating-untargeted-adversarial-examples">Generating Untargeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_space_manipulation.html#generating-targeted-adversarial-examples">Generating Targeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_space_manipulation.html#custom-input-manipulation-e-g-representation-inversion">Custom Input Manipulation (e.g. Representation Inversion)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="input_space_manipulation.html#changing-optimization-methods">Changing optimization methods</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="input_space_manipulation.html#advanced-usage">Advanced usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="input_space_manipulation.html#gradient-estimation-nes">Gradient Estimation/NES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="input_space_manipulation.html#custom-optimization-methods">Custom optimization methods</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="training_lib_part_1.html">Using robustness as a general training library (Part 1: Getting started)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_1.html#step-1-imports">Step 1: Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_1.html#step-2-dealing-with-arguments">Step 2: Dealing with arguments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="training_lib_part_1.html#step-2-1-setting-up-command-line-args">Step 2.1: Setting up command-line args</a></li>
+<li class="toctree-l3"><a class="reference internal" href="training_lib_part_1.html#step-2-2-sanity-checks-and-defaults">Step 2.2: Sanity checks and defaults</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_1.html#step-3-creating-the-model-dataset-and-loader">Step 3: Creating the model, dataset, and loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_1.html#step-4-training-the-model">Step 4: Training the model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="training_lib_part_2.html">Using robustness as a general training library (Part 2: Customizing training)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_2.html#training-networks-with-custom-loss-functions">Training networks with custom loss functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_2.html#training-networks-with-custom-data-loaders">Training networks with custom data loaders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="training_lib_part_2.html#using-lambdaloader-to-train-with-label-noise">Using LambdaLoader to train with label noise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="training_lib_part_2.html#using-transformedloader-to-train-with-random-labels">Using TransformedLoader to train with random labels</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_2.html#training-networks-with-custom-logging">Training networks with custom logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_2.html#training-on-custom-datasets">Training on custom datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training_lib_part_2.html#training-with-custom-architectures">Training with custom architectures</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Creating a custom dataset by superclassing ImageNet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#basic-usage-loading-pre-packaged-imagenet-based-datasets">Basic Usage: Loading Pre-Packaged ImageNet-based Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-usage-making-custom-datasets-part-1-browsing-the-wordnet-hierarchy">Advanced Usage (Making Custom Datasets) Part 1: Browsing the WordNet Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-usage-making-custom-datasets-part-2-making-the-datasets">Advanced Usage (Making Custom Datasets) Part 2: Making the Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="breeds_datasets.html">Creating BREEDS subpopulation shift benchmarks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="breeds_datasets.html#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="breeds_datasets.html#part-1-browsing-through-the-class-hierarchy">Part 1: Browsing through the Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="breeds_datasets.html#part-2-creating-breeds-datasets">Part 2: Creating BREEDS Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="breeds_datasets.html#part-3-loading-in-built-breeds-datasets">Part 3: Loading in-built BREEDS Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#robustness-1-2-post2">robustness 1.2.post2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#robustness-1-2">robustness 1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#robustness-1-1-post2">robustness 1.1.post2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#robustness-1-1">robustness 1.1</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.attack_steps.html">robustness.attack_steps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.attacker.html">robustness.attacker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.data_augmentation.html">robustness.data_augmentation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.datasets.html">robustness.datasets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.defaults.html">robustness.defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.loaders.html">robustness.loaders module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.main.html">robustness.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.model_utils.html">robustness.model_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.train.html">robustness.train module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/robustness.tools.html">robustness.tools package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/robustness.tools.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.constants.html">robustness.tools.constants module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.folder.html">robustness.tools.folder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.helpers.html">robustness.tools.helpers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.label_maps.html">robustness.tools.label_maps module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.vis_tools.html">robustness.tools.vis_tools module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/robustness.tools.breeds_helpers.html">robustness.tools.breeds_helpers module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api/robustness.tools.html#module-robustness.tools">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetaDataset</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Creating a custom dataset by superclassing ImageNet</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/example_usage/custom_imagenet.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="creating-a-custom-dataset-by-superclassing-imagenet">
+<h1>Creating a custom dataset by superclassing ImageNet<a class="headerlink" href="#creating-a-custom-dataset-by-superclassing-imagenet" title="Permalink to this headline">¶</a></h1>
+<p>Often in both adversarial robustness research and otherwise, datasets with the
+richness of ImageNet are desired, but without the added complexity of the 1000-way
+ILSVRC classification task. A common workaround is to “superclass” ImageNet,
+that is, to define a new dataset that contains broad classes which each subsume
+several of the original ImageNet classes.</p>
+<p>In this document, we will discuss how to (a) load pre-packaged ImageNet-based
+datasets that we’ve created, and (b) create new custom N-class subset of
+ImageNet data by leveraging the WordNet hierarchy to build superclasses. The
+robustness library provides functionality to do this via the
+<a class="reference internal" href="../api/robustness.datasets.html#robustness.datasets.CustomImageNet" title="robustness.datasets.CustomImageNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomImageNet</span></code></a> and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ImageNetHierarchy</span></code> classes. In this
+walkthrough, we’ll see how to use these classes to browse and use the WordNet
+hierarchy to create custom ImageNet-based datasets.</p>
+<i class="fa fa-play"></i> &nbsp;&nbsp; <a
+href="https://github.com/MadryLab/robustness/blob/master/notebooks/Superclassing%20ImageNet.ipynb">Download
+a Jupyter notebook</a> containing all the code from this walkthrough! <br />
+<br /><div class="section" id="requirements-setup">
+<h2>Requirements/Setup<a class="headerlink" href="#requirements-setup" title="Permalink to this headline">¶</a></h2>
+<p>To create custom ImageNet datasets, we need (a) the ImageNet dataset to be
+downloaded and available in PyTorch-readable format, and (b) the files
+<code class="docutils literal notranslate"><span class="pre">wordnet.is_a.txt</span></code>, <code class="docutils literal notranslate"><span class="pre">words.txt</span></code> and <code class="docutils literal notranslate"><span class="pre">imagenet_class_index.json</span></code>, all
+contained within the same directory (all of these files can be obtained from
+<a class="reference external" href="http://image-net.org/download-API">the ImageNet website</a>.</p>
+</div>
+<div class="section" id="basic-usage-loading-pre-packaged-imagenet-based-datasets">
+<h2>Basic Usage: Loading Pre-Packaged ImageNet-based Datasets<a class="headerlink" href="#basic-usage-loading-pre-packaged-imagenet-based-datasets" title="Permalink to this headline">¶</a></h2>
+<p>To make things as easy as possible, we’ve compiled a list of large, but less
+complex ImageNet-based datasets. These datasets can be loaded in their
+unbalanced or balanced forms, where in the latter we truncate each class to have
+the same number of images as the smallest class. We enumerate these datasets
+below:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 77%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Dataset Name</p></th>
+<th class="head"><p>Classes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>living_9</p></td>
+<td><div class="line-block">
+<div class="line">Dog (n02084071), Bird (n01503061),</div>
+<div class="line">Arthropod (n01767661), Reptile (n01661091),</div>
+<div class="line">Primate (n02469914), Fish (n02512053),</div>
+<div class="line">Feline (n02120997), Bovid (n02401031),</div>
+<div class="line">Amphibian (n01627424)</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>mixed_10</p></td>
+<td><div class="line-block">
+<div class="line">Dog (n02084071), Bird (n01503061),</div>
+<div class="line">Insect (n02159955), Monkey (n02484322),</div>
+<div class="line">Car (n02958343), Cat (n02120997),</div>
+<div class="line">Truck (n04490091), Fruit (n13134947),</div>
+<div class="line">Fungus (n12992868), Boat (n02858304)</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p>mixed_13</p></td>
+<td><div class="line-block">
+<div class="line">Dog (n02084071), Bird (n01503061),</div>
+<div class="line">Insect (n02159955), Furniture (n03405725),</div>
+<div class="line">Fish (n02512053), Monkey (n02484322),</div>
+<div class="line">Car (n02958343), Cat (n02120997),</div>
+<div class="line">Truck (n04490091), Fruit (n13134947),</div>
+<div class="line">Fungus (n12992868), Boat (n02858304),</div>
+<div class="line">Computer (n03082979)</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>geirhos_16</p></td>
+<td><div class="line-block">
+<div class="line">Aircraft (n02686568), Bear (n02131653),</div>
+<div class="line">Bicycle (n02834778), Bird (n01503061),</div>
+<div class="line">Boat (n02858304), Bottle (n02876657),</div>
+<div class="line">Car (n02958343), Cat (n02121808),</div>
+<div class="line">Char (n03001627), Clock (n03046257),</div>
+<div class="line">Dog (n02084071), Elephant (n02503517),</div>
+<div class="line">Keyboard (n03614532), Knife (n03623556),</div>
+<div class="line">Oven (n03862676), Truck (n04490091),</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p>big_12</p></td>
+<td><div class="line-block">
+<div class="line">Dog (n02084071), Structure(n04341686),</div>
+<div class="line">Bird (n01503061), Clothing (n03051540),</div>
+<div class="line">Vehicle(n04576211), Reptile (n01661091),</div>
+<div class="line">Carnivore (n02075296), Insect (n02159955),</div>
+<div class="line">Instrument (n03800933), Food (n07555863),</div>
+<div class="line">Furniture (n03405725), Primate (n02469914),</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Loading any of these datasets (for example, <code class="docutils literal notranslate"><span class="pre">mixed_10</span></code>) is relatively simple:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness</span> <span class="kn">import</span> <span class="n">datasets</span>
+<span class="kn">from</span> <span class="nn">robustness.tools.imagenet_helpers</span> <span class="kn">import</span> <span class="n">common_superclass_wnid</span><span class="p">,</span> <span class="n">ImageNetHierarchy</span>
+
+<span class="n">in_hier</span> <span class="o">=</span> <span class="n">ImageNetHierarchy</span><span class="p">(</span><span class="n">in_path</span><span class="p">,</span> <span class="n">in_info_path</span><span class="p">)</span>
+<span class="n">superclass_wnid</span> <span class="o">=</span> <span class="n">common_superclass_wnid</span><span class="p">(</span><span class="s1">&#39;mixed_10&#39;</span><span class="p">)</span>
+<span class="n">class_ranges</span><span class="p">,</span> <span class="n">label_map</span> <span class="o">=</span> <span class="n">in_hier</span><span class="o">.</span><span class="n">get_subclasses</span><span class="p">(</span><span class="n">superclass_wnid</span><span class="p">,</span> <span class="n">balanced</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the above, <code class="samp docutils literal notranslate"><span class="pre">in_path</span></code> should point to a folder with the ImageNet
+dataset in <code class="docutils literal notranslate"><span class="pre">train</span></code> and <code class="docutils literal notranslate"><span class="pre">val</span></code> sub-folders; <code class="samp docutils literal notranslate"><span class="pre">in_info_path</span></code> should be the
+path to the directory containing the aforementioned files (<code class="docutils literal notranslate"><span class="pre">wordnet.is_a.txt</span></code>,
+<code class="docutils literal notranslate"><span class="pre">words.txt</span></code>, <code class="docutils literal notranslate"><span class="pre">imagenet_class_index.json</span></code>).</p>
+<p>We can then create a dataset and the corresponding data loader using:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">custom_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">CustomImageNet</span><span class="p">(</span><span class="n">in_path</span><span class="p">,</span> <span class="n">class_ranges</span><span class="p">)</span>
+<span class="n">train_loader</span><span class="p">,</span> <span class="n">test_loader</span> <span class="o">=</span> <span class="n">custom_dataset</span><span class="o">.</span><span class="n">make_loaders</span><span class="p">(</span><span class="n">workers</span><span class="o">=</span><span class="n">num_workers</span><span class="p">,</span>
+                                                        <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You’re all set! You can then use this <code class="samp docutils literal notranslate"><span class="pre">custom_dataset</span></code> and loaders
+just as you would any other existing/custom dataset in the robustness
+library. For instance, you can visualize training set samples and their
+labels using:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness.tools.vis_tools</span> <span class="kn">import</span> <span class="n">show_image_row</span>
+<span class="n">im</span><span class="p">,</span> <span class="n">lab</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">train_loader</span><span class="p">))</span>
+<span class="n">show_image_row</span><span class="p">([</span><span class="n">im</span><span class="p">],</span> <span class="n">tlist</span><span class="o">=</span><span class="p">[[</span><span class="n">label_map</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">lab</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="advanced-usage-making-custom-datasets-part-1-browsing-the-wordnet-hierarchy">
+<h2>Advanced Usage (Making Custom Datasets) Part 1: Browsing the WordNet Hierarchy<a class="headerlink" href="#advanced-usage-making-custom-datasets-part-1-browsing-the-wordnet-hierarchy" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">ImageNetHierarchy</span></code> class allows
+us to probe the WordNet hierarchy and create custom datasets with the desired
+number of superclasses.  We first create an instance of the
+<code class="docutils literal notranslate"><span class="pre">ImageNetHierarchy</span></code> class:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness.tools.imagenet_helpers</span> <span class="kn">import</span> <span class="n">ImageNetHierarchy</span>
+<span class="n">in_hier</span> <span class="o">=</span> <span class="n">ImageNetHierarchy</span><span class="p">(</span><span class="n">in_path</span><span class="p">,</span> <span class="n">in_info_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Again, <code class="samp docutils literal notranslate"><span class="pre">in_path</span></code> should point to a folder with the ImageNet
+dataset in <code class="docutils literal notranslate"><span class="pre">train</span></code> and <code class="docutils literal notranslate"><span class="pre">val</span></code> sub-folders; <code class="samp docutils literal notranslate"><span class="pre">in_info_path</span></code> should be the
+path to the directory containing the aforementioned files (<code class="docutils literal notranslate"><span class="pre">wordnet.is_a.txt</span></code>,
+<code class="docutils literal notranslate"><span class="pre">words.txt</span></code>, <code class="docutils literal notranslate"><span class="pre">imagenet_class_index.json</span></code>).</p>
+<p>We can now use the <code class="samp docutils literal notranslate"><span class="pre">in_hier</span></code> object to probe the ImageNet hierarchy.  The
+<code class="docutils literal notranslate"><span class="pre">wnid_sorted</span></code> attribute, for example, is an iterator over the WordNet IDs,
+sorted by the number of descendents they have which are ImageNet classes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">cnt</span><span class="p">,</span> <span class="p">(</span><span class="n">wnid</span><span class="p">,</span> <span class="n">ndesc_in</span><span class="p">,</span> <span class="n">ndesc_total</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">in_hier</span><span class="o">.</span><span class="n">wnid_sorted</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;WordNet ID: </span><span class="si">{</span><span class="n">wnid</span><span class="si">}</span><span class="s2">, Name: </span><span class="si">{</span><span class="n">in_hier</span><span class="o">.</span><span class="n">wnid_to_name</span><span class="p">[</span><span class="n">wnid</span><span class="p">]</span><span class="si">}</span><span class="s2">, #ImageNet descendants: </span><span class="si">{</span><span class="n">ndesc_in</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Given any WordNet ID, we can also enumerate all of its subclasses of a given
+superclass using the <code class="docutils literal notranslate"><span class="pre">in_hier.tree</span></code> object and its related methods/attributes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ancestor_wnid</span> <span class="o">=</span> <span class="s1">&#39;n02120997&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Superclass | WordNet ID: </span><span class="si">{</span><span class="n">ancestor_wnid</span><span class="si">}</span><span class="s2">, Name: </span><span class="si">{</span><span class="n">in_hier</span><span class="o">.</span><span class="n">wnid_to_name</span><span class="p">[</span><span class="n">ancestor_wnid</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">cnt</span><span class="p">,</span> <span class="n">wnid</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">in_hier</span><span class="o">.</span><span class="n">tree</span><span class="p">[</span><span class="s1">&#39;n02120997&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">descendants_all</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Subclass | WordNet ID: </span><span class="si">{</span><span class="n">wnid</span><span class="si">}</span><span class="s2">, Name: </span><span class="si">{</span><span class="n">in_hier</span><span class="o">.</span><span class="n">wnid_to_name</span><span class="p">[</span><span class="n">wnid</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can filter these subclasses based on whether they correspond to ImageNet
+classes using the <code class="docutils literal notranslate"><span class="pre">in_wnids</span></code> attribute:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ancestor_wnid</span> <span class="o">=</span> <span class="s1">&#39;n02120997&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Superclass | WordNet ID: </span><span class="si">{</span><span class="n">ancestor_wnid</span><span class="si">}</span><span class="s2">, Name: </span><span class="si">{</span><span class="n">in_hier</span><span class="o">.</span><span class="n">wnid_to_name</span><span class="p">[</span><span class="n">ancestor_wnid</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">cnt</span><span class="p">,</span> <span class="n">wnid</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">in_hier</span><span class="o">.</span><span class="n">tree</span><span class="p">[</span><span class="n">ancestor_wnid</span><span class="p">]</span><span class="o">.</span><span class="n">descendants_all</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">wnid</span> <span class="ow">in</span> <span class="n">in_hier</span><span class="o">.</span><span class="n">in_wnids</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ImageNet subclass | WordNet ID: </span><span class="si">{</span><span class="n">wnid</span><span class="si">}</span><span class="s2">, Name: </span><span class="si">{</span><span class="n">in_hier</span><span class="o">.</span><span class="n">wnid_to_name</span><span class="p">[</span><span class="n">wnid</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="advanced-usage-making-custom-datasets-part-2-making-the-datasets">
+<h2>Advanced Usage (Making Custom Datasets) Part 2: Making the Datasets<a class="headerlink" href="#advanced-usage-making-custom-datasets-part-2-making-the-datasets" title="Permalink to this headline">¶</a></h2>
+<p>To create a dataset with the desired number of superclasses we use
+the <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_superclasses()</span></code> function,
+which takes in a desired number of superclasses <code class="samp docutils literal notranslate"><span class="pre">n_classes</span></code>, an
+(optional) WordNet ID <code class="samp docutils literal notranslate"><span class="pre">ancestor_wnid</span></code> that allows us to fix a common
+WordNet ancestor for all the classes in our new dataset, and an optional boolean
+<code class="samp docutils literal notranslate"><span class="pre">balanced</span></code> to get a balanced dataset (where each superclass
+has the same number of ImageNet subclasses).
+(see <code class="xref py py-meth docutils literal notranslate"><span class="pre">the</span> <span class="pre">docstring</span></code> for
+more details).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">superclass_wnid</span><span class="p">,</span> <span class="n">class_ranges</span><span class="p">,</span> <span class="n">label_map</span> <span class="o">=</span> <span class="n">in_hier</span><span class="o">.</span><span class="n">get_superclasses</span><span class="p">(</span><span class="n">n_classes</span><span class="p">,</span>
+                                             <span class="n">ancestor_wnid</span><span class="o">=</span><span class="n">ancestor_wnid</span><span class="p">,</span>
+                                             <span class="n">balanced</span><span class="o">=</span><span class="n">balanced</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This method returns WordNet IDs of chosen superclasses
+<code class="samp docutils literal notranslate"><span class="pre">superclass_wnid</span></code>, sets of ImageNet subclasses to group together
+for each of the superclasses <code class="samp docutils literal notranslate"><span class="pre">class_ranges</span></code>, and a mapping from
+superclass number to its human-interpretable description <code class="samp docutils literal notranslate"><span class="pre">label_map</span></code>.</p>
+<p>You can also directly provide a list of superclass WordNet IDs <code class="samp docutils literal notranslate"><span class="pre">ancestor_wnid</span></code>
+that you would like to use to build a custom dataset. For instance, some sample superclass
+groupings can be found in
+py:meth:<cite>~robustness.tools.imagenet_helpers.ImageNetHierarchy.common_superclass_wnid</cite>.</p>
+<p>Once a list of WordNet IDs has been acquired (whether through the method
+described here or just manually), we can use the method presented at the
+beginning of this article to load the corresponding dataset:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">custom_dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">CustomImageNet</span><span class="p">(</span><span class="n">in_path</span><span class="p">,</span> <span class="n">class_ranges</span><span class="p">)</span>
+<span class="n">train_loader</span><span class="p">,</span> <span class="n">test_loader</span> <span class="o">=</span> <span class="n">custom_dataset</span><span class="o">.</span><span class="n">make_loaders</span><span class="p">(</span><span class="n">workers</span><span class="o">=</span><span class="n">num_workers</span><span class="p">,</span>
+                                                        <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="breeds_datasets.html" class="btn btn-neutral float-right" title="Creating BREEDS subpopulation shift benchmarks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="training_lib_part_2.html" class="btn btn-neutral float-left" title="Using robustness as a general training library (Part 2: Customizing training)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, MetaDataset Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,636 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>robustness.tools.breeds_helpers module &mdash; MetaDataset 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/all.min.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="robustness.tools.vis_tools module" href="robustness.tools.vis_tools.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetaDataset
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/cli_usage.html">Training and evaluating networks via command line</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#training-a-standard-nonrobust-model">Training a standard (nonrobust) model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#training-a-robust-model-adversarial-training">Training a robust model (adversarial training)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#evaluating-trained-models">Evaluating trained models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/cli_usage.html#training-a-non-robust-resnet-18-for-the-cifar-dataset">Training a non-robust ResNet-18 for the CIFAR dataset:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/cli_usage.html#training-a-robust-resnet-50-for-the-restricted-imagenet-dataset">Training a robust ResNet-50 for the Restricted-ImageNet dataset:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#reading-and-analyzing-training-results">Reading and analyzing training results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/input_space_manipulation.html">Input manipulation with pre-trained models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/input_space_manipulation.html#generating-untargeted-adversarial-examples">Generating Untargeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/input_space_manipulation.html#generating-targeted-adversarial-examples">Generating Targeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/input_space_manipulation.html#custom-input-manipulation-e-g-representation-inversion">Custom Input Manipulation (e.g. Representation Inversion)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/input_space_manipulation.html#changing-optimization-methods">Changing optimization methods</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/input_space_manipulation.html#advanced-usage">Advanced usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/input_space_manipulation.html#gradient-estimation-nes">Gradient Estimation/NES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/input_space_manipulation.html#custom-optimization-methods">Custom optimization methods</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/training_lib_part_1.html">Using robustness as a general training library (Part 1: Getting started)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-1-imports">Step 1: Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-2-dealing-with-arguments">Step 2: Dealing with arguments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-2-1-setting-up-command-line-args">Step 2.1: Setting up command-line args</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-2-2-sanity-checks-and-defaults">Step 2.2: Sanity checks and defaults</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-3-creating-the-model-dataset-and-loader">Step 3: Creating the model, dataset, and loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-4-training-the-model">Step 4: Training the model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/training_lib_part_2.html">Using robustness as a general training library (Part 2: Customizing training)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-networks-with-custom-loss-functions">Training networks with custom loss functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-networks-with-custom-data-loaders">Training networks with custom data loaders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/training_lib_part_2.html#using-lambdaloader-to-train-with-label-noise">Using LambdaLoader to train with label noise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/training_lib_part_2.html#using-transformedloader-to-train-with-random-labels">Using TransformedLoader to train with random labels</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-networks-with-custom-logging">Training networks with custom logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-on-custom-datasets">Training on custom datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-with-custom-architectures">Training with custom architectures</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/custom_imagenet.html">Creating a custom dataset by superclassing ImageNet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/custom_imagenet.html#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/custom_imagenet.html#basic-usage-loading-pre-packaged-imagenet-based-datasets">Basic Usage: Loading Pre-Packaged ImageNet-based Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/custom_imagenet.html#advanced-usage-making-custom-datasets-part-1-browsing-the-wordnet-hierarchy">Advanced Usage (Making Custom Datasets) Part 1: Browsing the WordNet Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/custom_imagenet.html#advanced-usage-making-custom-datasets-part-2-making-the-datasets">Advanced Usage (Making Custom Datasets) Part 2: Making the Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/breeds_datasets.html">Creating BREEDS subpopulation shift benchmarks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/breeds_datasets.html#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/breeds_datasets.html#part-1-browsing-through-the-class-hierarchy">Part 1: Browsing through the Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/breeds_datasets.html#part-2-creating-breeds-datasets">Part 2: Creating BREEDS Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/breeds_datasets.html#part-3-loading-in-built-breeds-datasets">Part 3: Loading in-built BREEDS Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/changelog.html#robustness-1-2-post2">robustness 1.2.post2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/changelog.html#robustness-1-2">robustness 1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/changelog.html#robustness-1-1-post2">robustness 1.1.post2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/changelog.html#robustness-1-1">robustness 1.1</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="robustness.attack_steps.html">robustness.attack_steps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.attacker.html">robustness.attacker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.data_augmentation.html">robustness.data_augmentation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.datasets.html">robustness.datasets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.defaults.html">robustness.defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.loaders.html">robustness.loaders module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.main.html">robustness.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.model_utils.html">robustness.model_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.train.html">robustness.train module</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="robustness.tools.html">robustness.tools package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="robustness.tools.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="robustness.tools.constants.html">robustness.tools.constants module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="robustness.tools.folder.html">robustness.tools.folder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="robustness.tools.helpers.html">robustness.tools.helpers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="robustness.tools.label_maps.html">robustness.tools.label_maps module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="robustness.tools.vis_tools.html">robustness.tools.vis_tools module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">robustness.tools.breeds_helpers module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="robustness.tools.html#module-robustness.tools">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetaDataset</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="robustness.tools.html">robustness.tools package</a> &raquo;</li>
+        
+      <li>robustness.tools.breeds_helpers module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/api/robustness.tools.breeds_helpers.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="robustness-tools-breeds-helpers-module">
+<h1>robustness.tools.breeds_helpers module<a class="headerlink" href="#robustness-tools-breeds-helpers-module" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-robustness.tools.breeds_helpers"></span><dl class="py function">
+<dt id="robustness.tools.breeds_helpers.setup_breeds">
+<code class="sig-prename descclassname">robustness.tools.breeds_helpers.</code><code class="sig-name descname">setup_breeds</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">info_dir</span></em>, <em class="sig-param"><span class="n">url</span><span class="o">=</span><span class="default_value">'https://github.com/MadryLab/BREEDS-Benchmarks/blob/master/imagenet_class_hierarchy/modified/'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.tools.breeds_helpers.setup_breeds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt id="robustness.tools.breeds_helpers.ClassHierarchy">
+<em class="property">class </em><code class="sig-prename descclassname">robustness.tools.breeds_helpers.</code><code class="sig-name descname">ClassHierarchy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">info_dir</span></em>, <em class="sig-param"><span class="n">root_wnid</span><span class="o">=</span><span class="default_value">'n00001740'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.tools.breeds_helpers.ClassHierarchy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class representing a general ImageNet-style hierarchy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>info_dir</strong> (<em>str</em>) – Path to hierarchy information files. Contains a
+“class_hierarchy.txt” file with one edge per line, a
+“node_names.txt” mapping nodes to names, and “class_info.json”.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="robustness.tools.breeds_helpers.ClassHierarchy.leaves_reachable">
+<code class="sig-name descname">leaves_reachable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.tools.breeds_helpers.ClassHierarchy.leaves_reachable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the leaves (ImageNet classes) reachable for a give node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>str</em>) – WordNet ID of node</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of WordNet IDs of the ImageNet descendants</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>leaves (list)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="robustness.tools.breeds_helpers.ClassHierarchy.node_name">
+<code class="sig-name descname">node_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.tools.breeds_helpers.ClassHierarchy.node_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the name of a node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="robustness.tools.breeds_helpers.ClassHierarchy.print_node_info">
+<code class="sig-name descname">print_node_info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.tools.breeds_helpers.ClassHierarchy.print_node_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints basic information (name, number of ImageNet descendants)
+about a given set of nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>nodes</strong> (<em>list</em>) – List of WordNet IDs for relevant nodes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="robustness.tools.breeds_helpers.ClassHierarchy.traverse">
+<code class="sig-name descname">traverse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span></em>, <em class="sig-param"><span class="n">direction</span><span class="o">=</span><span class="default_value">'down'</span></em>, <em class="sig-param"><span class="n">depth</span><span class="o">=</span><span class="default_value">100</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.tools.breeds_helpers.ClassHierarchy.traverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find all nodes accessible from a set of given nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodes</strong> (<em>list</em>) – List of WordNet IDs for relevant nodes</p></li>
+<li><p><strong>direction</strong> (<em>&quot;up&quot;/&quot;down&quot;</em>) – Traversal direction</p></li>
+<li><p><strong>depth</strong> (<em>int</em>) – Maximum depth to traverse (from nodes)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Set of nodes reachable within the desired depth, in the
+desired direction.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="robustness.tools.breeds_helpers.ClassHierarchy.get_nodes_at_level">
+<code class="sig-name descname">get_nodes_at_level</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">L</span></em>, <em class="sig-param"><span class="n">ancestor</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.tools.breeds_helpers.ClassHierarchy.get_nodes_at_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find all superclasses at a specified depth within a subtree
+of the hierarchy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>L</strong> (<em>int</em>) – Depth in hierarchy (from root node)</p></li>
+<li><p><strong>ancestor</strong> (<em>str</em>) – (optional) WordNet ID that can be used to
+restrict the subtree in which superclasses
+are found</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Set of superclasses at that depth in</dt><dd><p>the hierarchy</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>nodes (list)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="robustness.tools.breeds_helpers.BreedsDatasetGenerator">
+<em class="property">class </em><code class="sig-prename descclassname">robustness.tools.breeds_helpers.</code><code class="sig-name descname">BreedsDatasetGenerator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">info_dir</span></em>, <em class="sig-param"><span class="n">root_wnid</span><span class="o">=</span><span class="default_value">'n00001740'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.tools.breeds_helpers.BreedsDatasetGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for generating datasets from ImageNet superclasses.</p>
+<dl class="py method">
+<dt id="robustness.tools.breeds_helpers.BreedsDatasetGenerator.split_superclass">
+<code class="sig-name descname">split_superclass</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">superclass_wnid</span></em>, <em class="sig-param"><span class="n">Nsubclasses</span></em>, <em class="sig-param"><span class="n">balanced</span></em>, <em class="sig-param"><span class="n">split_type</span></em>, <em class="sig-param"><span class="n">rng</span><span class="o">=</span><span class="default_value">numpy.random.RandomState</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.tools.breeds_helpers.BreedsDatasetGenerator.split_superclass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split superclass into two disjoint sets of subclasses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>superclass_wnid</strong> (<em>str</em>) – WordNet ID of superclass node</p></li>
+<li><p><strong>Nsubclasses</strong> (<em>int</em>) – Number of subclasses per superclass
+(not used when balanced is True)</p></li>
+<li><p><strong>balanced</strong> (<em>bool</em>) – Whether or not the dataset should be
+balanced over superclasses</p></li>
+<li><p><strong>split_type</strong> (<em>&quot;good&quot;/&quot;bad&quot;/&quot;rand&quot;</em>) – Whether the subclass
+partitioning should be more or less
+adversarial or random</p></li>
+<li><p><strong>rng</strong> (<em>RandomState</em>) – Random number generator</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple of lists of subclasses</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>class_ranges (tuple)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="robustness.tools.breeds_helpers.BreedsDatasetGenerator.get_superclasses">
+<code class="sig-name descname">get_superclasses</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">level</span></em>, <em class="sig-param"><span class="n">Nsubclasses</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">split</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ancestor</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">balanced</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">random_seed</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.tools.breeds_helpers.BreedsDatasetGenerator.get_superclasses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain a dataset composed of ImageNet superclasses with a desired
+set of properties.
+(Optional) By specifying a split, one can parition the subclasses
+into two disjoint datasets (with the same superclasses).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>level</strong> (<em>int</em>) – Depth in hierarchy (from root node)</p></li>
+<li><p><strong>Nsubclasses</strong> (<em>int</em>) – Minimum number of subclasses per superclass</p></li>
+<li><p><strong>balanced</strong> (<em>bool</em>) – Whether or not the dataset should be
+balanced over superclasses</p></li>
+<li><p><strong>split</strong> (<em>&quot;good&quot;/&quot;bad&quot;/&quot;rand&quot;/None</em>) – If None, superclasses are
+not partitioned into two disjoint datasets.
+If not None, determines whether the subclass
+partitioning should be more or less
+adversarial or random</p></li>
+<li><p><strong>rng</strong> (<em>RandomState</em>) – Random number generator</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>WordNet IDs of superclasses
+subclass_splits (tuple): Tuple entries correspond to the source</p>
+<blockquote>
+<div><p>and target domains respectively. A
+tuple entry is a list, where each
+element is a list of subclasses to
+be included in a given superclass in
+that domain. If split is None,
+the second tuple element is empty.</p>
+</div></blockquote>
+<p>label_map (dict): Map from (super)class number to superclass name</p>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>superclasses (list)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="robustness.tools.breeds_helpers.print_dataset_info">
+<code class="sig-prename descclassname">robustness.tools.breeds_helpers.</code><code class="sig-name descname">print_dataset_info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">superclasses</span></em>, <em class="sig-param"><span class="n">subclass_splits</span></em>, <em class="sig-param"><span class="n">label_map</span></em>, <em class="sig-param"><span class="n">label_map_sub</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.tools.breeds_helpers.print_dataset_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain a dataframe with information about the
+superclasses/subclasses included in the dataset.</p>
+<p>Args:
+superclasses (list): WordNet IDs of superclasses
+subclass_splits (tuple): Tuple entries correspond to the source</p>
+<blockquote>
+<div><p>and target domains respectively. A
+tuple entry is a list, where each
+element is a list of subclasses to
+be included in a given superclass in
+that domain. If split is None,
+the second tuple element is empty.</p>
+</div></blockquote>
+<p>label_map (dict): Map from (super)class number to superclass name
+label_map_sub (dict):  Map from subclass number to subclass name</p>
+<blockquote>
+<div><p>(equivalent to label map for original dataset)</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>Columns contain relevant information</dt><dd><p>about the datast</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dataDf (pandas DataFrame)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="robustness.tools.breeds_helpers.make_entity13">
+<code class="sig-prename descclassname">robustness.tools.breeds_helpers.</code><code class="sig-name descname">make_entity13</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">info_dir</span></em>, <em class="sig-param"><span class="n">split</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.tools.breeds_helpers.make_entity13" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain superclass/subclass information for the ENTITY-13 dataset
+:param info_dir: Path to ImageNet information files
+:type info_dir: str
+:param split: Nature of subclass
+:type split: “good”/”bad”/”rand”/None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><p>WordNet IDs of superclasses
+subclass_splits (tuple): Tuple entries correspond to the source</p>
+<blockquote>
+<div><p>and target domains respectively. A
+tuple entry is a list, where each
+element is a list of subclasses to
+be included in a given superclass in
+that domain. If split is None,
+the second tuple element is empty.</p>
+</div></blockquote>
+<p>label_map (dict): Map from (super)class number to superclass name</p>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>superclasses (list)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="robustness.tools.breeds_helpers.make_entity30">
+<code class="sig-prename descclassname">robustness.tools.breeds_helpers.</code><code class="sig-name descname">make_entity30</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">info_dir</span></em>, <em class="sig-param"><span class="n">split</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.tools.breeds_helpers.make_entity30" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain superclass/subclass information for the ENTITY-30 dataset
+:param info_dir: Path to ImageNet information files
+:type info_dir: str
+:param split: Nature of subclass
+:type split: “good”/”bad”/”rand”/None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><p>WordNet IDs of superclasses
+subclass_splits (tuple): Tuple entries correspond to the source</p>
+<blockquote>
+<div><p>and target domains respectively. A
+tuple entry is a list, where each
+element is a list of subclasses to
+be included in a given superclass in
+that domain. If split is None,
+the second tuple element is empty.</p>
+</div></blockquote>
+<p>label_map (dict): Map from (super)class number to superclass name</p>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>superclasses (list)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="robustness.tools.breeds_helpers.make_living17">
+<code class="sig-prename descclassname">robustness.tools.breeds_helpers.</code><code class="sig-name descname">make_living17</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">info_dir</span></em>, <em class="sig-param"><span class="n">split</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.tools.breeds_helpers.make_living17" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain superclass/subclass information for the LIVING-17 dataset
+:param info_dir: Path to ImageNet information files
+:type info_dir: str
+:param split: Nature of subclass
+:type split: “good”/”bad”/”rand”/None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><p>WordNet IDs of superclasses
+subclass_splits (tuple): Tuple entries correspond to the source</p>
+<blockquote>
+<div><p>and target domains respectively. A
+tuple entry is a list, where each
+element is a list of subclasses to
+be included in a given superclass in
+that domain. If split is None,
+the second tuple element is empty.</p>
+</div></blockquote>
+<p>label_map (dict): Map from (super)class number to superclass name</p>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>superclasses (list)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="robustness.tools.breeds_helpers.make_nonliving26">
+<code class="sig-prename descclassname">robustness.tools.breeds_helpers.</code><code class="sig-name descname">make_nonliving26</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">info_dir</span></em>, <em class="sig-param"><span class="n">split</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.tools.breeds_helpers.make_nonliving26" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain superclass/subclass information for the NONLIVING-26 dataset.
+:param info_dir: Path to ImageNet information files
+:type info_dir: str
+:param split: Nature of subclass
+:type split: “good”/”bad”/”rand”/None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><p>WordNet IDs of superclasses
+subclass_splits (tuple): Tuple entries correspond to the source</p>
+<blockquote>
+<div><p>and target domains respectively. A
+tuple entry is a list, where each
+element is a list of subclasses to
+be included in a given superclass in
+that domain. If split is None,
+the second tuple element is empty.</p>
+</div></blockquote>
+<p>label_map (dict): Map from (super)class number to superclass name</p>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>superclasses (list)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="robustness.tools.vis_tools.html" class="btn btn-neutral float-left" title="robustness.tools.vis_tools module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, MetaDataset Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

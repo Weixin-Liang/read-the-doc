@@ -1,0 +1,550 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>robustness.attack_steps module &mdash; MetaDataset 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/all.min.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="robustness.attacker module" href="robustness.attacker.html" />
+    <link rel="prev" title="API Reference" href="../api.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetaDataset
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/cli_usage.html">Training and evaluating networks via command line</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#training-a-standard-nonrobust-model">Training a standard (nonrobust) model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#training-a-robust-model-adversarial-training">Training a robust model (adversarial training)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#evaluating-trained-models">Evaluating trained models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/cli_usage.html#training-a-non-robust-resnet-18-for-the-cifar-dataset">Training a non-robust ResNet-18 for the CIFAR dataset:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/cli_usage.html#training-a-robust-resnet-50-for-the-restricted-imagenet-dataset">Training a robust ResNet-50 for the Restricted-ImageNet dataset:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#reading-and-analyzing-training-results">Reading and analyzing training results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/input_space_manipulation.html">Input manipulation with pre-trained models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/input_space_manipulation.html#generating-untargeted-adversarial-examples">Generating Untargeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/input_space_manipulation.html#generating-targeted-adversarial-examples">Generating Targeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/input_space_manipulation.html#custom-input-manipulation-e-g-representation-inversion">Custom Input Manipulation (e.g. Representation Inversion)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/input_space_manipulation.html#changing-optimization-methods">Changing optimization methods</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/input_space_manipulation.html#advanced-usage">Advanced usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/input_space_manipulation.html#gradient-estimation-nes">Gradient Estimation/NES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/input_space_manipulation.html#custom-optimization-methods">Custom optimization methods</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/training_lib_part_1.html">Using robustness as a general training library (Part 1: Getting started)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-1-imports">Step 1: Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-2-dealing-with-arguments">Step 2: Dealing with arguments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-2-1-setting-up-command-line-args">Step 2.1: Setting up command-line args</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-2-2-sanity-checks-and-defaults">Step 2.2: Sanity checks and defaults</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-3-creating-the-model-dataset-and-loader">Step 3: Creating the model, dataset, and loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-4-training-the-model">Step 4: Training the model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/training_lib_part_2.html">Using robustness as a general training library (Part 2: Customizing training)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-networks-with-custom-loss-functions">Training networks with custom loss functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-networks-with-custom-data-loaders">Training networks with custom data loaders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/training_lib_part_2.html#using-lambdaloader-to-train-with-label-noise">Using LambdaLoader to train with label noise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/training_lib_part_2.html#using-transformedloader-to-train-with-random-labels">Using TransformedLoader to train with random labels</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-networks-with-custom-logging">Training networks with custom logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-on-custom-datasets">Training on custom datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-with-custom-architectures">Training with custom architectures</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/custom_imagenet.html">Creating a custom dataset by superclassing ImageNet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/custom_imagenet.html#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/custom_imagenet.html#basic-usage-loading-pre-packaged-imagenet-based-datasets">Basic Usage: Loading Pre-Packaged ImageNet-based Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/custom_imagenet.html#advanced-usage-making-custom-datasets-part-1-browsing-the-wordnet-hierarchy">Advanced Usage (Making Custom Datasets) Part 1: Browsing the WordNet Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/custom_imagenet.html#advanced-usage-making-custom-datasets-part-2-making-the-datasets">Advanced Usage (Making Custom Datasets) Part 2: Making the Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/breeds_datasets.html">Creating BREEDS subpopulation shift benchmarks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/breeds_datasets.html#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/breeds_datasets.html#part-1-browsing-through-the-class-hierarchy">Part 1: Browsing through the Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/breeds_datasets.html#part-2-creating-breeds-datasets">Part 2: Creating BREEDS Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/breeds_datasets.html#part-3-loading-in-built-breeds-datasets">Part 3: Loading in-built BREEDS Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/changelog.html#robustness-1-2-post2">robustness 1.2.post2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/changelog.html#robustness-1-2">robustness 1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/changelog.html#robustness-1-1-post2">robustness 1.1.post2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/changelog.html#robustness-1-1">robustness 1.1</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">robustness.attack_steps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.attacker.html">robustness.attacker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.data_augmentation.html">robustness.data_augmentation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.datasets.html">robustness.datasets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.defaults.html">robustness.defaults module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.loaders.html">robustness.loaders module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.main.html">robustness.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.model_utils.html">robustness.model_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.train.html">robustness.train module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="robustness.tools.html">robustness.tools package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="robustness.tools.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="robustness.tools.constants.html">robustness.tools.constants module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="robustness.tools.folder.html">robustness.tools.folder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="robustness.tools.helpers.html">robustness.tools.helpers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="robustness.tools.label_maps.html">robustness.tools.label_maps module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="robustness.tools.vis_tools.html">robustness.tools.vis_tools module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="robustness.tools.breeds_helpers.html">robustness.tools.breeds_helpers module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="robustness.tools.html#module-robustness.tools">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetaDataset</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+        
+      <li>robustness.attack_steps module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/api/robustness.attack_steps.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-robustness.attack_steps">
+<span id="robustness-attack-steps-module"></span><h1>robustness.attack_steps module<a class="headerlink" href="#module-robustness.attack_steps" title="Permalink to this headline">¶</a></h1>
+<p><strong>For most use cases, this can just be considered an internal class and
+ignored.</strong></p>
+<p>This module contains the abstract class AttackerStep as well as a few subclasses.</p>
+<p>AttackerStep is a generic way to implement optimizers specifically for use with
+<code class="xref py py-class docutils literal notranslate"><span class="pre">robustness.attacker.AttackerModel</span></code>. In general, except for when you want
+to <a class="reference internal" href="../example_usage/input_space_manipulation.html#adding-custom-steps"><span class="std std-ref">create a custom optimization method</span></a>, you probably do not need to
+import or edit this module and can just think of it as internal.</p>
+<dl class="py class">
+<dt id="robustness.attack_steps.AttackerStep">
+<em class="property">class </em><code class="sig-prename descclassname">robustness.attack_steps.</code><code class="sig-name descname">AttackerStep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">orig_input</span></em>, <em class="sig-param"><span class="n">eps</span></em>, <em class="sig-param"><span class="n">step_size</span></em>, <em class="sig-param"><span class="n">use_grad</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.AttackerStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Generic class for attacker steps, under perturbation constraints
+specified by an “origin input” and a perturbation magnitude.
+Must implement project, step, and random_perturb</p>
+<p>Initialize the attacker step with a given perturbation magnitude.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eps</strong> (<em>float</em>) – the perturbation magnitude</p></li>
+<li><p><strong>orig_input</strong> (<em>ch.tensor</em>) – the original input</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="robustness.attack_steps.AttackerStep.project">
+<code class="sig-name descname">project</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.AttackerStep.project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an input x, project it back into the feasible set</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>ch.tensor</em>) – the input to project back into the feasible set.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <cite>ch.tensor</cite> that is the input projected back into
+the feasible set, that is,</p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[\min_{x' \in S} \|x' - x\|_2\]</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="robustness.attack_steps.AttackerStep.step">
+<code class="sig-name descname">step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.AttackerStep.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a gradient, make the appropriate step according to the
+perturbation constraint (e.g. dual norm maximization for <span class="math notranslate nohighlight">\(\ell_p\)</span>
+norms).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>g</strong> (<em>ch.tensor</em>) – the raw gradient</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The new input, a ch.tensor for the next step.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="robustness.attack_steps.AttackerStep.random_perturb">
+<code class="sig-name descname">random_perturb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.AttackerStep.random_perturb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a starting input, take a random step within the feasible set</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="robustness.attack_steps.AttackerStep.to_image">
+<code class="sig-name descname">to_image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.AttackerStep.to_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an input (which may be in an alternative parameterization),
+convert it to a valid image (this is implemented as the identity
+function by default as most of the time we use the pixel
+parameterization, but for alternative parameterizations this functino
+must be overriden).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="robustness.attack_steps.LinfStep">
+<em class="property">class </em><code class="sig-prename descclassname">robustness.attack_steps.</code><code class="sig-name descname">LinfStep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">orig_input</span></em>, <em class="sig-param"><span class="n">eps</span></em>, <em class="sig-param"><span class="n">step_size</span></em>, <em class="sig-param"><span class="n">use_grad</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.LinfStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#robustness.attack_steps.AttackerStep" title="robustness.attack_steps.AttackerStep"><code class="xref py py-class docutils literal notranslate"><span class="pre">robustness.attack_steps.AttackerStep</span></code></a></p>
+<p>Attack step for <span class="math notranslate nohighlight">\(\ell_\infty\)</span> threat model. Given <span class="math notranslate nohighlight">\(x_0\)</span>
+and <span class="math notranslate nohighlight">\(\epsilon\)</span>, the constraint set is given by:</p>
+<div class="math notranslate nohighlight">
+\[S = \{x | \|x - x_0\|_\infty \leq \epsilon\}\]</div>
+<p>Initialize the attacker step with a given perturbation magnitude.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eps</strong> (<em>float</em>) – the perturbation magnitude</p></li>
+<li><p><strong>orig_input</strong> (<em>ch.tensor</em>) – the original input</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="robustness.attack_steps.LinfStep.project">
+<code class="sig-name descname">project</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.LinfStep.project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="robustness.attack_steps.LinfStep.step">
+<code class="sig-name descname">step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.LinfStep.step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="robustness.attack_steps.LinfStep.random_perturb">
+<code class="sig-name descname">random_perturb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.LinfStep.random_perturb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="robustness.attack_steps.L2Step">
+<em class="property">class </em><code class="sig-prename descclassname">robustness.attack_steps.</code><code class="sig-name descname">L2Step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">orig_input</span></em>, <em class="sig-param"><span class="n">eps</span></em>, <em class="sig-param"><span class="n">step_size</span></em>, <em class="sig-param"><span class="n">use_grad</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.L2Step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#robustness.attack_steps.AttackerStep" title="robustness.attack_steps.AttackerStep"><code class="xref py py-class docutils literal notranslate"><span class="pre">robustness.attack_steps.AttackerStep</span></code></a></p>
+<p>Attack step for <span class="math notranslate nohighlight">\(\ell_\infty\)</span> threat model. Given <span class="math notranslate nohighlight">\(x_0\)</span>
+and <span class="math notranslate nohighlight">\(\epsilon\)</span>, the constraint set is given by:</p>
+<div class="math notranslate nohighlight">
+\[S = \{x | \|x - x_0\|_2 \leq \epsilon\}\]</div>
+<p>Initialize the attacker step with a given perturbation magnitude.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eps</strong> (<em>float</em>) – the perturbation magnitude</p></li>
+<li><p><strong>orig_input</strong> (<em>ch.tensor</em>) – the original input</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="robustness.attack_steps.L2Step.project">
+<code class="sig-name descname">project</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.L2Step.project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="robustness.attack_steps.L2Step.step">
+<code class="sig-name descname">step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.L2Step.step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="robustness.attack_steps.L2Step.random_perturb">
+<code class="sig-name descname">random_perturb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.L2Step.random_perturb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="robustness.attack_steps.UnconstrainedStep">
+<em class="property">class </em><code class="sig-prename descclassname">robustness.attack_steps.</code><code class="sig-name descname">UnconstrainedStep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">orig_input</span></em>, <em class="sig-param"><span class="n">eps</span></em>, <em class="sig-param"><span class="n">step_size</span></em>, <em class="sig-param"><span class="n">use_grad</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.UnconstrainedStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#robustness.attack_steps.AttackerStep" title="robustness.attack_steps.AttackerStep"><code class="xref py py-class docutils literal notranslate"><span class="pre">robustness.attack_steps.AttackerStep</span></code></a></p>
+<p>Unconstrained threat model, <span class="math notranslate nohighlight">\(S = [0, 1]^n\)</span>.</p>
+<p>Initialize the attacker step with a given perturbation magnitude.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eps</strong> (<em>float</em>) – the perturbation magnitude</p></li>
+<li><p><strong>orig_input</strong> (<em>ch.tensor</em>) – the original input</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="robustness.attack_steps.UnconstrainedStep.project">
+<code class="sig-name descname">project</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.UnconstrainedStep.project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="robustness.attack_steps.UnconstrainedStep.step">
+<code class="sig-name descname">step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.UnconstrainedStep.step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="robustness.attack_steps.UnconstrainedStep.random_perturb">
+<code class="sig-name descname">random_perturb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.UnconstrainedStep.random_perturb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="robustness.attack_steps.FourierStep">
+<em class="property">class </em><code class="sig-prename descclassname">robustness.attack_steps.</code><code class="sig-name descname">FourierStep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">orig_input</span></em>, <em class="sig-param"><span class="n">eps</span></em>, <em class="sig-param"><span class="n">step_size</span></em>, <em class="sig-param"><span class="n">use_grad</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.FourierStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#robustness.attack_steps.AttackerStep" title="robustness.attack_steps.AttackerStep"><code class="xref py py-class docutils literal notranslate"><span class="pre">robustness.attack_steps.AttackerStep</span></code></a></p>
+<p>Step under the Fourier (decorrelated) parameterization of an image.</p>
+<p>See <a class="reference external" href="https://distill.pub/2017/feature-visualization/#preconditioning">https://distill.pub/2017/feature-visualization/#preconditioning</a> for more information.</p>
+<p>Initialize the attacker step with a given perturbation magnitude.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eps</strong> (<em>float</em>) – the perturbation magnitude</p></li>
+<li><p><strong>orig_input</strong> (<em>ch.tensor</em>) – the original input</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="robustness.attack_steps.FourierStep.project">
+<code class="sig-name descname">project</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.FourierStep.project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="robustness.attack_steps.FourierStep.step">
+<code class="sig-name descname">step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.FourierStep.step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="robustness.attack_steps.FourierStep.random_perturb">
+<code class="sig-name descname">random_perturb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.FourierStep.random_perturb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="robustness.attack_steps.FourierStep.to_image">
+<code class="sig-name descname">to_image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.FourierStep.to_image" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="robustness.attack_steps.RandomStep">
+<em class="property">class </em><code class="sig-prename descclassname">robustness.attack_steps.</code><code class="sig-name descname">RandomStep</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.RandomStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#robustness.attack_steps.AttackerStep" title="robustness.attack_steps.AttackerStep"><code class="xref py py-class docutils literal notranslate"><span class="pre">robustness.attack_steps.AttackerStep</span></code></a></p>
+<p>Step for Randomized Smoothing.</p>
+<p>Initialize the attacker step with a given perturbation magnitude.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eps</strong> (<em>float</em>) – the perturbation magnitude</p></li>
+<li><p><strong>orig_input</strong> (<em>ch.tensor</em>) – the original input</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="robustness.attack_steps.RandomStep.project">
+<code class="sig-name descname">project</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.RandomStep.project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="robustness.attack_steps.RandomStep.step">
+<code class="sig-name descname">step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">g</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.RandomStep.step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="robustness.attack_steps.RandomStep.random_perturb">
+<code class="sig-name descname">random_perturb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#robustness.attack_steps.RandomStep.random_perturb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="robustness.attacker.html" class="btn btn-neutral float-right" title="robustness.attacker module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../api.html" class="btn btn-neutral float-left" title="API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, MetaDataset Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
