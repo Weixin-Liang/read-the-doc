@@ -22,6 +22,13 @@ Abstract
 *Understanding the performance of machine learning model across diverse data distributions is critically important for reliable applications. Motivated by this, there is a growing focus on curating benchmark datasets that capture distribution shifts. While valuable, the existing benchmarks are limited in that many of them only contain a small number of shifts and they lack systematic annotation about what is different across different shifts. We present MetaDataset---a collection of 12,868 sets of natural images across 410 classes---to address this challenge. We leverage the natural heterogeneity of Visual Genome and its annotations to construct MetaDataset. The key construction idea is to cluster images using its metadata, which provides context for each image (e.g. cats with cars or cats in bathroom) that represent distinct data distributions. MetaDataset has two important benefits: first it contains orders of magnitude more natural data shifts than previously available. Second, it provides explicit explanations of what is unique about each of its data sets and a distance score that measures the amount of distribution shift between any two of its data sets. We demonstrate the utility of MetaDataset in benchmarking several recent proposals for training models to be robust to data shifts. We find that the simple empirical risk minimization performs the best when shifts are moderate and no method had a systematic advantage for large shifts. We also show how MetaDataset can help to visualize conflicts between data subsets during model training.*
 
 
+
+
+What is :samp:`MetaDataset`?
+--------------------------------
+The :samp:`MetaDataset` is a collection of subsets of data together with an annotation graph that explains the similarity/distance between two subsets (edge weight) as well as what is unique about each subset (node metadata). For each class, say “cat”, we have many subsets of cats, and we can think of each subset as a node in the graph. Each subset corresponds to “cat” in a different context: e.g. “cat with sink” or “cat with fence”. The context of each subset is the node metadata. The “cat with sink” subset is more similar to “cat with faucet” subset because there are many images that contain both sink and faucet. This similarity is the weight of the node; higher weight means the contexts of the two nodes tend to co-occur in the same data. 
+
+
 .. figure:: ./figures/MetaDataset-InfoGraphic.jpg
    :width: 100 %
    :align: center
@@ -31,12 +38,6 @@ Abstract
    Each class also has is also associated with a meta-graph. 
    The subsets are characterized by a diverse collection of 1,853 distinct contexts. 
 
-
-
-
-What is :samp:`MetaDataset`?
---------------------------------
-The :samp:`MetaDataset` is a collection of subsets of data together with an annotation graph that explains the similarity/distance between two subsets (edge weight) as well as what is unique about each subset (node metadata). For each class, say “cat”, we have many subsets of cats, and we can think of each subset as a node in the graph. Each subset corresponds to “cat” in a different context: e.g. “cat with sink” or “cat with fence”. The context of each subset is the node metadata. The “cat with sink” subset is more similar to “cat with faucet” subset because there are many images that contain both sink and faucet. This similarity is the weight of the node; higher weight means the contexts of the two nodes tend to co-occur in the same data. 
 
 
 How can we use :samp:`MetaDataset`?
@@ -170,30 +171,13 @@ Walkthroughs
 ------------
 
 .. toctree::
+   example_usage/custom_imagenet
+   example_usage/breeds_datasets
    example_usage/cli_usage
    example_usage/input_space_manipulation
    example_usage/training_lib_part_1
    example_usage/training_lib_part_2
-   example_usage/custom_imagenet
-   example_usage/breeds_datasets
-   example_usage/changelog
 
-API Reference
--------------
-
-We provide an API reference where we discuss the role of each module and
-provide extensive documentation.
-
-.. toctree::
-   api
-
-
-Contributors
--------------
-- `Andrew Ilyas <https://twitter.com/andrew_ilyas>`_
-- `Logan Engstrom <https://twitter.com/logan_engstrom>`_
-- `Shibani Santurkar <https://twitter.com/ShibaniSan>`_
-- `Dimitris Tsipras <https://twitter.com/tsiprasd>`_
 
 .. [EIS+19] Engstrom L., Ilyas A., Santurkar S., Tsipras D., Tran B., Madry A. (2019). Learning Perceptually-Aligned Representations via Adversarial Robustness. arXiv, arXiv:1906.00945 
 
