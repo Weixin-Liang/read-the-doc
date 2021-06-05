@@ -1,4 +1,4 @@
-MetaDataset
+MetaDataset: A Dataset of Datasets for Evaluating Distribution Shifts and Training Conflicts
 ==================
 
 .. raw:: html
