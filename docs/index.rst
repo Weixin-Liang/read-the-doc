@@ -1,14 +1,16 @@
 MetaDataset: A Dataset of Datasets for Evaluating Distribution Shifts and Training Conflicts
-==================
+====================================================================================================
 
 .. raw:: html
    
-   <i class="fa fa-github"></i> View on <a
-   href="https://github.com/MadryLab/robustness">GitHub</a> <br /> <br />
+   <i class="fa fa-github"></i> View on and Install via <a
+   href="https://anonymous.4open.science/r/MetaDataset-Distribution-Shift-E613/">anonymous GitHub.</a> 
+   A public Github repo will be created after the peer review. 
+   <br /> <br />
 
-Install via ``pip``: ``pip install robustness``
 
-:samp:`robustness` is a package we (students in the `MadryLab <http://madry-lab.ml>`_) created
+
+:samp:`MetaDataset` is a package we (students in the `MadryLab <http://madry-lab.ml>`_) created
 to make training, evaluating, and exploring neural networks flexible and easy.
 We use it in almost all of our projects (whether they involve
 adversarial training or not!) and it will be a dependency in many of our
