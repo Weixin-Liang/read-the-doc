@@ -31,10 +31,11 @@ release = '1.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.napoleon',
-    'sphinx.ext.mathjax'
+    # 'sphinx.ext.autodoc',
+    # 'sphinx.ext.autosummary',
+    # 'sphinx.ext.napoleon',
+    # 'sphinx.ext.mathjax',
+    # 'sphinxcontrib.fulltoc',
 ]
 
 napoleon_google_docstring = True
