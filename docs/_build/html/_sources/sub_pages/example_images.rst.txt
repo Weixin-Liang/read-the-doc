@@ -1,6 +1,6 @@
 Preview: Example Images in MetaDataset
 ============================================
-For each image class (e.g. *Dogs*), the MetaDataset contains different sets of dogs under different contexts to represent diverse data distributions. The contexts include presence/absence of other objects (e.g. *dog with frisbee*). Contexts can also reflect attributes (e.g. *black dogs*) and general settings (e.g. *dogs in sunny weather*). These concepts thus captures diverse and real-world distribution shifts. We list the attribute and general location contexts below.  
+For each image class (e.g. *Dogs*), the MetaDataset contains different sets of dogs under different contexts to represent diverse data distributions. The contexts include presence/absence of other objects (e.g. *dog with frisbee*). Contexts can also reflect attributes (e.g. *black dogs*) and general settings (e.g. *dogs in sunny weather*). These concepts thus captures diverse and real-world distribution shifts. We list the object presense, attribute and general location contexts below.  
 
 
 .. figure:: ../figures/MetaDataset-InfoGraphic.jpg
@@ -12,6 +12,7 @@ For each image class (e.g. *Dogs*), the MetaDataset contains different sets of d
 
 Presence/Absence of Other Objects
 ----------------------------------------
+MetaDataset considers the presence/absence of 1,702 distinct object classes.  We use the pre-processed and cleaned version of Visual Genome by Hudson and Manning which contains 113,018 distinct images across 1,702 object classes. MetaDataset is a collection of 12,868 sets of natural images from 410 classes. Each class has 31.4 subsets, and each subset has 200.4 images on average. 
 
 .. figure:: ../figures/MetaDataset-Examples.jpg
    :width: 100 %
@@ -19,6 +20,9 @@ Presence/Absence of Other Objects
    :alt: 
 
    **Figure: Example Cat vs. Dog Images from MetaDataset.** For each class, MetaDataset provides many subsets of data, each of which corresponds different contexts (the context is stated in parenthesis). 
+
+Different subsets may share common images---e.g. a dog image can have both grass and frisbee would occur in both \emph{dog with grass} and \emph{dog with frisbee}. 
+Therefore, the total number of subsets times the average number of images in each subset is much larger than the original dataset. The distance between subsets capture this overlap, but also broader similarities. 
 
 
 General Contexts (Locations and Weather)

@@ -173,16 +173,19 @@
             
   <div class="section" id="preview-example-images-in-metadataset">
 <h1>Preview: Example Images in MetaDataset<a class="headerlink" href="#preview-example-images-in-metadataset" title="Permalink to this headline">¶</a></h1>
-<p>For each image class (e.g. <em>Dogs</em>), the MetaDataset contains different sets of dogs under different contexts to represent diverse data distributions. The contexts include presence/absence of other objects (e.g. <em>dog with frisbee</em>). Contexts can also reflect attributes (e.g. <em>black dogs</em>) and general settings (e.g. <em>dogs in sunny weather</em>). These concepts thus captures diverse and real-world distribution shifts. We list the attribute and general location contexts below.</p>
+<p>For each image class (e.g. <em>Dogs</em>), the MetaDataset contains different sets of dogs under different contexts to represent diverse data distributions. The contexts include presence/absence of other objects (e.g. <em>dog with frisbee</em>). Contexts can also reflect attributes (e.g. <em>black dogs</em>) and general settings (e.g. <em>dogs in sunny weather</em>). These concepts thus captures diverse and real-world distribution shifts. We list the object presense, attribute and general location contexts below.</p>
 <div class="figure align-center">
 <a class="reference internal image-reference" href="../_images/MetaDataset-InfoGraphic1.jpg"><img alt="" src="../_images/MetaDataset-InfoGraphic1.jpg" style="width: 100%;" /></a>
 </div>
 <div class="section" id="presence-absence-of-other-objects">
 <h2>Presence/Absence of Other Objects<a class="headerlink" href="#presence-absence-of-other-objects" title="Permalink to this headline">¶</a></h2>
+<p>MetaDataset considers the presence/absence of 1,702 distinct object classes.  We use the pre-processed and cleaned version of Visual Genome by Hudson and Manning which contains 113,018 distinct images across 1,702 object classes. MetaDataset is a collection of 12,868 sets of natural images from 410 classes. Each class has 31.4 subsets, and each subset has 200.4 images on average.</p>
 <div class="figure align-center" id="id1">
 <a class="reference internal image-reference" href="../_images/MetaDataset-Examples1.jpg"><img alt="" src="../_images/MetaDataset-Examples1.jpg" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text"><strong>Figure: Example Cat vs. Dog Images from MetaDataset.</strong> For each class, MetaDataset provides many subsets of data, each of which corresponds different contexts (the context is stated in parenthesis).</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
+<p>Different subsets may share common images—e.g. a dog image can have both grass and frisbee would occur in both emph{dog with grass} and emph{dog with frisbee}.
+Therefore, the total number of subsets times the average number of images in each subset is much larger than the original dataset. The distance between subsets capture this overlap, but also broader similarities.</p>
 </div>
 <div class="section" id="general-contexts-locations-and-weather">
 <h2>General Contexts (Locations and Weather)<a class="headerlink" href="#general-contexts-locations-and-weather" title="Permalink to this headline">¶</a></h2>
