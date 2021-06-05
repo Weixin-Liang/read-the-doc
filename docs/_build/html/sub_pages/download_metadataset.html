@@ -236,7 +236,7 @@ A public Github repo will be created after the peer review.
 <br /> <br /></div>
 <div class="section" id="downlaod-base-dataset-visual-genome">
 <h2>Downlaod Base Dataset: Visual Genome<a class="headerlink" href="#downlaod-base-dataset-visual-genome" title="Permalink to this headline">¶</a></h2>
-<p>We leverage the natural heterogeneity of Visual Genome and its annotations to construct MetaDataset. We use the pre-processed and cleaned version of Visual Genome by <a class="reference external" href="https://arxiv.org/pdf/1902.09506.pdfL">Hudson and Manning</a>. We can download the base dataset as follows:</p>
+<p>We leverage the natural heterogeneity of Visual Genome and its annotations to construct MetaDataset. We use the pre-processed and cleaned version of Visual Genome by <a class="reference external" href="https://arxiv.org/pdf/1902.09506.pdfL">Hudson and Manning</a>. Download the base dataset as follows:</p>
 <ul class="simple">
 <li><p>Download image files (~20GB) from: <a class="reference external" href="https://nlp.stanford.edu/data/gqa/images.zip">https://nlp.stanford.edu/data/gqa/images.zip</a></p></li>
 </ul>
@@ -254,6 +254,7 @@ A public Github repo will be created after the peer review.
     <span class="n">allImages</span><span class="o">/</span>
         <span class="n">images</span><span class="o">/</span>
             <span class="o">&lt;</span><span class="n">ID</span><span class="o">&gt;.</span><span class="n">jpg</span>
+            <span class="o">...</span>
     <span class="n">sceneGraphs</span><span class="o">/</span>
         <span class="n">train_sceneGraphs</span><span class="o">.</span><span class="n">json</span>
         <span class="n">val_sceneGraphs</span><span class="o">.</span><span class="n">json</span>
@@ -288,6 +289,27 @@ A public Github repo will be created after the peer review.
 <li><p>Run the scpript to generate MetaDataset including the meta-graph for each class.</p></li>
 </ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python create_metadataset.py
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">meta-graphs</span></code> folder contains the generated meta-graph for each class.
+The <code class="docutils literal notranslate"><span class="pre">subsets</span></code> folder contains the image subsets, organized by the subject class. The file structure should look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">generate_dataset</span><span class="o">/</span>
+    <span class="n">meta</span><span class="o">-</span><span class="n">graphs</span><span class="o">/</span>
+        <span class="n">cat_graph</span><span class="o">.</span><span class="n">jpg</span>
+        <span class="n">dog_graph</span><span class="o">.</span><span class="n">jpg</span>
+        <span class="o">...</span>
+    <span class="n">subsets</span><span class="o">/</span>
+        <span class="n">cat</span><span class="o">/</span>
+            <span class="n">cat</span><span class="p">(</span><span class="n">sink</span><span class="p">)</span><span class="o">/</span>
+                <span class="o">&lt;</span><span class="n">ID</span><span class="o">&gt;.</span><span class="n">jpg</span>
+                <span class="o">...</span>
+            <span class="n">cat</span><span class="p">(</span><span class="n">faucet</span><span class="p">)</span><span class="o">/</span>
+                <span class="o">&lt;</span><span class="n">ID</span><span class="o">&gt;.</span><span class="n">jpg</span>
+                <span class="o">...</span>
+        <span class="n">truck</span><span class="o">/</span>
+            <span class="n">truck</span><span class="p">(</span><span class="n">airplane</span><span class="p">)</span><span class="o">/</span>
+                <span class="o">&lt;</span><span class="n">ID</span><span class="o">&gt;.</span><span class="n">jpg</span>
+                <span class="o">...</span>
 </pre></div>
 </div>
 </div>

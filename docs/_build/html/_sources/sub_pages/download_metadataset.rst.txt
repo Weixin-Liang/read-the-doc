@@ -12,10 +12,9 @@ Download MetaDataset Github Repo
    <br /> <br />
 
 
-
 Downlaod Base Dataset: Visual Genome
 ------------------------------------
-We leverage the natural heterogeneity of Visual Genome and its annotations to construct MetaDataset. We use the pre-processed and cleaned version of Visual Genome by `Hudson and Manning <https://arxiv.org/pdf/1902.09506.pdfL>`_. We can download the base dataset as follows: 
+We leverage the natural heterogeneity of Visual Genome and its annotations to construct MetaDataset. We use the pre-processed and cleaned version of Visual Genome by `Hudson and Manning <https://arxiv.org/pdf/1902.09506.pdfL>`_. Download the base dataset as follows: 
 
 
 - Download image files (~20GB) from: https://nlp.stanford.edu/data/gqa/images.zip
@@ -40,6 +39,7 @@ Extract the files. After this step, the base dataset file structure should look 
         allImages/
             images/
                 <ID>.jpg
+                ...
         sceneGraphs/
             train_sceneGraphs.json
             val_sceneGraphs.json
@@ -76,4 +76,27 @@ The image IDs for each subset are provided as a Python Dictionary in ``generate_
 
    python create_metadataset.py
 
+
+The ``meta-graphs`` folder contains the generated meta-graph for each class. 
+The ``subsets`` folder contains the image subsets, organized by the subject class. The file structure should look like this:
+
+.. code-block:: 
+
+    generate_dataset/
+        meta-graphs/
+            cat_graph.jpg
+            dog_graph.jpg
+            ...
+        subsets/
+            cat/
+                cat(sink)/
+                    <ID>.jpg
+                    ...
+                cat(faucet)/
+                    <ID>.jpg
+                    ...
+            truck/
+                truck(airplane)/
+                    <ID>.jpg
+                    ...
 
