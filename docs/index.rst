@@ -9,6 +9,16 @@ MetaDataset: A Dataset of Datasets for Evaluating Distribution Shifts and Traini
    <br /> <br />
 
 
+
+Walkthroughs
+------------
+
+.. toctree::
+   sub_pages/download_metadataset
+   sub_pages/example_images
+   sub_pages/applications
+
+
 .. figure:: ./figures/MetaDataset-Examples.jpg
    :width: 100 %
    :align: center
@@ -73,14 +83,4 @@ follows *(Under Submission)*. :
       booktitle   = {(Under Submission)}
       year      = {2021}
    }
-
-
-
-Walkthroughs
-------------
-
-.. toctree::
-   sub_pages/download_metadataset
-   sub_pages/example_images
-   sub_pages/applications
 
