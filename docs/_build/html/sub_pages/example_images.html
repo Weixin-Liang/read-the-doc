@@ -97,6 +97,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#presence-absence-of-other-objects">Presence/Absence of Other Objects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#general-contexts-locations-and-weather">General Contexts (Locations and Weather)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#object-attributes">Object Attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#more-examples-of-meta-graphs">More Examples of Meta-graphs</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="applications.html">Applications of MetaDataset</a><ul>
@@ -240,6 +241,22 @@ Therefore, the total number of subsets times the average number of images in eac
             <span class="s1">&#39;brunette&#39;</span><span class="p">,</span> <span class="s1">&#39;maroon&#39;</span><span class="p">,</span> <span class="s1">&#39;light blue&#39;</span><span class="p">,</span> <span class="s1">&#39;light brown&#39;</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="more-examples-of-meta-graphs">
+<h2>More Examples of Meta-graphs<a class="headerlink" href="#more-examples-of-meta-graphs" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center" id="id4">
+<a class="reference internal image-reference" href="../_images/Cat-MetaGraph1.jpg"><img alt="" src="../_images/Cat-MetaGraph1.jpg" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-text"><strong>Figure: Meta-graph for the “Cat” class, which captures meaningful semantics of the multi-modal data distribution of “Cat”.</strong> MetaDataset splits the data points of each class (e.g., Cat) into many subsets based on visual contexts.
+Each node in the meta-graph represents one subset. The weight of each edge is the overlap coefficient between the corresponding two subsets. Node colors indicate the graph-based community detection results. Inter-community edges are colored. Intra-community edges are grayed out for better visualization. The border color of each example image indicates its community in the meta-graph. We have one such meta-graph for each of the 410 classes in the MetaDataset.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-center" id="id5">
+<a class="reference internal image-reference" href="../_images/Dog-MetaGraph.jpg"><img alt="" src="../_images/Dog-MetaGraph.jpg" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-text"><strong>Figure: Meta-graph for the “Dog” class</strong></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-center" id="id6">
+<a class="reference internal image-reference" href="../_images/Cup-MetaGraph.jpg"><img alt="" src="../_images/Cup-MetaGraph.jpg" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-text"><strong>Figure: Meta-graph for the “Cup” class</strong></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 </div>

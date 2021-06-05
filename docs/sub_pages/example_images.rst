@@ -93,3 +93,31 @@ The general contexts and their ontology in MetaDataset are as follows:
                 'blue', 'yellow', 'tan', 'brown', 'orange', 'purple', 'beige', 'blond', 
                 'brunette', 'maroon', 'light blue', 'light brown']
     }
+
+
+More Examples of Meta-graphs
+---------------------------------------------
+.. figure:: ../figures/Cat-MetaGraph.jpg
+   :width: 100 %
+   :align: center
+   :alt: 
+
+   **Figure: Meta-graph for the “Cat” class, which captures meaningful semantics of the multi-modal data distribution of “Cat”.** MetaDataset splits the data points of each class (e.g., Cat) into many subsets based on visual contexts. 
+   Each node in the meta-graph represents one subset. The weight of each edge is the overlap coefficient between the corresponding two subsets. Node colors indicate the graph-based community detection results. Inter-community edges are colored. Intra-community edges are grayed out for better visualization. The border color of each example image indicates its community in the meta-graph. We have one such meta-graph for each of the 410 classes in the MetaDataset.
+
+
+.. figure:: ../figures/Dog-MetaGraph.jpg
+   :width: 100 %
+   :align: center
+   :alt: 
+
+   **Figure: Meta-graph for the “Dog” class**
+
+
+
+.. figure:: ../figures/Cup-MetaGraph.jpg
+   :width: 100 %
+   :align: center
+   :alt: 
+
+   **Figure: Meta-graph for the “Cup” class**
