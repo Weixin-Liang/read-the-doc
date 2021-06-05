@@ -40,6 +40,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Applications of MetaDataset" href="applications.html" />
     <link rel="prev" title="Getting Started: Download MetaDataset" href="download_metadataset.html" /> 
 </head>
 
@@ -94,6 +95,13 @@
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Preview: Example Images in MetaDataset</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#presence-absence-of-other-objects">Presence/Absence of Other Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#general-contexts-locations-and-weather">General Contexts (Locations and Weather)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#object-attributes">Object Attributes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="applications.html">Applications of MetaDataset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="applications.html#application-evaluating-distribution-shifts">Application: Evaluating Distribution Shifts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="applications.html#application-accessing-training-conflicts">Application: Accessing Training Conflicts</a></li>
 </ul>
 </li>
 </ul>
@@ -166,17 +174,69 @@
   <div class="section" id="preview-example-images-in-metadataset">
 <h1>Preview: Example Images in MetaDataset<a class="headerlink" href="#preview-example-images-in-metadataset" title="Permalink to this headline">¶</a></h1>
 <p>For each image class (e.g. <em>Dogs</em>), the MetaDataset contains different sets of dogs under different contexts to represent diverse data distributions. The contexts include presence/absence of other objects (e.g. <em>dog with frisbee</em>). Contexts can also reflect attributes (e.g. <em>black dogs</em>) and general settings (e.g. <em>dogs in sunny weather</em>). These concepts thus captures diverse and real-world distribution shifts. We list the attribute and general location contexts below.</p>
-<div class="figure align-center" id="id1">
+<div class="figure align-center">
 <a class="reference internal image-reference" href="../_images/MetaDataset-InfoGraphic1.jpg"><img alt="" src="../_images/MetaDataset-InfoGraphic1.jpg" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text"><strong>Figure: Infographics of MetaDataset.</strong> We leverage the natural heterogeneity of Visual Genome and its annotations to construct MetaDataset. MetaDataset is a collection of 12,868 sets of natural images from 410 classes. Each class has 31.4 subsets, and each subset has 200.4 images on average.
-Each class also has is also associated with a meta-graph.
-The subsets are characterized by a diverse collection of 1,853 distinct contexts.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 <div class="section" id="presence-absence-of-other-objects">
 <h2>Presence/Absence of Other Objects<a class="headerlink" href="#presence-absence-of-other-objects" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/MetaDataset-Examples1.jpg"><img alt="" src="../_images/MetaDataset-Examples1.jpg" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-text"><strong>Figure: Example Cat vs. Dog Images from MetaDataset.</strong> For each class, MetaDataset provides many subsets of data, each of which corresponds different contexts (the context is stated in parenthesis).</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="general-contexts-locations-and-weather">
+<h2>General Contexts (Locations and Weather)<a class="headerlink" href="#general-contexts-locations-and-weather" title="Permalink to this headline">¶</a></h2>
+<p>MetaDataset covers 37 general contexts including location (e.g., indoor, outdoor, ocean, snow) and weather (e.g., couldy, sunny, rainy).</p>
 <div class="figure align-center" id="id2">
-<a class="reference internal image-reference" href="sub_pages/./figures/MetaDataset-Examples.jpg"><img alt="" src="sub_pages/./figures/MetaDataset-Examples.jpg" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text"><strong>Figure: Example Cat vs. Dog Images from MetaDataset.</strong> For each class, MetaDataset provides many subsets of data, each of which corresponds different contexts (the context is stated in parenthesis).</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<a class="reference internal image-reference" href="../_images/MetaDataset-Global-Examples.jpg"><img alt="" src="../_images/MetaDataset-Global-Examples.jpg" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-text"><strong>Figure: Example subsets based on general contexts.</strong></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<p>The attributes and their ontology in MetaDataset are as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">GENERAL_CONTEXT_ONTOLOGY</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;indoor/outdoor&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;indoors&#39;</span><span class="p">,</span> <span class="s1">&#39;outdoors&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;clear&#39;</span><span class="p">,</span> <span class="s1">&#39;overcast&#39;</span><span class="p">,</span> <span class="s1">&#39;cloudless&#39;</span><span class="p">,</span> <span class="s1">&#39;cloudy&#39;</span><span class="p">,</span> <span class="s1">&#39;sunny&#39;</span><span class="p">,</span> <span class="s1">&#39;foggy&#39;</span><span class="p">,</span> <span class="s1">&#39;rainy&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;room&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;bedroom&#39;</span><span class="p">,</span> <span class="s1">&#39;kitchen&#39;</span><span class="p">,</span> <span class="s1">&#39;bathroom&#39;</span><span class="p">,</span> <span class="s1">&#39;living room&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;place&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;road&#39;</span><span class="p">,</span> <span class="s1">&#39;sidewalk&#39;</span><span class="p">,</span> <span class="s1">&#39;field&#39;</span><span class="p">,</span> <span class="s1">&#39;beach&#39;</span><span class="p">,</span> <span class="s1">&#39;park&#39;</span><span class="p">,</span> <span class="s1">&#39;grass&#39;</span><span class="p">,</span> <span class="s1">&#39;farm&#39;</span><span class="p">,</span> <span class="s1">&#39;ocean&#39;</span><span class="p">,</span> <span class="s1">&#39;pavement&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;lake&#39;</span><span class="p">,</span> <span class="s1">&#39;street&#39;</span><span class="p">,</span> <span class="s1">&#39;train station&#39;</span><span class="p">,</span> <span class="s1">&#39;hotel room&#39;</span><span class="p">,</span> <span class="s1">&#39;church&#39;</span><span class="p">,</span> <span class="s1">&#39;restaurant&#39;</span><span class="p">,</span> <span class="s1">&#39;forest&#39;</span><span class="p">,</span> <span class="s1">&#39;path&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="s1">&#39;store&#39;</span><span class="p">,</span> <span class="s1">&#39;river&#39;</span><span class="p">,</span> <span class="s1">&#39;yard&#39;</span><span class="p">,</span> <span class="s1">&#39;snow&#39;</span><span class="p">,</span> <span class="s1">&#39;airport&#39;</span><span class="p">,</span> <span class="s1">&#39;parking lot&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="object-attributes">
+<h2>Object Attributes<a class="headerlink" href="#object-attributes" title="Permalink to this headline">¶</a></h2>
+<p>MetaDataset covers attributes including activity (e.g., sitting, jumping), color (e.g., orange, white), material (e.g., wooden, metallic), shape (e.g., round, square) and so on.</p>
+<div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/MetaDataset-Attributes-Examples.jpg"><img alt="" src="../_images/MetaDataset-Attributes-Examples.jpg" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-text"><strong>Figure: Example subsets based on general contexts.</strong></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+<p>The general contexts and their ontology in MetaDataset are as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ATTRIBUTE_CONTEXT_ONTOLOGY</span> <span class="o">=</span> <span class="p">{</span>
+<span class="s1">&#39;darkness&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;dark&#39;</span><span class="p">,</span> <span class="s1">&#39;bright&#39;</span><span class="p">],</span> <span class="s1">&#39;dryness&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;wet&#39;</span><span class="p">,</span> <span class="s1">&#39;dry&#39;</span><span class="p">],</span>
+<span class="s1">&#39;colorful&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;colorful&#39;</span><span class="p">,</span> <span class="s1">&#39;shiny&#39;</span><span class="p">],</span> <span class="s1">&#39;leaf&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;leafy&#39;</span><span class="p">,</span> <span class="s1">&#39;bare&#39;</span><span class="p">],</span>
+<span class="s1">&#39;emotion&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;happy&#39;</span><span class="p">,</span> <span class="s1">&#39;calm&#39;</span><span class="p">],</span> <span class="s1">&#39;sports&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;baseball&#39;</span><span class="p">,</span> <span class="s1">&#39;tennis&#39;</span><span class="p">],</span>
+<span class="s1">&#39;flatness&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;flat&#39;</span><span class="p">,</span> <span class="s1">&#39;curved&#39;</span><span class="p">],</span> <span class="s1">&#39;lightness&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;light&#39;</span><span class="p">,</span> <span class="s1">&#39;heavy&#39;</span><span class="p">],</span>
+<span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;female&#39;</span><span class="p">],</span> <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;wide&#39;</span><span class="p">,</span> <span class="s1">&#39;narrow&#39;</span><span class="p">],</span>
+<span class="s1">&#39;depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;deep&#39;</span><span class="p">,</span> <span class="s1">&#39;shallow&#39;</span><span class="p">],</span> <span class="s1">&#39;hardness&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;hard&#39;</span><span class="p">,</span> <span class="s1">&#39;soft&#39;</span><span class="p">],</span>
+<span class="s1">&#39;cleanliness&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;clean&#39;</span><span class="p">,</span> <span class="s1">&#39;dirty&#39;</span><span class="p">],</span> <span class="s1">&#39;switch&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;on&#39;</span><span class="p">,</span> <span class="s1">&#39;off&#39;</span><span class="p">],</span>
+<span class="s1">&#39;thickness&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;thin&#39;</span><span class="p">,</span> <span class="s1">&#39;thick&#39;</span><span class="p">],</span> <span class="s1">&#39;openness&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;open&#39;</span><span class="p">,</span> <span class="s1">&#39;closed&#39;</span><span class="p">],</span>
+<span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;tall&#39;</span><span class="p">,</span> <span class="s1">&#39;short&#39;</span><span class="p">],</span> <span class="s1">&#39;length&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;long&#39;</span><span class="p">,</span> <span class="s1">&#39;short&#39;</span><span class="p">],</span>
+<span class="s1">&#39;fullness&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;full&#39;</span><span class="p">,</span> <span class="s1">&#39;empty&#39;</span><span class="p">],</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;young&#39;</span><span class="p">,</span> <span class="s1">&#39;old&#39;</span><span class="p">],</span>
+<span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;large&#39;</span><span class="p">,</span> <span class="s1">&#39;small&#39;</span><span class="p">],</span> <span class="s1">&#39;pattern&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;checkered&#39;</span><span class="p">,</span> <span class="s1">&#39;striped&#39;</span><span class="p">,</span> <span class="s1">&#39;dress&#39;</span><span class="p">,</span> <span class="s1">&#39;dotted&#39;</span><span class="p">],</span>
+<span class="s1">&#39;shape&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;round&#39;</span><span class="p">,</span> <span class="s1">&#39;rectangular&#39;</span><span class="p">,</span> <span class="s1">&#39;triangular&#39;</span><span class="p">,</span> <span class="s1">&#39;square&#39;</span><span class="p">],</span>
+<span class="s1">&#39;activity&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;waiting&#39;</span><span class="p">,</span> <span class="s1">&#39;staring&#39;</span><span class="p">,</span> <span class="s1">&#39;drinking&#39;</span><span class="p">,</span> <span class="s1">&#39;playing&#39;</span><span class="p">,</span> <span class="s1">&#39;eating&#39;</span><span class="p">,</span> <span class="s1">&#39;cooking&#39;</span><span class="p">,</span> <span class="s1">&#39;resting&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;sleeping&#39;</span><span class="p">,</span> <span class="s1">&#39;posing&#39;</span><span class="p">,</span> <span class="s1">&#39;talking&#39;</span><span class="p">,</span> <span class="s1">&#39;looking down&#39;</span><span class="p">,</span> <span class="s1">&#39;looking up&#39;</span><span class="p">,</span> <span class="s1">&#39;driving&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;reading&#39;</span><span class="p">,</span> <span class="s1">&#39;brushing teeth&#39;</span><span class="p">,</span> <span class="s1">&#39;flying&#39;</span><span class="p">,</span> <span class="s1">&#39;surfing&#39;</span><span class="p">,</span> <span class="s1">&#39;skiing&#39;</span><span class="p">,</span> <span class="s1">&#39;hanging&#39;</span><span class="p">],</span>
+<span class="s1">&#39;pose&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;walking&#39;</span><span class="p">,</span> <span class="s1">&#39;standing&#39;</span><span class="p">,</span> <span class="s1">&#39;lying&#39;</span><span class="p">,</span> <span class="s1">&#39;sitting&#39;</span><span class="p">,</span> <span class="s1">&#39;running&#39;</span><span class="p">,</span> <span class="s1">&#39;jumping&#39;</span><span class="p">,</span> <span class="s1">&#39;crouching&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;bending&#39;</span><span class="p">,</span> <span class="s1">&#39;smiling&#39;</span><span class="p">,</span> <span class="s1">&#39;grazing&#39;</span><span class="p">],</span>
+<span class="s1">&#39;material&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;wood&#39;</span><span class="p">,</span> <span class="s1">&#39;plastic&#39;</span><span class="p">,</span> <span class="s1">&#39;metal&#39;</span><span class="p">,</span> <span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="s1">&#39;leather&#39;</span><span class="p">,</span> <span class="s1">&#39;leather&#39;</span><span class="p">,</span> <span class="s1">&#39;porcelain&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;concrete&#39;</span><span class="p">,</span> <span class="s1">&#39;paper&#39;</span><span class="p">,</span> <span class="s1">&#39;stone&#39;</span><span class="p">,</span> <span class="s1">&#39;brick&#39;</span><span class="p">],</span>
+<span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="s1">&#39;gold&#39;</span><span class="p">,</span> <span class="s1">&#39;khaki&#39;</span><span class="p">,</span> <span class="s1">&#39;gray&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;dark&#39;</span><span class="p">,</span> <span class="s1">&#39;pink&#39;</span><span class="p">,</span> <span class="s1">&#39;dark blue&#39;</span><span class="p">,</span> <span class="s1">&#39;dark brown&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;tan&#39;</span><span class="p">,</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="s1">&#39;beige&#39;</span><span class="p">,</span> <span class="s1">&#39;blond&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;brunette&#39;</span><span class="p">,</span> <span class="s1">&#39;maroon&#39;</span><span class="p">,</span> <span class="s1">&#39;light blue&#39;</span><span class="p">,</span> <span class="s1">&#39;light brown&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 </div>
 </div>
@@ -187,6 +247,7 @@ The subsets are characterized by a diverse collection of 1,853 distinct contexts
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="applications.html" class="btn btn-neutral float-right" title="Applications of MetaDataset" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="download_metadataset.html" class="btn btn-neutral float-left" title="Getting Started: Download MetaDataset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

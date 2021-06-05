@@ -94,6 +94,13 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="sub_pages/example_images.html">Preview: Example Images in MetaDataset</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="sub_pages/example_images.html#presence-absence-of-other-objects">Presence/Absence of Other Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sub_pages/example_images.html#general-contexts-locations-and-weather">General Contexts (Locations and Weather)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sub_pages/example_images.html#object-attributes">Object Attributes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sub_pages/applications.html">Applications of MetaDataset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sub_pages/applications.html#application-evaluating-distribution-shifts">Application: Evaluating Distribution Shifts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sub_pages/applications.html#application-accessing-training-conflicts">Application: Accessing Training Conflicts</a></li>
 </ul>
 </li>
 </ul>
@@ -195,6 +202,10 @@ The subsets are characterized by a diverse collection of 1,853 distinct contexts
 Each node in the meta-graph represents one subset. The weight of each edge is the overlap coefficient between the corresponding two subsets. Node colors indicate the graph-based community detection results. Inter-community edges are colored. Intra-community edges are grayed out for better visualization. The border color of each example image indicates its community in the meta-graph. We have one such meta-graph for each of the 410 classes in the MetaDataset.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
 </div>
+<div class="section" id="quantify-distances-of-distribution-shifts">
+<h2>Quantify Distances of Distribution Shifts<a class="headerlink" href="#quantify-distances-of-distribution-shifts" title="Permalink to this headline">¶</a></h2>
+<p>The geometry of MetaGraphs provides a way to quantify the distances of shifts across different data distributions: Intuitively, if two subsets are far away from each other in the MetaGraph, then the shift between them tend to be large. We calculate spectral embeddings of each node in the meta-graph measures the distance between any two subsets.</p>
+</div>
 <div class="section" id="citation">
 <h2>Citation<a class="headerlink" href="#citation" title="Permalink to this headline">¶</a></h2>
 <p>If you use this library in your research, cite it as
@@ -220,6 +231,13 @@ follows <em>(Under Submission)</em>. :</p>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="sub_pages/example_images.html">Preview: Example Images in MetaDataset</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="sub_pages/example_images.html#presence-absence-of-other-objects">Presence/Absence of Other Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sub_pages/example_images.html#general-contexts-locations-and-weather">General Contexts (Locations and Weather)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sub_pages/example_images.html#object-attributes">Object Attributes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sub_pages/applications.html">Applications of MetaDataset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sub_pages/applications.html#application-evaluating-distribution-shifts">Application: Evaluating Distribution Shifts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sub_pages/applications.html#application-accessing-training-conflicts">Application: Accessing Training Conflicts</a></li>
 </ul>
 </li>
 </ul>

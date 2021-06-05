@@ -53,6 +53,13 @@ It is a flexible framework to generate a large number of real-world distribution
    **Figure 3: Meta-graph for the “Cat” class, which captures meaningful semantics of the multi-modal data distribution of “Cat”.** MetaDataset splits the data points of each class (e.g., Cat) into many subsets based on visual contexts. 
    Each node in the meta-graph represents one subset. The weight of each edge is the overlap coefficient between the corresponding two subsets. Node colors indicate the graph-based community detection results. Inter-community edges are colored. Intra-community edges are grayed out for better visualization. The border color of each example image indicates its community in the meta-graph. We have one such meta-graph for each of the 410 classes in the MetaDataset.
 
+
+
+Quantify Distances of Distribution Shifts
+------------------------------------------------
+The geometry of MetaGraphs provides a way to quantify the distances of shifts across different data distributions: Intuitively, if two subsets are far away from each other in the MetaGraph, then the shift between them tend to be large. We calculate spectral embeddings of each node in the meta-graph measures the distance between any two subsets. 
+
+
 Citation
 --------
 If you use this library in your research, cite it as
@@ -75,4 +82,5 @@ Walkthroughs
 .. toctree::
    sub_pages/download_metadataset
    sub_pages/example_images
+   sub_pages/applications
 
