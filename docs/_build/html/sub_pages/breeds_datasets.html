@@ -1,0 +1,530 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Creating BREEDS subpopulation shift benchmarks &mdash; MetaDataset 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/all.min.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetaDataset
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="download_metadataset.html">Getting Started: Download MetaDataset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="download_metadataset.html#download-metadataset-github-repo">Download MetaDataset Github Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="download_metadataset.html#downlaod-base-dataset-visual-genome">Downlaod Base Dataset: Visual Genome</a></li>
+<li class="toctree-l2"><a class="reference internal" href="download_metadataset.html#generate-metadataset">Generate MetaDataset</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/custom_imagenet.html">Creating a custom dataset by superclassing ImageNet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/custom_imagenet.html#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/custom_imagenet.html#basic-usage-loading-pre-packaged-imagenet-based-datasets">Basic Usage: Loading Pre-Packaged ImageNet-based Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/custom_imagenet.html#advanced-usage-making-custom-datasets-part-1-browsing-the-wordnet-hierarchy">Advanced Usage (Making Custom Datasets) Part 1: Browsing the WordNet Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/custom_imagenet.html#advanced-usage-making-custom-datasets-part-2-making-the-datasets">Advanced Usage (Making Custom Datasets) Part 2: Making the Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/breeds_datasets.html">Creating BREEDS subpopulation shift benchmarks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/breeds_datasets.html#requirements-setup">Requirements/Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/breeds_datasets.html#part-1-browsing-through-the-class-hierarchy">Part 1: Browsing through the Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/breeds_datasets.html#part-2-creating-breeds-datasets">Part 2: Creating BREEDS Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/breeds_datasets.html#part-3-loading-in-built-breeds-datasets">Part 3: Loading in-built BREEDS Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/cli_usage.html">Training and evaluating networks via command line</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#training-a-standard-nonrobust-model">Training a standard (nonrobust) model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#training-a-robust-model-adversarial-training">Training a robust model (adversarial training)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#evaluating-trained-models">Evaluating trained models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/cli_usage.html#training-a-non-robust-resnet-18-for-the-cifar-dataset">Training a non-robust ResNet-18 for the CIFAR dataset:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/cli_usage.html#training-a-robust-resnet-50-for-the-restricted-imagenet-dataset">Training a robust ResNet-50 for the Restricted-ImageNet dataset:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/cli_usage.html#reading-and-analyzing-training-results">Reading and analyzing training results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/input_space_manipulation.html">Input manipulation with pre-trained models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/input_space_manipulation.html#generating-untargeted-adversarial-examples">Generating Untargeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/input_space_manipulation.html#generating-targeted-adversarial-examples">Generating Targeted Adversarial Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/input_space_manipulation.html#custom-input-manipulation-e-g-representation-inversion">Custom Input Manipulation (e.g. Representation Inversion)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/input_space_manipulation.html#changing-optimization-methods">Changing optimization methods</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/input_space_manipulation.html#advanced-usage">Advanced usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/input_space_manipulation.html#gradient-estimation-nes">Gradient Estimation/NES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/input_space_manipulation.html#custom-optimization-methods">Custom optimization methods</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/training_lib_part_1.html">Using robustness as a general training library (Part 1: Getting started)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-1-imports">Step 1: Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-2-dealing-with-arguments">Step 2: Dealing with arguments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-2-1-setting-up-command-line-args">Step 2.1: Setting up command-line args</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-2-2-sanity-checks-and-defaults">Step 2.2: Sanity checks and defaults</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-3-creating-the-model-dataset-and-loader">Step 3: Creating the model, dataset, and loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_1.html#step-4-training-the-model">Step 4: Training the model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../example_usage/training_lib_part_2.html">Using robustness as a general training library (Part 2: Customizing training)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-networks-with-custom-loss-functions">Training networks with custom loss functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-networks-with-custom-data-loaders">Training networks with custom data loaders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/training_lib_part_2.html#using-lambdaloader-to-train-with-label-noise">Using LambdaLoader to train with label noise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example_usage/training_lib_part_2.html#using-transformedloader-to-train-with-random-labels">Using TransformedLoader to train with random labels</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-networks-with-custom-logging">Training networks with custom logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-on-custom-datasets">Training on custom datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../example_usage/training_lib_part_2.html#training-with-custom-architectures">Training with custom architectures</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetaDataset</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Creating BREEDS subpopulation shift benchmarks</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sub_pages/breeds_datasets.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="creating-breeds-subpopulation-shift-benchmarks">
+<h1>Creating BREEDS subpopulation shift benchmarks<a class="headerlink" href="#creating-breeds-subpopulation-shift-benchmarks" title="Permalink to this headline">¶</a></h1>
+<p>In this document, we will discuss how to create BREEDS datasets <span id="id1">[STM20]</span>.
+Given any existing dataset that comes with a class hierarchy (e.g. ImageNet,
+OpenImages), the BREEDS methodology allows you to make a derivative
+classification task that can be used to measure robustness to subpopulation
+shift. To do this, we:</p>
+<ol class="arabic simple">
+<li><p>Group together semantically-simlar classes (“breeds”) in the dataset
+into superclasses.</p></li>
+<li><p>Define a classification task in terms of these superclasses—with
+the twist that the “breeds” used in the training set from each superclasses
+are disjoint from the “breeds” used in the test set.</p></li>
+</ol>
+<p>As a primitive example, one could take ImageNet (which contains many classes
+corresponding to cat and dog breeds), and use the BREEDS methodology to come up
+with a derivative “cats vs. dogs” task, where the training set would contain one
+set of breeds (e.g., Egyptian cat and Tabby Cat vs. Labrador and Golden
+Retriever) and the test set would contain another set (e.g. Persian cat and
+alley cat vs Mastiff and Poodle). Here is a pictorial illustration of the BREEDS
+approach:</p>
+<a class="reference internal image-reference" href="sub_pages/Figures/breeds_pipeline.png"><img alt="Illustration of the BREEDS dataset creation pipeline." class="align-center" src="sub_pages/Figures/breeds_pipeline.png" style="width: 600px;" /></a>
+<p>This methodology allows you to create subpopulation shift benchmarks of varying
+difficulty automatically, without having to manually group or split up classes,
+and can be applied to any dataset which has a class hierarchy. In this
+walkthrough, we will use ImageNet and the corresponding class hierarchy from
+<span id="id2">[STM20]</span>.</p>
+<i class="fa fa-play"></i> &nbsp;&nbsp; <a
+href="https://github.com/MadryLab/BREEDS-Benchmarks/blob/master/Constructing%20BREEDS%20datasets.ipynb">Download
+a Jupyter notebook</a> containing all the code from this walkthrough! <br />
+<br /><div class="section" id="requirements-setup">
+<h2>Requirements/Setup<a class="headerlink" href="#requirements-setup" title="Permalink to this headline">¶</a></h2>
+<p>To create BREEDS datasets using ImageNet, we need to create a:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">data_dir</span></code> which contains the ImageNet dataset
+in PyTorch-readable format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">info_dir</span></code> which contains the following information (files) about
+the class hierarchy:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">dataset_class_info.json</span></code>: A list whose entries are triplets of
+class number, class ID and class name, for each dataset class.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">class_hierarchy.txt</span></code>: Every line denotes an edge—parent ID followed by
+child ID (space separated)—in the class hierarchy.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">node_names.txt</span></code>: Each line contains the ID of a node followed by
+it’s name (tab separated).</p></li>
+</ul>
+</li>
+</ul>
+<p>For convenience, we provide the relevant files for the (modified) class
+hierarchy <a class="reference external" href="https://github.com/MadryLab/BREEDS-Benchmarks/tree/master/imagenet_class_hierarchy/modified">here</a>.
+You can manually download them and move them to <code class="docutils literal notranslate"><span class="pre">info_dir</span></code> or do it
+automatically by specifying an empty <code class="docutils literal notranslate"><span class="pre">info_dir</span></code> to
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">get_superclasses()</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness.tools.breeds_helpers</span> <span class="kn">import</span> <span class="n">setup_breeds</span>
+
+<span class="n">setup_breeds</span><span class="p">(</span><span class="n">info_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="part-1-browsing-through-the-class-hierarchy">
+<h2>Part 1: Browsing through the Class Hierarchy<a class="headerlink" href="#part-1-browsing-through-the-class-hierarchy" title="Permalink to this headline">¶</a></h2>
+<p>We can use <code class="xref py py-class docutils literal notranslate"><span class="pre">ClassHierarchy</span></code> to
+examine a dataset’s (here, ImageNet) class hierarchy. Here, <code class="docutils literal notranslate"><span class="pre">info_dir</span></code>
+should contain the requisite files for the class hierarchy (from the Setup
+step):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness.tools.breeds_helpers</span> <span class="kn">import</span> <span class="n">ClassHierarchy</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">hier</span> <span class="o">=</span> <span class="n">ClassHierarchy</span><span class="p">(</span><span class="n">info_dir</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# Levels in hierarchy: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">hier</span><span class="o">.</span><span class="n">level_to_nodes</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# Nodes/level:&quot;</span><span class="p">,</span>
+   <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Level </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">hier</span><span class="o">.</span><span class="n">level_to_nodes</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+</pre></div>
+</div>
+<p>The <code class="samp docutils literal notranslate"><span class="pre">hier</span></code> object has a <code class="docutils literal notranslate"><span class="pre">graph</span></code> attribute, which represents the class
+hierarchy as a <code class="docutils literal notranslate"><span class="pre">networkx</span></code> graph. In this graph, the children of a node
+correspond to its subclasses (e.g., Labrador would be a child of the dog
+class in our primitive example). Note that all the original dataset classes
+will be the leaves of this graph.</p>
+<p>We can then use this graph to define superclasses—all nodes at a user-specified
+depth from the root node. For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">level</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># Could be any number smaller than max level</span>
+<span class="n">superclasses</span> <span class="o">=</span> <span class="n">hier</span><span class="o">.</span><span class="n">get_nodes_at_level</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Superclasses at level </span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hier</span><span class="o">.</span><span class="n">HIER_NODE_NAME</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">superclasses</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>Each superclass is made up of multiple “breeds”, which simply correspond to
+the leaves (original dataset classes) that are its descendants in the class
+hierarchy:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">superclasses</span><span class="p">),</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">superclass</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">superclasses</span><span class="p">)[</span><span class="n">idx</span><span class="p">]</span>
+<span class="n">subclasses</span> <span class="o">=</span> <span class="n">hier</span><span class="o">.</span><span class="n">leaves_reachable</span><span class="p">(</span><span class="n">superclass</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Superclass: </span><span class="si">{</span><span class="n">hier</span><span class="o">.</span><span class="n">HIER_NODE_NAME</span><span class="p">[</span><span class="n">superclass</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Subclasses (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">subclasses</span><span class="p">)</span><span class="si">}</span><span class="s2">):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hier</span><span class="o">.</span><span class="n">LEAF_ID_TO_NAME</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">subclasses</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p>We can also visualize subtrees of the graph with the help of
+the <cite>networkx</cite> and <cite>pygraphviz</cite> packages. For instance, we can
+taks a look at the subtree of the class hierarchy rooted at a
+particular superclass:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">from</span> <span class="nn">networkx.drawing.nx_agraph</span> <span class="kn">import</span> <span class="n">graphviz_layout</span><span class="p">,</span> <span class="n">to_agraph</span>
+<span class="kn">import</span> <span class="nn">pygraphviz</span> <span class="k">as</span> <span class="nn">pgv</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="n">subtree</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ego_graph</span><span class="p">(</span><span class="n">hier</span><span class="o">.</span><span class="n">graph</span><span class="p">,</span> <span class="n">superclass</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="n">hier</span><span class="o">.</span><span class="n">HIER_NODE_NAME</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">subtree</span><span class="o">.</span><span class="n">nodes</span><span class="p">()}</span>
+<span class="n">subtree</span> <span class="o">=</span> <span class="n">to_agraph</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">relabel_nodes</span><span class="p">(</span><span class="n">subtree</span><span class="p">,</span> <span class="n">mapping</span><span class="p">))</span>
+<span class="n">subtree</span><span class="o">.</span><span class="n">delete_edge</span><span class="p">(</span><span class="n">subtree</span><span class="o">.</span><span class="n">edges</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">subtree</span><span class="o">.</span><span class="n">layout</span><span class="p">(</span><span class="s1">&#39;dot&#39;</span><span class="p">)</span>
+<span class="n">subtree</span><span class="o">.</span><span class="n">node_attr</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span>
+<span class="n">subtree</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s1">&#39;graph.png&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
+<span class="n">Image</span><span class="p">(</span><span class="s1">&#39;graph.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For instance, visualizing tree rooted at the <code class="docutils literal notranslate"><span class="pre">fungus</span></code> superclass yields:</p>
+<a class="reference internal image-reference" href="sub_pages/Figures/breeds_superclasses.png"><img alt="Visulization of subtree rooted at a specific superclass." class="align-center" src="sub_pages/Figures/breeds_superclasses.png" style="width: 600px;" /></a>
+</div>
+<div class="section" id="part-2-creating-breeds-datasets">
+<h2>Part 2: Creating BREEDS Datasets<a class="headerlink" href="#part-2-creating-breeds-datasets" title="Permalink to this headline">¶</a></h2>
+<p>To create a dataset composed of superclasses, we use the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">BreedsDatasetGenerator</span></code>.
+Internally, this class instantiates an object of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ClassHierarchy</span></code> and uses it
+to define the superclasses.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness.tools.breeds_helpers</span> <span class="kn">import</span> <span class="n">BreedsDatasetGenerator</span>
+
+<span class="n">DG</span> <span class="o">=</span> <span class="n">BreedsDatasetGenerator</span><span class="p">(</span><span class="n">info_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Specifically, we will use
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">get_superclasses()</span></code>.
+This function takes in the following arguments (see <code class="xref py py-meth docutils literal notranslate"><span class="pre">this</span> <span class="pre">docstring</span></code> for more details):</p>
+<ul class="simple">
+<li><p><code class="samp docutils literal notranslate"><span class="pre">level</span></code>: Level in the hierarchy (in terms of distance from the
+root node) at which to define superclasses.</p></li>
+<li><p><code class="samp docutils literal notranslate"><span class="pre">Nsubclasses</span></code>: Controls the minimum number of subclasses/superclass
+in the dataset. If None, it is automatically set to be the size (in terms
+of subclasses) of the smallest superclass.</p></li>
+<li><p><code class="samp docutils literal notranslate"><span class="pre">split</span></code>: If <code class="docutils literal notranslate"><span class="pre">None</span></code>, subclasses of a superclass are returned
+as is, without partitioning them into the source and target domains.
+Else, can be <code class="docutils literal notranslate"><span class="pre">rand/good/bad</span></code> depending on whether the subclass split should be
+random or less/more adversarially chosen (see paper for details).</p></li>
+<li><p><code class="samp docutils literal notranslate"><span class="pre">ancestor</span></code>: If a node ID is specified, superclasses are chosen from
+subtree of class hierarchy rooted at this node. Else, if None, <code class="samp docutils literal notranslate"><span class="pre">ancestor</span></code>
+is set to be the root node.</p></li>
+<li><p><code class="samp docutils literal notranslate"><span class="pre">balanced</span></code>: If True, subclasses/superclass is fixed over superclasses.</p></li>
+</ul>
+<p>For instance, we could create a balanced dataset, with the subclass partition
+being less adversarial as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ret</span> <span class="o">=</span> <span class="n">DG</span><span class="o">.</span><span class="n">get_superclasses</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                      <span class="n">Nsubclasses</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">split</span><span class="o">=</span><span class="s2">&quot;rand&quot;</span><span class="p">,</span>
+                      <span class="n">ancestor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">balanced</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">superclasses</span><span class="p">,</span> <span class="n">subclass_split</span><span class="p">,</span> <span class="n">label_map</span> <span class="o">=</span> <span class="n">ret</span>
+</pre></div>
+</div>
+<p>This method returns:</p>
+<ul class="simple">
+<li><p><code class="samp docutils literal notranslate"><span class="pre">superclasses</span></code> is a list containing the IDs of all the
+superclasses.</p></li>
+<li><p><code class="samp docutils literal notranslate"><span class="pre">subclass_split</span></code> is a tuple of subclass ranges for
+the source and target domains. For instance,
+<code class="samp docutils literal notranslate"><span class="pre">subclass_split[0]</span></code> is a list, which for each superclass,
+contains a list of subclasses present in the source domain.
+If <code class="docutils literal notranslate"><span class="pre">split=None</span></code>, subclass_split[1] is empty and can be
+ignored.</p></li>
+<li><p><code class="samp docutils literal notranslate"><span class="pre">label_map</span></code> is a dictionary mapping a superclass
+number (label) to name.</p></li>
+</ul>
+<p>You can experiment with these parameters to create datasets of different
+granularity. For instance, you could specify the <code class="samp docutils literal notranslate"><span class="pre">Nsubclasses</span></code> to
+restrict the size of every superclass in the dataset,
+set the <code class="samp docutils literal notranslate"><span class="pre">ancestor</span></code> to be a specific node (e.g., <code class="docutils literal notranslate"><span class="pre">n00004258</span></code>
+to focus on living things), or set <code class="samp docutils literal notranslate"><span class="pre">balanced</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code>
+to get an imbalanced dataset.</p>
+<p>We can take a closer look at the composition of the dataset—what
+superclasses/subclasses it contains—using:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness.tools.breeds_helpers</span> <span class="kn">import</span> <span class="n">print_dataset_info</span>
+
+<span class="n">print_dataset_info</span><span class="p">(</span><span class="n">superclasses</span><span class="p">,</span>
+                   <span class="n">subclass_split</span><span class="p">,</span>
+                   <span class="n">label_map</span><span class="p">,</span>
+                   <span class="n">hier</span><span class="o">.</span><span class="n">LEAF_NUM_TO_NAME</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, for the source and target domains, we can create datasets
+and their corresponding loaders:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness</span> <span class="kn">import</span> <span class="n">datasets</span>
+
+<span class="n">train_subclasses</span><span class="p">,</span> <span class="n">test_subclasses</span> <span class="o">=</span> <span class="n">subclass_split</span>
+
+<span class="n">dataset_source</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">CustomImageNet</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">train_subclasses</span><span class="p">)</span>
+<span class="n">loaders_source</span> <span class="o">=</span> <span class="n">dataset_source</span><span class="o">.</span><span class="n">make_loaders</span><span class="p">(</span><span class="n">num_workers</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
+<span class="n">train_loader_source</span><span class="p">,</span> <span class="n">val_loader_source</span> <span class="o">=</span> <span class="n">loaders_source</span>
+
+<span class="n">dataset_target</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">CustomImageNet</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">test_subclasses</span><span class="p">)</span>
+<span class="n">loaders_target</span> <span class="o">=</span> <span class="n">dataset_source</span><span class="o">.</span><span class="n">make_loaders</span><span class="p">(</span><span class="n">num_workers</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
+<span class="n">train_loader_target</span><span class="p">,</span> <span class="n">val_loader_target</span> <span class="o">=</span> <span class="n">loaders_target</span>
+</pre></div>
+</div>
+<p>You’re all set! You can then use this dataset and loaders
+just as you would any other existing/custom dataset in the robustness
+library. For instance, you can visualize validation set samples from
+both domains and their labels using:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness.tools.vis_tools</span> <span class="kn">import</span> <span class="n">show_image_row</span>
+
+<span class="k">for</span> <span class="n">domain</span><span class="p">,</span> <span class="n">loader</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s2">&quot;Source&quot;</span><span class="p">,</span> <span class="s2">&quot;Target&quot;</span><span class="p">],</span>
+                          <span class="p">[</span><span class="n">val_loader_source</span><span class="p">,</span> <span class="n">val_loader_target</span><span class="p">]):</span>
+    <span class="n">im</span><span class="p">,</span> <span class="n">lab</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">loader</span><span class="p">))</span>
+    <span class="n">show_image_row</span><span class="p">([</span><span class="n">im</span><span class="p">],</span>
+                   <span class="n">tlist</span><span class="o">=</span><span class="p">[[</span><span class="n">label_map</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">lab</span><span class="p">]],</span>
+                   <span class="n">ylist</span><span class="o">=</span><span class="p">[</span><span class="n">domain</span><span class="p">],</span>
+                   <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also create superclass tasks where subclasses are not
+partitioned across domains:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ret</span> <span class="o">=</span> <span class="n">DG</span><span class="o">.</span><span class="n">get_superclasses</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                          <span class="n">Nsubclasses</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                          <span class="n">split</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">ancestor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">balanced</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">superclasses</span><span class="p">,</span> <span class="n">subclass_split</span><span class="p">,</span> <span class="n">label_map</span> <span class="o">=</span> <span class="n">ret</span>
+<span class="n">all_subclasses</span> <span class="o">=</span> <span class="n">subclass_split</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">CustomImageNet</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">all_subclasses</span><span class="p">)</span>
+
+<span class="n">print_dataset_info</span><span class="p">(</span><span class="n">superclasses</span><span class="p">,</span>
+                   <span class="n">subclass_split</span><span class="p">,</span>
+                   <span class="n">label_map</span><span class="p">,</span>
+                   <span class="n">hier</span><span class="o">.</span><span class="n">LEAF_NUM_TO_NAME</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="part-3-loading-in-built-breeds-datasets">
+<h2>Part 3: Loading in-built BREEDS Datasets<a class="headerlink" href="#part-3-loading-in-built-breeds-datasets" title="Permalink to this headline">¶</a></h2>
+<p>Alternatively, we can directly use one of the datasets from our paper
+<span id="id3">[STM20]</span>—namely <code class="docutils literal notranslate"><span class="pre">Entity13</span></code>, <code class="docutils literal notranslate"><span class="pre">Entity30</span></code>, <code class="docutils literal notranslate"><span class="pre">Living17</span></code>
+and <code class="docutils literal notranslate"><span class="pre">Nonliving26</span></code>. Loading any of these datasets is relatively simple:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robustness.tools.breeds_helpers</span> <span class="kn">import</span> <span class="n">make_living17</span>
+<span class="n">ret</span> <span class="o">=</span> <span class="n">make_living17</span><span class="p">(</span><span class="n">info_dir</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s2">&quot;rand&quot;</span><span class="p">)</span>
+<span class="n">superclasses</span><span class="p">,</span> <span class="n">subclass_split</span><span class="p">,</span> <span class="n">label_map</span> <span class="o">=</span> <span class="n">ret</span>
+
+<span class="n">print_dataset_info</span><span class="p">(</span><span class="n">superclasses</span><span class="p">,</span>
+                   <span class="n">subclass_split</span><span class="p">,</span>
+                   <span class="n">label_map</span><span class="p">,</span>
+                   <span class="n">hier</span><span class="o">.</span><span class="n">LEAF_NUM_TO_NAME</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can then use a similar methodology to Part 2 above to probe
+dataset information and create datasets and loaders.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, MetaDataset Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
