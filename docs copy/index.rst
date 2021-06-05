@@ -1,19 +1,14 @@
-MetaDataset
+robustness package
 ==================
-
-This webpage provides the documentation for the :samp:`MetaDataset` 
-
-scripts for generating the proposed MetaDataset, and the PyTorch source code for the experiments of evaluating distribution shifts and training conflicts. 
 
 .. raw:: html
    
-   <i class="fa fa-github"></i> View on and Install via <a
-   href="https://anonymous.4open.science/r/MetaDataset-Distribution-Shift-E613/"> 
-   anonymous Github
-   </a> <br /> <br />
+   <i class="fa fa-github"></i> View on <a
+   href="https://github.com/MadryLab/robustness">GitHub</a> <br /> <br />
 
+Install via ``pip``: ``pip install robustness``
 
-:samp:`MetaDataset` is a package we (students in the `MadryLab <http://madry-lab.ml>`_) created
+:samp:`robustness` is a package we (students in the `MadryLab <http://madry-lab.ml>`_) created
 to make training, evaluating, and exploring neural networks flexible and easy.
 We use it in almost all of our projects (whether they involve
 adversarial training or not!) and it will be a dependency in many of our
