@@ -14,6 +14,7 @@ Walkthroughs
 ------------
 
 .. toctree::
+   ./index
    sub_pages/download_metadataset
    sub_pages/example_images
    sub_pages/applications
