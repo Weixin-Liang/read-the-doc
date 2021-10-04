@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/all.min.css" type="text/css" />
 
   
@@ -30,10 +32,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -41,7 +43,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Applications of MetaDataset" href="applications.html" />
-    <link rel="prev" title="Getting Started: Download MetaDataset" href="download_metadataset.html" /> 
+    <link rel="prev" title="Getting Started: Download MetaDataset" href="download_MetaShift.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -87,10 +89,10 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="download_metadataset.html">Getting Started: Download MetaDataset</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="download_metadataset.html#download-metadataset-github-repo">Download MetaDataset Github Repo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="download_metadataset.html#downlaod-base-dataset-visual-genome">Downlaod Base Dataset: Visual Genome</a></li>
-<li class="toctree-l2"><a class="reference internal" href="download_metadataset.html#generate-metadataset">Generate MetaDataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="download_MetaShift.html">Getting Started: Download MetaDataset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="download_MetaShift.html#download-metadataset-github-repo">Download MetaDataset Github Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="download_MetaShift.html#downlaod-base-dataset-visual-genome">Downlaod Base Dataset: Visual Genome</a></li>
+<li class="toctree-l2"><a class="reference internal" href="download_MetaShift.html#generate-metadataset">Generate MetaDataset</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Preview: Example Images in MetaDataset</a><ul>
@@ -169,13 +171,13 @@
 <h1>Preview: Example Images in MetaDataset<a class="headerlink" href="#preview-example-images-in-metadataset" title="Permalink to this headline">¶</a></h1>
 <p>For each image class (e.g. <em>Dogs</em>), the MetaDataset contains different sets of dogs under different contexts to represent diverse data distributions. The contexts include presence/absence of other objects (e.g. <em>dog with frisbee</em>). Contexts can also reflect attributes (e.g. <em>black dogs</em>) and general settings (e.g. <em>dogs in sunny weather</em>). These concepts thus captures diverse and real-world distribution shifts. We list the object presense, attribute and general location contexts below.</p>
 <div class="figure align-center">
-<a class="reference internal image-reference" href="../_images/MetaDataset-InfoGraphic1.jpg"><img alt="" src="../_images/MetaDataset-InfoGraphic1.jpg" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/MetaDataset-InfoGraphic.jpg"><img alt="" src="../_images/MetaDataset-InfoGraphic.jpg" style="width: 100%;" /></a>
 </div>
 <div class="section" id="presence-absence-of-other-objects">
 <h2>Presence/Absence of Other Objects<a class="headerlink" href="#presence-absence-of-other-objects" title="Permalink to this headline">¶</a></h2>
 <p>MetaDataset considers the presence/absence of 1,702 distinct object classes.  We use the pre-processed and cleaned version of Visual Genome by Hudson and Manning which contains 113,018 distinct images across 1,702 object classes. MetaDataset is a collection of 12,868 sets of natural images from 410 classes. Each class has 31.4 subsets, and each subset has 200.4 images on average.</p>
 <div class="figure align-center" id="id1">
-<a class="reference internal image-reference" href="../_images/MetaDataset-Examples1.jpg"><img alt="" src="../_images/MetaDataset-Examples1.jpg" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/MetaDataset-Examples.jpg"><img alt="" src="../_images/MetaDataset-Examples.jpg" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text"><strong>Figure: Example Cat vs. Dog Images from MetaDataset.</strong> For each class, MetaDataset provides many subsets of data, each of which corresponds different contexts (the context is stated in parenthesis).</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 <p>Different subsets may share common images—e.g. a dog image can have both grass and frisbee would occur in both emph{dog with grass} and emph{dog with frisbee}.
@@ -239,7 +241,7 @@ Therefore, the total number of subsets times the average number of images in eac
 <div class="section" id="more-examples-of-meta-graphs">
 <h2>More Examples of Meta-graphs<a class="headerlink" href="#more-examples-of-meta-graphs" title="Permalink to this headline">¶</a></h2>
 <div class="figure align-center" id="id4">
-<a class="reference internal image-reference" href="../_images/Cat-MetaGraph1.jpg"><img alt="" src="../_images/Cat-MetaGraph1.jpg" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/Cat-MetaGraph.jpg"><img alt="" src="../_images/Cat-MetaGraph.jpg" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text"><strong>Figure: Meta-graph for the “Cat” class, which captures meaningful semantics of the multi-modal data distribution of “Cat”.</strong> MetaDataset splits the data points of each class (e.g., Cat) into many subsets based on visual contexts.
 Each node in the meta-graph represents one subset. The weight of each edge is the overlap coefficient between the corresponding two subsets. Node colors indicate the graph-based community detection results. Inter-community edges are colored. Intra-community edges are grayed out for better visualization. The border color of each example image indicates its community in the meta-graph. We have one such meta-graph for each of the 410 classes in the MetaDataset.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
@@ -261,7 +263,7 @@ Each node in the meta-graph represents one subset. The weight of each edge is th
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="applications.html" class="btn btn-neutral float-right" title="Applications of MetaDataset" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="download_metadataset.html" class="btn btn-neutral float-left" title="Getting Started: Download MetaDataset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="download_MetaShift.html" class="btn btn-neutral float-left" title="Getting Started: Download MetaDataset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
