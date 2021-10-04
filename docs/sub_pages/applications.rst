@@ -7,9 +7,9 @@ Application: Evaluating Distribution Shifts
 --------------------------------------------------
 
 In domain generalization, the train and test distributions comprise data from related but distinct domains. 
-    This arises in many real-word scenarios since it is often infeasible to construct a comprehensive training set that spans all domains. 
-    To simulate this setting, we can sample two distinct collections of subsets as the train domains and the test domains respectively (e.g. bathroom vs. outdoor contexts). 
-    To adjust the magnitude of the shift, we can fix the test domains and change the train domains with different distance. For example, if we use cats-in-living-room as the test set, then this is an smaller distribution shift.  
+This arises in many real-word scenarios since it is often infeasible to construct a comprehensive training set that spans all domains. 
+To simulate this setting, we can sample two distinct collections of subsets as the train domains and the test domains respectively (e.g. bathroom vs. outdoor contexts). 
+To adjust the magnitude of the shift, we can fix the test domains and change the train domains with different distance. For example, if we use cats-in-living-room as the test set, then this is an smaller distribution shift.  
 
 .. figure:: ../figures/app-domain-generalization.png
    :width: 100 %

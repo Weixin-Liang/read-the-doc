@@ -171,12 +171,10 @@
 <h1>Applications of MetaShift<a class="headerlink" href="#applications-of-metashift" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="application-evaluating-distribution-shifts">
 <h2>Application: Evaluating Distribution Shifts<a class="headerlink" href="#application-evaluating-distribution-shifts" title="Permalink to this headline">¶</a></h2>
-<dl class="simple">
-<dt>In domain generalization, the train and test distributions comprise data from related but distinct domains.</dt><dd><p>This arises in many real-word scenarios since it is often infeasible to construct a comprehensive training set that spans all domains.
+<p>In domain generalization, the train and test distributions comprise data from related but distinct domains.
+This arises in many real-word scenarios since it is often infeasible to construct a comprehensive training set that spans all domains.
 To simulate this setting, we can sample two distinct collections of subsets as the train domains and the test domains respectively (e.g. bathroom vs. outdoor contexts).
 To adjust the magnitude of the shift, we can fix the test domains and change the train domains with different distance. For example, if we use cats-in-living-room as the test set, then this is an smaller distribution shift.</p>
-</dd>
-</dl>
 <div class="figure align-center">
 <a class="reference internal image-reference" href="../_images/app-domain-generalization.png"><img alt="" src="../_images/app-domain-generalization.png" style="width: 100%;" /></a>
 </div>
