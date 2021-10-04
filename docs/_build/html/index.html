@@ -196,7 +196,7 @@ A public Github repo will be created after the peer review.
 </ul>
 </div>
 <div class="figure align-center" id="id3">
-<a class="reference internal image-reference" href="_images/MetaDataset-Examples.jpg"><img alt="" src="_images/MetaDataset-Examples.jpg" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="_images/MetaShift-Examples.jpg"><img alt="" src="_images/MetaShift-Examples.jpg" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text"><strong>Figure 1: Example Cat vs. Dog Images from MetaShift.</strong> For each class, MetaShift provides many subsets of data, each of which corresponds different contexts (the context is stated in parenthesis).</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
 </div>
@@ -208,7 +208,7 @@ A public Github repo will be created after the peer review.
 <h2>What is <code class="samp docutils literal notranslate"><span class="pre">MetaShift</span></code>?<a class="headerlink" href="#what-is-metashift" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="samp docutils literal notranslate"><span class="pre">MetaShift</span></code> is a collection of subsets of data together with an annotation graph that explains the similarity/distance between two subsets (edge weight) as well as what is unique about each subset (node metadata). For each class, say “cat”, we have many subsets of cats, and we can think of each subset as a node in the graph. Each subset corresponds to “cat” in a different context: e.g. “cat with sink” or “cat with fence”. The context of each subset is the node metadata. The “cat with sink” subset is more similar to “cat with faucet” subset because there are many images that contain both sink and faucet. This similarity is the weight of the node; higher weight means the contexts of the two nodes tend to co-occur in the same data.</p>
 <div class="figure align-center" id="id4">
-<a class="reference internal image-reference" href="_images/MetaDataset-InfoGraphic.jpg"><img alt="" src="_images/MetaDataset-InfoGraphic.jpg" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="_images/MetaShift-InfoGraphic.jpg"><img alt="" src="_images/MetaShift-InfoGraphic.jpg" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-text"><strong>Figure 2: Infographics of MetaShift.</strong> We leverage the natural heterogeneity of Visual Genome and its annotations to construct MetaShift. MetaShift is a collection of 12,868 sets of natural images from 410 classes. Each class has 31.4 subsets, and each subset has 200.4 images on average.
 Each class also has is also associated with a meta-graph.
 The subsets are characterized by a diverse collection of 1,853 distinct contexts.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
