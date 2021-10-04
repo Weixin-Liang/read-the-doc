@@ -42,7 +42,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Preview: Example Images in MetaDataset" href="example_images.html" /> 
+    <link rel="prev" title="Preview: Example Images in MetaShift" href="example_images.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -94,7 +94,7 @@
 <li class="toctree-l2"><a class="reference internal" href="download_MetaShift.html#generate-metashift">Generate MetaShift</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="example_images.html">Preview: Example Images in MetaDataset</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="example_images.html">Preview: Example Images in MetaShift</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="example_images.html#presence-absence-of-other-objects">Presence/Absence of Other Objects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="example_images.html#general-contexts-locations-and-weather">General Contexts (Locations and Weather)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="example_images.html#object-attributes">Object Attributes</a></li>
@@ -103,6 +103,7 @@
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Applications of MetaShift</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#application-evaluating-distribution-shifts">Application: Evaluating Distribution Shifts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#application-evaluating-subpopulation-shifts">Application: Evaluating Subpopulation Shifts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#application-accessing-training-conflicts">Application: Accessing Training Conflicts</a></li>
 </ul>
 </li>
@@ -170,9 +171,26 @@
 <h1>Applications of MetaShift<a class="headerlink" href="#applications-of-metashift" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="application-evaluating-distribution-shifts">
 <h2>Application: Evaluating Distribution Shifts<a class="headerlink" href="#application-evaluating-distribution-shifts" title="Permalink to this headline">¶</a></h2>
-<p>We demonstrate the utility of MetaShift in benchmarking several recent proposals for training models to be robust to data shifts. We find that the simple empirical risk minimization performs the best when shifts are moderate and no method had a systematic advantage for large shifts.</p>
+<dl class="simple">
+<dt>In domain generalization, the train and test distributions comprise data from related but distinct domains.</dt><dd><p>This arises in many real-word scenarios since it is often infeasible to construct a comprehensive training set that spans all domains.
+To simulate this setting, we can sample two distinct collections of subsets as the train domains and the test domains respectively (e.g. bathroom vs. outdoor contexts).
+To adjust the magnitude of the shift, we can fix the test domains and change the train domains with different distance. For example, if we use cats-in-living-room as the test set, then this is an smaller distribution shift.</p>
+</dd>
+</dl>
 <div class="figure align-center">
-<a class="reference internal image-reference" href="../_images/app-benchmark.png"><img alt="" src="../_images/app-benchmark.png" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/app-domain-generalization.png"><img alt="" src="../_images/app-domain-generalization.png" style="width: 100%;" /></a>
+</div>
+</div>
+<div class="section" id="application-evaluating-subpopulation-shifts">
+<h2>Application: Evaluating Subpopulation Shifts<a class="headerlink" href="#application-evaluating-subpopulation-shifts" title="Permalink to this headline">¶</a></h2>
+<p>In subpopulation shifts, the train and test distributions are mixtures of the same domains with different mixture weights. This is a more frequently-encountered problem since real-world datasets often has minority groups, while standard models are often reported to perform poorly on under-represented demographics.</p>
+<p>To benchmark subpopulation shifts using MetaShift, we can sample two distinct collections of subsets as the minority groups and majority groups respectively. We then use different mixture weights to construct the training set and test set.
+For “Cat vs. Dog”, we leveraging the general contexts “indoor/outdoor” which has a natural spurious correlation with the class labels.
+Concretely, in the training data, cat(ourdoor) and dog(indoor) subsets are the minority groups, while cat(indoor) and dog(outdoor) are majority groups.
+We keep the total size of training data as 1700 images unchanged and only vary the portion of minority groups.
+We use a balanced test set with 576 images to report both average accuracy and worst group accuracy.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/app-domain-generalization.png"><img alt="" src="../_images/app-domain-generalization.png" style="width: 100%;" /></a>
 </div>
 </div>
 <div class="section" id="application-accessing-training-conflicts">
@@ -190,7 +208,7 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="example_images.html" class="btn btn-neutral float-left" title="Preview: Example Images in MetaDataset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="example_images.html" class="btn btn-neutral float-left" title="Preview: Example Images in MetaShift" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
