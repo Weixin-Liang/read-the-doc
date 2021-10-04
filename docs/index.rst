@@ -4,7 +4,7 @@ MetaShift: A Dataset of Datasets for Evaluating Contextual Distribution Shifts a
 .. raw:: html
    
    <i class="fa fa-github"></i> View on and Install via <a
-   href="https://anonymous.4open.science/r/MetaShift-Distribution-Shift-E613/">anonymous GitHub.</a> 
+   href="https://anonymous.4open.science/r/MetaShift-Supplementary-011E/">anonymous GitHub.</a> 
    A public Github repo will be created after the peer review. 
    <br /> <br />
 

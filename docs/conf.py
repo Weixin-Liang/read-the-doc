@@ -17,9 +17,9 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'MetaDataset'
-copyright = '2021, MetaDataset Team'
-author = 'MetaDataset Team'
+project = 'MetaShift'
+copyright = '2021, MetaShift Team'
+author = 'MetaShift Team'
 
 # The full version, including alpha/beta/rc tags
 release = '1.0'
