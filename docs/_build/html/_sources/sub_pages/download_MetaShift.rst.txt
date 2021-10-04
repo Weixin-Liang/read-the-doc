@@ -1,20 +1,20 @@
-Getting Started: Download MetaDataset
+Getting Started: Download MetaShift
 ===============================================
 
 
-Download MetaDataset Github Repo
+Download MetaShift Github Repo
 ------------------------------------
 .. raw:: html
    
    <i class="fa fa-github"></i> Download via <a
-   href="https://anonymous.4open.science/r/MetaDataset-Distribution-Shift-E613/">anonymous GitHub.</a> 
+   href="https://anonymous.4open.science/r/MetaShift-Distribution-Shift-E613/">anonymous GitHub.</a> 
    A public Github repo will be created after the peer review. 
    <br /> <br />
 
 
 Downlaod Base Dataset: Visual Genome
 ------------------------------------
-We leverage the natural heterogeneity of Visual Genome and its annotations to construct MetaDataset. We use the pre-processed and cleaned version of Visual Genome by `Hudson and Manning <https://arxiv.org/pdf/1902.09506.pdfL>`_. Download the base dataset as follows: 
+We leverage the natural heterogeneity of Visual Genome and its annotations to construct MetaShift. We use the pre-processed and cleaned version of Visual Genome by `Hudson and Manning <https://arxiv.org/pdf/1902.09506.pdfL>`_. Download the base dataset as follows: 
 
 
 - Download image files (~20GB) from: https://nlp.stanford.edu/data/gqa/images.zip
@@ -45,19 +45,19 @@ Extract the files. After this step, the base dataset file structure should look 
             val_sceneGraphs.json
 
 
-Generate MetaDataset
+Generate MetaShift
 ------------------------------------
-The image IDs for each subset are provided as a Python Dictionary in ``generate_dataset/meta_data/full-candidate-subsets.pkl`` in the Github repo. The Python scpript ``generate_dataset/meta_data/create_metadataset.py`` provides the code for generating the MetaDataset. 
+The image IDs for each subset are provided as a Python Dictionary in ``generate_dataset/meta_data/full-candidate-subsets.pkl`` in the Github repo. The Python scpript ``generate_dataset/meta_data/create_MetaShift.py`` provides the code for generating the MetaShift. 
 
 - Specify the following arguments defined in ``generate_dataset/meta_data/Constants.py`` . 
 
     - The base dataset folder: ``IMAGE_DATA_FOLDER=/your_path/allImages/images/``
 
-    - The destination folder (to be created): ``PYTORCH_DATASET_FOLDER=/data/MetaDataset``
+    - The destination folder (to be created): ``PYTORCH_DATASET_FOLDER=/data/MetaShift``
 
-    - Only generate MetaDataset for selected classes. ``ONLY_SELECTED_CLASSES = True``. Change to False to generate the whole meta-dataset; However, that would be very large. 
+    - Only generate MetaShift for selected classes. ``ONLY_SELECTED_CLASSES = True``. Change to False to generate the whole meta-dataset; However, that would be very large. 
 
-    - If ``ONLY_SELECTED_CLASSES`` is True, we only generate MetaDataset for the following classes, as specified in the file. 
+    - If ``ONLY_SELECTED_CLASSES`` is True, we only generate MetaShift for the following classes, as specified in the file. 
     
     .. code-block:: python
 
@@ -70,11 +70,11 @@ The image IDs for each subset are provided as a Python Dictionary in ``generate_
     
     - If ``ONLY_SELECTED_CLASSES`` is False, this argument would be ignored. 
 
-- Run the scpript to generate MetaDataset including the meta-graph for each class. 
+- Run the scpript to generate MetaShift including the meta-graph for each class. 
 
 .. code-block:: bash
 
-   python create_metadataset.py
+   python create_MetaShift.py
 
 
 The ``meta-graphs`` folder contains the generated meta-graph for each class. 

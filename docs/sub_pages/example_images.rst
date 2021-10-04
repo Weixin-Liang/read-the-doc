@@ -1,9 +1,9 @@
-Preview: Example Images in MetaDataset
+Preview: Example Images in MetaShift
 ============================================
-For each image class (e.g. *Dogs*), the MetaDataset contains different sets of dogs under different contexts to represent diverse data distributions. The contexts include presence/absence of other objects (e.g. *dog with frisbee*). Contexts can also reflect attributes (e.g. *black dogs*) and general settings (e.g. *dogs in sunny weather*). These concepts thus captures diverse and real-world distribution shifts. We list the object presense, attribute and general location contexts below.  
+For each image class (e.g. *Dogs*), the MetaShift contains different sets of dogs under different contexts to represent diverse data distributions. The contexts include presence/absence of other objects (e.g. *dog with frisbee*). Contexts can also reflect attributes (e.g. *black dogs*) and general settings (e.g. *dogs in sunny weather*). These concepts thus captures diverse and real-world distribution shifts. We list the object presense, attribute and general location contexts below.  
 
 
-.. figure:: ../figures/MetaDataset-InfoGraphic.jpg
+.. figure:: ../figures/MetaShift-InfoGraphic.jpg
    :width: 100 %
    :align: center
    :alt: 
@@ -12,14 +12,14 @@ For each image class (e.g. *Dogs*), the MetaDataset contains different sets of d
 
 Presence/Absence of Other Objects
 ----------------------------------------
-MetaDataset considers the presence/absence of 1,702 distinct object classes.  We use the pre-processed and cleaned version of Visual Genome by Hudson and Manning which contains 113,018 distinct images across 1,702 object classes. MetaDataset is a collection of 12,868 sets of natural images from 410 classes. Each class has 31.4 subsets, and each subset has 200.4 images on average. 
+MetaShift considers the presence/absence of 1,702 distinct object classes.  We use the pre-processed and cleaned version of Visual Genome by Hudson and Manning which contains 113,018 distinct images across 1,702 object classes. MetaShift is a collection of 12,868 sets of natural images from 410 classes. Each class has 31.4 subsets, and each subset has 200.4 images on average. 
 
-.. figure:: ../figures/MetaDataset-Examples.jpg
+.. figure:: ../figures/MetaShift-Examples.jpg
    :width: 100 %
    :align: center
    :alt: 
 
-   **Figure: Example Cat vs. Dog Images from MetaDataset.** For each class, MetaDataset provides many subsets of data, each of which corresponds different contexts (the context is stated in parenthesis). 
+   **Figure: Example Cat vs. Dog Images from MetaShift.** For each class, MetaShift provides many subsets of data, each of which corresponds different contexts (the context is stated in parenthesis). 
 
 Different subsets may share common images---e.g. a dog image can have both grass and frisbee would occur in both \emph{dog with grass} and \emph{dog with frisbee}. 
 Therefore, the total number of subsets times the average number of images in each subset is much larger than the original dataset. The distance between subsets capture this overlap, but also broader similarities. 
@@ -27,9 +27,9 @@ Therefore, the total number of subsets times the average number of images in eac
 
 General Contexts (Locations and Weather)
 ---------------------------------------------
-MetaDataset covers 37 general contexts including location (e.g., indoor, outdoor, ocean, snow) and weather (e.g., couldy, sunny, rainy). 
+MetaShift covers 37 general contexts including location (e.g., indoor, outdoor, ocean, snow) and weather (e.g., couldy, sunny, rainy). 
 
-.. figure:: ../figures/MetaDataset-Global-Examples.jpg
+.. figure:: ../figures/MetaShift-Global-Examples.jpg
    :width: 100 %
    :align: center
    :alt: 
@@ -37,7 +37,7 @@ MetaDataset covers 37 general contexts including location (e.g., indoor, outdoor
    **Figure: Example subsets based on general contexts.** 
 
 
-The attributes and their ontology in MetaDataset are as follows: 
+The attributes and their ontology in MetaShift are as follows: 
 
 
 .. code-block:: python
@@ -54,17 +54,17 @@ The attributes and their ontology in MetaDataset are as follows:
 
 Object Attributes
 ---------------------------------------------
-MetaDataset covers attributes including activity (e.g., sitting, jumping), color (e.g., orange, white), material (e.g., wooden, metallic), shape (e.g., round, square) and so on. 
+MetaShift covers attributes including activity (e.g., sitting, jumping), color (e.g., orange, white), material (e.g., wooden, metallic), shape (e.g., round, square) and so on. 
 
 
-.. figure:: ../figures/MetaDataset-Attributes-Examples.jpg
+.. figure:: ../figures/MetaShift-Attributes-Examples.jpg
    :width: 100 %
    :align: center
    :alt: 
 
    **Figure: Example subsets based on general contexts.** 
 
-The general contexts and their ontology in MetaDataset are as follows: 
+The general contexts and their ontology in MetaShift are as follows: 
 
 .. code-block:: python
 
@@ -102,8 +102,8 @@ More Examples of Meta-graphs
    :align: center
    :alt: 
 
-   **Figure: Meta-graph for the “Cat” class, which captures meaningful semantics of the multi-modal data distribution of “Cat”.** MetaDataset splits the data points of each class (e.g., Cat) into many subsets based on visual contexts. 
-   Each node in the meta-graph represents one subset. The weight of each edge is the overlap coefficient between the corresponding two subsets. Node colors indicate the graph-based community detection results. Inter-community edges are colored. Intra-community edges are grayed out for better visualization. The border color of each example image indicates its community in the meta-graph. We have one such meta-graph for each of the 410 classes in the MetaDataset.
+   **Figure: Meta-graph for the “Cat” class, which captures meaningful semantics of the multi-modal data distribution of “Cat”.** MetaShift splits the data points of each class (e.g., Cat) into many subsets based on visual contexts. 
+   Each node in the meta-graph represents one subset. The weight of each edge is the overlap coefficient between the corresponding two subsets. Node colors indicate the graph-based community detection results. Inter-community edges are colored. Intra-community edges are grayed out for better visualization. The border color of each example image indicates its community in the meta-graph. We have one such meta-graph for each of the 410 classes in the MetaShift.
 
 
 .. figure:: ../figures/Dog-MetaGraph.jpg

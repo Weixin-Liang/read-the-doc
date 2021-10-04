@@ -1,4 +1,4 @@
-MetaShift: A Dataset of Datasets for Evaluating Distribution Shifts and Training Conflicts
+MetaShift: A Dataset of Datasets for Evaluating Contextual Distribution Shifts and Training Conflicts
 ====================================================================================================
 
 .. raw:: html
