@@ -7,7 +7,7 @@ Download MetaShift Github Repo
 .. raw:: html
    
    <i class="fa fa-github"></i> Download via <a
-   href="https://anonymous.4open.science/r/MetaShift-Distribution-Shift-E613/">anonymous GitHub.</a> 
+   href="https://anonymous.4open.science/r/MetaShift-Supplementary-011E/">anonymous GitHub.</a> 
    A public Github repo will be created after the peer review. 
    <br /> <br />
 
