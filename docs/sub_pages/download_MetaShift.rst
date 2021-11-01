@@ -14,7 +14,7 @@ Download MetaShift Github Repo
 
 Downlaod Base Dataset: Visual Genome
 ------------------------------------
-We leverage the natural heterogeneity of Visual Genome and its annotations to construct MetaShift. We use the pre-processed and cleaned version of Visual Genome by `Hudson and Manning <https://arxiv.org/pdf/1902.09506.pdfL>`_. Download the base dataset as follows: 
+We leverage the natural heterogeneity of Visual Genome and its annotations to construct MetaShift. We use the pre-processed and cleaned version of Visual Genome by `GQA <https://arxiv.org/pdf/1902.09506.pdfL>`_. Download the base dataset as follows: 
 
 
 - Download image files (~20GB) from: https://nlp.stanford.edu/data/gqa/images.zip
@@ -74,10 +74,19 @@ The image IDs for each subset are provided as a Python Dictionary in ``generate_
 
 .. code-block:: bash
 
-   python create_MetaShift.py
-
+   python create_metashift.py
+   
 
 The ``meta-graphs`` folder contains the generated meta-graph for each class. 
+The following python scripts provide the data for reproducing the experiments in the paper: 
+
+.. code-block:: bash
+
+   python custom_cat_indoor_outdoor.py
+   python custom_cat_dog.py
+   python custom_bus_truck.py
+
+
 The ``subsets`` folder contains the image subsets, organized by the subject class. The file structure should look like this:
 
 .. code-block:: 
