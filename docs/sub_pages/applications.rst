@@ -28,7 +28,7 @@ Concretely, in the training data, cat(ourdoor) and dog(indoor) subsets are the m
 We keep the total size of training data as 1700 images unchanged and only vary the portion of minority groups. 
 We use a balanced test set with 576 images to report both average accuracy and worst group accuracy. 
 
-.. figure:: ../figures/app-domain-generalization.png
+.. figure:: ../figures/app-subpopulation-shift.png
    :width: 100 %
    :align: center
    :alt: 
