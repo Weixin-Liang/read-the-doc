@@ -62,7 +62,7 @@ MetaShift covers attributes including activity (e.g., sitting, jumping), color (
    :align: center
    :alt: 
 
-   **Figure: Example subsets based on general contexts.** 
+   **Figure: Example subsets based on object attributes.** 
 
 The general contexts and their ontology in MetaShift are as follows: 
 

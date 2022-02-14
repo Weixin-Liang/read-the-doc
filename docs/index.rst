@@ -69,6 +69,21 @@ Quantify Distances of Distribution Shifts
 The geometry of MetaGraphs provides a way to quantify the distances of shifts across different data distributions: Intuitively, if two subsets are far away from each other in the MetaGraph, then the shift between them tend to be large. We calculate spectral embeddings of each node in the meta-graph measures the distance between any two subsets. 
 
 
+.. figure:: ./figures/MetaShift-Global-Examples.jpg
+   :width: 100 %
+   :align: center
+   :alt: 
+
+   **Figure: Example subsets based on general contexts.** 
+
+
+.. figure:: ./figures/MetaShift-Attributes-Examples.jpg
+   :width: 100 %
+   :align: center
+   :alt: 
+
+   **Figure: Example subsets based on object attributes.** 
+
 Citation
 --------
 If you find this code useful in your research, please consider citing:
