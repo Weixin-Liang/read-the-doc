@@ -46,7 +46,6 @@ We also show how MetaShift can help to visualize conflicts between data subsets 
 
 Citation
 --------
-If you find this code useful in your research, please consider citing:
 
 .. code-block:: bibtex
 

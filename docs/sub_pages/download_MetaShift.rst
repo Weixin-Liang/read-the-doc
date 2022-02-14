@@ -341,7 +341,6 @@ thanks to the authors and developers!
 
 Citation
 --------
-If you find this code useful in your research, please consider citing:
 
 .. code-block:: bibtex
 

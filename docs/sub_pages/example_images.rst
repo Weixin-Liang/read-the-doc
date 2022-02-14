@@ -126,7 +126,6 @@ More Examples of Meta-graphs
 
 Citation
 --------
-If you find this code useful in your research, please consider citing:
 
 .. code-block:: bibtex
 

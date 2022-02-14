@@ -86,7 +86,6 @@ The geometry of MetaGraphs provides a way to quantify the distances of shifts ac
 
 Citation
 --------
-If you find this code useful in your research, please consider citing:
 
 .. code-block:: bibtex
 
