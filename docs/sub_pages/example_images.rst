@@ -121,3 +121,20 @@ More Examples of Meta-graphs
    :alt: 
 
    **Figure: Meta-graph for the “Cup” class**
+
+
+
+Citation
+--------
+If you use this library in your research, please cite it as
+follows:
+
+.. code-block:: bibtex
+
+   @InProceedings{liang2022metashift,
+   title={MetaShift: A Dataset of Datasets for Evaluating Contextual Distribution Shifts and Training Conflicts},
+   author={Weixin Liang and James Zou},
+   booktitle={International Conference on Learning Representations},
+   year={2022},
+   url={https://openreview.net/forum?id=MTex8qKavoS}
+   }
