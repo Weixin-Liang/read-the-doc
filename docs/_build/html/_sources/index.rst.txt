@@ -4,8 +4,7 @@ MetaShift: A Dataset of Datasets for Evaluating Contextual Distribution Shifts a
 .. raw:: html
    
    <i class="fa fa-github"></i> View on and Install via <a
-   href="https://anonymous.4open.science/r/MetaShift-Distribution-Shift-E613/">anonymous GitHub.</a> 
-   A public Github repo will be created after the peer review. 
+   href="https://github.com/Weixin-Liang/MetaShift/">GitHub.</a> 
    <br /> <br />
 
 
@@ -52,7 +51,7 @@ The :samp:`MetaShift` is a collection of subsets of data together with an annota
 
 How can we use :samp:`MetaShift`?
 ------------------------------------------------
-It is a flexible framework to generate a large number of real-world distribution shifts that are well-annotated and controlled. For each class of interest, say ``cats'', we can use the meta-graph of cats to identify a collection of cats nodes for training (e.g. cats with bathroom related contexts) and a collection of cats nodes for out-of-domain evaluation (e.g. cats in outdoor contexts). Our meta-graph tells us exactly what is different between the train and test domains (e.g. bathroom vs. outdoor contexts), and it also specifies the similarity between the two contexts via graph distance. That makes it easy to carefully modulate the amount of distribution shift. For example, if we use cats-in-living-room as the test set, then this is an smaller distribution shift.  
+It is a flexible framework to generate a large number of real-world distribution shifts that are well-annotated and controlled. For each class of interest, say 'cats', we can use the meta-graph of cats to identify a collection of cats nodes for training (e.g. cats with bathroom related contexts) and a collection of cats nodes for out-of-domain evaluation (e.g. cats in outdoor contexts). Our meta-graph tells us exactly what is different between the train and test domains (e.g. bathroom vs. outdoor contexts), and it also specifies the similarity between the two contexts via graph distance. That makes it easy to carefully modulate the amount of distribution shift. For example, if we use cats-in-living-room as the test set, then this is an smaller distribution shift.  
 
 
 .. figure:: ./figures/Cat-MetaGraph.jpg
@@ -77,13 +76,10 @@ follows *(Under Submission)*. :
 
 .. code-block:: bibtex
 
-   @inproceedings{
-      anonymous2022metashift,
-      title={MetaShift: A Dataset of Datasets for Evaluating Contextual Distribution Shifts and Training Conflicts},
-      author={Anonymous},
-      booktitle={Submitted to The Tenth International Conference on Learning Representations },
-      year={2022},
-      url={https://openreview.net/forum?id=MTex8qKavoS},
-      note={under review}
+   @InProceedings{liang2022metashift,
+   title={MetaShift: A Dataset of Datasets for Evaluating Contextual Distribution Shifts and Training Conflicts},
+   author={Weixin Liang and James Zou},
+   booktitle={International Conference on Learning Representations},
+   year={2022},
+   url={https://openreview.net/forum?id=MTex8qKavoS}
    }
-
